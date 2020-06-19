@@ -255,10 +255,10 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
     #     default=False,
     #     description="Check for updates of the addon")
 
-    scale_y: BoolProperty(
-        name="",
-        default=False
-    )
+    # scale_y: BoolProperty(
+    #     name="",
+    #     default=False
+    # )
 
     # use_normals_buttons: BoolProperty(
     #     name="Use Normal buttons",
@@ -431,12 +431,6 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
         description="Space Between lines"
     )
 
-    use_bevel_node: BoolProperty(
-        name="Use Bevel Node",
-        default=False,
-        description="Use Bevel Node"
-    )
-
     infotext_text_pos_y: IntProperty(
         name="",
         default=29,
@@ -487,8 +481,8 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
         # row.operator("wm.url_open", text="SUPPORT ON DISCORD FOR CUSTOMERS",
         #              icon_value=icon.icon_id).url = "https://discord.gg/ctQAdbY"
 
-        box = layout.box()
-        row = box.row(align=True)
+        # box = layout.box()
+        # row = box.row(align=True)
 
         # row.label(text="Check For Updates")
         # row.prop(self, "show_update", text="      ")
@@ -551,40 +545,40 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
 
         # Options
         # if self.prefs_tabs == 'options':
-        box = layout.box()
-        split = box.split()
-        col = split.column()
-        col.label(text="Use Bevel Shader:")
-        col = split.column(align=True)
-        col.prop(self, 'use_bevel_node', expand=True, text=" ")
-
-        box = layout.box()
-        split = box.split()
-        col = split.column()
-        col.label(text="Use Normal Buttons:")
-        col = split.column(align=True)
-        col.prop(self, 'use_normals_buttons', expand=True, text=" ")
-
-        box = layout.box()
-        split = box.split()
-        col = split.column()
-        col.label(text="Pie Menus Buttons Scale:")
-        col = split.column(align=True)
-        col.prop(self, 'scale_y', expand=True, text=" ")
-
-        box = layout.box()
-        split = box.split()
-        col = split.column()
-        col.label(text="Auto smooth :")
-        col = split.column(align=True)
-        col.prop(self, 'auto_smooth_value', expand=True, text="Angle")
+        # box = layout.box()
+        # split = box.split()
+        # col = split.column()
+        # col.label(text="Use Bevel Shader:")
+        # col = split.column(align=True)
+        # col.prop(self, 'use_bevel_node', expand=True, text=" ")
 
         # box = layout.box()
-        split = box.split()
-        col = split.column()
-        col.label(text="Add Bool Objects to Collection")
-        col = split.column()
-        col.prop(self, "add_bool_objects_to_collection", text="      ")
+        # split = box.split()
+        # col = split.column()
+        # col.label(text="Use Normal Buttons:")
+        # col = split.column(align=True)
+        # col.prop(self, 'use_normals_buttons', expand=True, text=" ")
+
+        # box = layout.box()
+        # split = box.split()
+        # col = split.column()
+        # col.label(text="Pie Menus Buttons Scale:")
+        # col = split.column(align=True)
+        # col.prop(self, 'scale_y', expand=True, text=" ")
+
+        # box = layout.box()
+        # split = box.split()
+        # col = split.column()
+        # col.label(text="Auto smooth :")
+        # col = split.column(align=True)
+        # col.prop(self, 'auto_smooth_value', expand=True, text="Angle")
+
+        # box = layout.box()
+        # split = box.split()
+        # col = split.column()
+        # col.label(text="Add Bool Objects to Collection")
+        # col = split.column()
+        # col.prop(self, "add_bool_objects_to_collection", text="      ")
 
         # box = layout.box()
         # split = box.split()
@@ -612,9 +606,11 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
         # row.label(text="Material 2")
         # row.prop(self, "color_2")
 
+        # box = layout.box()
+        # row = box.row(align=True)
+        # row.label(text="Text Options:")
+
         box = layout.box()
-        row = box.row(align=True)
-        row.label(text="Text Options:")
 
         row = box.row(align=True)
         row.label(text="Text in the viewport")
