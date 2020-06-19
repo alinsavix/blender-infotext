@@ -1,0 +1,17 @@
+# Don't forget to also 'pip3.8 install fake-bpy-module-2.82'
+# Sadly, these settings don't carry over to VSCode. Wonder if there's a
+# way to make it read this...
+[flake8]
+ignore =
+  E266,   # Allow multiple # ahead of comments
+  E402,   # Allow imports not at top of file
+  F403,   # Don't complain about wildcard imports
+
+max-line-length = 120
+
+[flake8:local-plugins]
+# extension =
+#   MC1 = myflake8plugin:MyChecker1
+paths =
+  /Applications/Blender.app//Contents/Resources/2.83/scripts/modules,
+  /usr/local/lib/python3.8/site-packages/
