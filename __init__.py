@@ -229,7 +229,7 @@ class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
 # Preferences
 ##################################
 
-class infotext_addon_prefs(bpy.types.AddonPreferences):
+class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
     bl_idname = __name__
 
     prefs_tabs: EnumProperty(
@@ -480,15 +480,16 @@ class infotext_addon_prefs(bpy.types.AddonPreferences):
         infotext = bpy.context.window_manager.infotext
         icons = ui.load_icons()
 
-        box = layout.box()
-        icon = icons.get("icon_discord")
-        row = box.row()
-        row.scale_y = 2
-        row.operator("wm.url_open", text="SUPPORT ON DISCORD FOR CUSTOMERS",
-                     icon_value=icon.icon_id).url = "https://discord.gg/ctQAdbY"
+        # box = layout.box()
+        # icon = icons.get("icon_discord")
+        # row = box.row()
+        # row.scale_y = 2
+        # row.operator("wm.url_open", text="SUPPORT ON DISCORD FOR CUSTOMERS",
+        #              icon_value=icon.icon_id).url = "https://discord.gg/ctQAdbY"
 
         box = layout.box()
         row = box.row(align=True)
+
         # row.label(text="Check For Updates")
         # row.prop(self, "show_update", text="      ")
 
@@ -521,197 +522,197 @@ class infotext_addon_prefs(bpy.types.AddonPreferences):
         #     box.label(text="- Click on SAVE PREFERENCES")
         #     box.label(text="- Restart Blender")
 
-        row = layout.row(align=True)
-        row.prop(self, "prefs_tabs", expand=True)
+        # row = layout.row(align=True)
+        # row.prop(self, "prefs_tabs", expand=True)
 
-        # Info
-        if self.prefs_tabs == 'info':
-            box = layout.box()
-            split = box.split()
-            col = split.column()
-            col.label(text="Keymap > Shift + Q")
-            col.separator()
-            col.label(text="Speedflow Companion works with Speedflow")
-            col.label(
-                text="This Addon allows you to edit your model in Object and Edit mode.")
-            col.label(
-                text="You can Create Primitives on the mouse to make Booleans.")
-            col.label(
-                text="You can add Bevel Weight, Sharps, Creases, clean faces, select Ngons etc")
-            col.label(
-                text="You can call the Carver Addon in the pie menu and add CAD Snap Utilities line tool to cut faces. ")
-            col.label(
-                text="In Curve selection you can edit the point, Poly, Bezier, change the radius etc")
-            col.label(
-                text="Each button allow several actions with Shift, Ctrl, Alt...")
-            col.separator()
-            col.label(
-                text="Follow the documentation and videos for more informations.")
+        # # Info
+        # if self.prefs_tabs == 'info':
+        #     box = layout.box()
+        #     split = box.split()
+        #     col = split.column()
+        #     col.label(text="Keymap > Shift + Q")
+        #     col.separator()
+        #     col.label(text="Speedflow Companion works with Speedflow")
+        #     col.label(
+        #         text="This Addon allows you to edit your model in Object and Edit mode.")
+        #     col.label(
+        #         text="You can Create Primitives on the mouse to make Booleans.")
+        #     col.label(
+        #         text="You can add Bevel Weight, Sharps, Creases, clean faces, select Ngons etc")
+        #     col.label(
+        #         text="You can call the Carver Addon in the pie menu and add CAD Snap Utilities line tool to cut faces. ")
+        #     col.label(
+        #         text="In Curve selection you can edit the point, Poly, Bezier, change the radius etc")
+        #     col.label(
+        #         text="Each button allow several actions with Shift, Ctrl, Alt...")
+        #     col.separator()
+        #     col.label(
+        #         text="Follow the documentation and videos for more informations.")
 
         # Options
-        if self.prefs_tabs == 'options':
-            # if bpy.app.version >= (2, 79, 1):
-            box = layout.box()
-            split = box.split()
-            col = split.column()
-            col.label(text="Use Bevel Shader:")
-            col = split.column(align=True)
-            col.prop(self, 'use_bevel_node', expand=True, text=" ")
+        # if self.prefs_tabs == 'options':
+        box = layout.box()
+        split = box.split()
+        col = split.column()
+        col.label(text="Use Bevel Shader:")
+        col = split.column(align=True)
+        col.prop(self, 'use_bevel_node', expand=True, text=" ")
 
-            box = layout.box()
-            split = box.split()
-            col = split.column()
-            col.label(text="Use Normal Buttons:")
-            col = split.column(align=True)
-            col.prop(self, 'use_normals_buttons', expand=True, text=" ")
+        box = layout.box()
+        split = box.split()
+        col = split.column()
+        col.label(text="Use Normal Buttons:")
+        col = split.column(align=True)
+        col.prop(self, 'use_normals_buttons', expand=True, text=" ")
 
-            box = layout.box()
-            split = box.split()
-            col = split.column()
-            col.label(text="Pie Menus Buttons Scale:")
-            col = split.column(align=True)
-            col.prop(self, 'scale_y', expand=True, text=" ")
+        box = layout.box()
+        split = box.split()
+        col = split.column()
+        col.label(text="Pie Menus Buttons Scale:")
+        col = split.column(align=True)
+        col.prop(self, 'scale_y', expand=True, text=" ")
 
-            box = layout.box()
-            split = box.split()
-            col = split.column()
-            col.label(text="Auto smooth :")
-            col = split.column(align=True)
-            col.prop(self, 'auto_smooth_value', expand=True, text="Angle")
+        box = layout.box()
+        split = box.split()
+        col = split.column()
+        col.label(text="Auto smooth :")
+        col = split.column(align=True)
+        col.prop(self, 'auto_smooth_value', expand=True, text="Angle")
 
-            # box = layout.box()
-            split = box.split()
-            col = split.column()
-            col.label(text="Add Bool Objects to Collection")
-            col = split.column()
-            col.prop(self, "add_bool_objects_to_collection", text="      ")
+        # box = layout.box()
+        split = box.split()
+        col = split.column()
+        col.label(text="Add Bool Objects to Collection")
+        col = split.column()
+        col.prop(self, "add_bool_objects_to_collection", text="      ")
 
-            # box = layout.box()
-            # split = box.split()
-            # col = split.column()
-            # col.label(text="Solo Color:")
-            # col = split.column(align=True)
-            # col.prop(self, "solo_color", text="")
-            #
-            # split = box.split()
-            # col = split.column()
-            # col.label(text="Solo Alpha:")
-            # col = split.column(align=True)
-            # col.prop(self, "solo_alpha", text="")
+        # box = layout.box()
+        # split = box.split()
+        # col = split.column()
+        # col.label(text="Solo Color:")
+        # col = split.column(align=True)
+        # col.prop(self, "solo_color", text="")
+        #
+        # split = box.split()
+        # col = split.column()
+        # col.label(text="Solo Alpha:")
+        # col = split.column(align=True)
+        # col.prop(self, "solo_alpha", text="")
 
-            # MAT COLOR
-            # box = layout.box()
-            # split = box.split()
-            # col = split.column()
-            # col.label(text="Material Color:")
-            # row = box.row(align=True)
-            # row.label(text="Plastic")
-            # row.prop(self, "color_1")
-            #
-            # row = box.row(align=True)
-            # row.label(text="Material 2")
-            # row.prop(self, "color_2")
+        # MAT COLOR
+        # box = layout.box()
+        # split = box.split()
+        # col = split.column()
+        # col.label(text="Material Color:")
+        # row = box.row(align=True)
+        # row.label(text="Plastic")
+        # row.prop(self, "color_1")
+        #
+        # row = box.row(align=True)
+        # row.label(text="Material 2")
+        # row.prop(self, "color_2")
 
-            box = layout.box()
+        box = layout.box()
+        row = box.row(align=True)
+        row.label(text="Text Options:")
+
+        row = box.row(align=True)
+        row.label(text="Text in the viewport")
+        row.prop(self, "drawText", expand=True, text=" ")
+
+        row = box.row(align=True)
+        row.label(text="Show Object Mode")
+        row.prop(self, "show_object_mode", expand=True, text=" ")
+
+        # row = box.row(align=True)
+        # row.label(text="Show Object Type & Name")
+        # row.prop(self, "show_object_name", expand=True, text=" ")
+
+        row = box.row(align=True)
+        row.label(text="Show Transforms")
+        row.prop(self, "show_loc_rot_scale", expand=True, text=" ")
+
+        row = box.row(align=True)
+        row.label(text="Show Vert/Faces/Tris/Ngons")
+        row.prop(self, "show_vert_face_tris", expand=True, text=" ")
+
+        row = box.row(align=True)
+        row.label(text="Show Object informations")
+        row.prop(self, "show_object_info", expand=True, text=" ")
+
+        row = box.row(align=True)
+        row.label(text="Show Modifiers")
+        row.prop(self, "show_modifiers", expand=True, text=" ")
+
+        row = box.row(align=True)
+        row.label(text="Simple Mode for Modifiers")
+        row.prop(self, "simple_text_mode", expand=True, text=" ")
+
+        row = box.row(align=True)
+        row.label(text="Show Addons Keymaps")
+        row.prop(self, "show_keymaps", expand=True, text=" ")
+
+        row = box.row(align=True)
+        row.label(text="Show Blender Keymaps")
+        row.prop(self, "show_blender_keymaps", expand=True, text=" ")
+
+        row = box.row(align=True)
+        row.label(text="Title Color")
+        row.prop(self, "text_color")
+
+        row = box.row(align=True)
+        row.label(text="Settings Color")
+        row.prop(self, "text_color_1")
+
+        row = box.row(align=True)
+        row.label(text="Value Color")
+        row.prop(self, "text_color_2")
+
+        row = box.row(align=True)
+        row.label(text="Modifier Hidden")
+        row.prop(self, "hidden")
+
+        row = box.row(align=True)
+        row.label(text="Text Size Max")
+        row.prop(self, "text_size_max")
+
+        row = box.row(align=True)
+        row.label(text="Text Size Min")
+        row.prop(self, "text_size_mini")
+
+        row = box.row(align=True)
+        row.label(text="Text Space")
+        row.prop(self, "infotext_text_space")
+
+        row = box.row(align=True)
+        row.label(text="Text X position")
+        row.prop(self, "infotext_text_pos_x")
+
+        row = box.row(align=True)
+        row.label(text="Text Y position")
+        row.prop(self, "infotext_text_pos_y")
+
+        row = box.row(align=True)
+        row.label(text="Activate Shadows")
+        row.prop(self, "infotext_text_shadow", text="      ")
+
+        if self.infotext_text_shadow:
             row = box.row(align=True)
-            row.label(text="Text Options:")
+            row.label(text="Shadows Color")
+            row.prop(self, "infotext_shadow_color")
 
             row = box.row(align=True)
-            row.label(text="Text in the viewport")
-            row.prop(self, "drawText", expand=True, text=" ")
+            row.label(text="Shadows Transparency")
+            row.prop(self, "infotext_shadow_alpha")
 
             row = box.row(align=True)
-            row.label(text="Show Object Mode")
-            row.prop(self, "show_object_mode", expand=True, text=" ")
-
-            # row = box.row(align=True)
-            # row.label(text="Show Object Type & Name")
-            # row.prop(self, "show_object_name", expand=True, text=" ")
+            row.label(text="Offset Shadows X")
+            row.prop(self, "infotext_offset_shadow_x")
 
             row = box.row(align=True)
-            row.label(text="Show Transforms")
-            row.prop(self, "show_loc_rot_scale", expand=True, text=" ")
-
-            row = box.row(align=True)
-            row.label(text="Show Vert/Faces/Tris/Ngons")
-            row.prop(self, "show_vert_face_tris", expand=True, text=" ")
-
-            row = box.row(align=True)
-            row.label(text="Show Object informations")
-            row.prop(self, "show_object_info", expand=True, text=" ")
-
-            row = box.row(align=True)
-            row.label(text="Show Modifiers")
-            row.prop(self, "show_modifiers", expand=True, text=" ")
-
-            row = box.row(align=True)
-            row.label(text="Simple Mode for Modifiers")
-            row.prop(self, "simple_text_mode", expand=True, text=" ")
-
-            row = box.row(align=True)
-            row.label(text="Show Addons Keymaps")
-            row.prop(self, "show_keymaps", expand=True, text=" ")
-
-            row = box.row(align=True)
-            row.label(text="Show Blender Keymaps")
-            row.prop(self, "show_blender_keymaps", expand=True, text=" ")
-
-            row = box.row(align=True)
-            row.label(text="Title Color")
-            row.prop(self, "text_color")
-
-            row = box.row(align=True)
-            row.label(text="Settings Color")
-            row.prop(self, "text_color_1")
-
-            row = box.row(align=True)
-            row.label(text="Value Color")
-            row.prop(self, "text_color_2")
-
-            row = box.row(align=True)
-            row.label(text="Modifier Hidden")
-            row.prop(self, "hidden")
-
-            row = box.row(align=True)
-            row.label(text="Text Size Max")
-            row.prop(self, "text_size_max")
-
-            row = box.row(align=True)
-            row.label(text="Text Size Min")
-            row.prop(self, "text_size_mini")
-
-            row = box.row(align=True)
-            row.label(text="Text Space")
-            row.prop(self, "infotext_text_space")
-
-            row = box.row(align=True)
-            row.label(text="Text X position")
-            row.prop(self, "infotext_text_pos_x")
-
-            row = box.row(align=True)
-            row.label(text="Text Y position")
-            row.prop(self, "infotext_text_pos_y")
-
-            row = box.row(align=True)
-            row.label(text="Activate Shadows")
-            row.prop(self, "infotext_text_shadow", text="      ")
-
-            if self.infotext_text_shadow:
-                row = box.row(align=True)
-                row.label(text="Shadows Color")
-                row.prop(self, "infotext_shadow_color")
-
-                row = box.row(align=True)
-                row.label(text="Shadows Transparency")
-                row.prop(self, "infotext_shadow_alpha")
-
-                row = box.row(align=True)
-                row.label(text="Offset Shadows X")
-                row.prop(self, "infotext_offset_shadow_x")
-
-                row = box.row(align=True)
-                row.label(text="Offset Shadows Y")
-                row.prop(self, "infotext_offset_shadow_y")
+            row.label(text="Offset Shadows Y")
+            row.prop(self, "infotext_offset_shadow_y")
+            # End of original IF block above
 
             # RESET PREFS
             row = box.row(align=True)
@@ -1084,14 +1085,14 @@ class INFOTEXT_OT_property_group(bpy.types.PropertyGroup):
 
 
 # CLASSES = [SFC_OT_Reset_Prefs,
-#            infotext_addon_prefs,
+#            INFOTEXT_MT_addon_prefs,
 #            SPEEDFLOW_COMPANION_OT_add_hotkey,
 #            SFC_OT_property_group,
 #            SFC_Primitives_PropertyGroup
 #            ]
 
 CLASSES = [INFOTEXT_OT_Reset_Prefs,
-           infotext_addon_prefs,
+           INFOTEXT_MT_addon_prefs,
            #    INFOTEXT_OT_add_hotkey,
            INFOTEXT_OT_property_group,
            #    infotext_Primitives_PropertyGroup
