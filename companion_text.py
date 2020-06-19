@@ -14,14 +14,18 @@
 import bpy
 import blf
 import math
+print(__name__ + "1")
 from math import degrees
+print(__name__ + "2")
 # from .functions import get_addon_preferences, infotext_update_mesh_info_values
 from .functions import *
+print(__name__ + "3")
 import bmesh
 # from .icon.icons import load_icons
+print(__name__ + "4")
 from os.path import dirname, join
 from . import png
-
+print(__name__ + "::5")
 
 infotext_text_Handle = []
 TEXTURES = {}

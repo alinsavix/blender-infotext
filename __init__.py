@@ -38,18 +38,20 @@ if "bpy" in locals():
         if module in locals():
             importlib.reload(locals()[module])
 
-
+print(__name__ + "::1")
 from . import (functions,
                ui,
                #    lattice,
-               modals,
+               #    modals,
                #    operators,
-               modifiers_popup,
+               #    modifiers_popup,
                )
-
+print(__name__ + "::2")
 import bpy
+print(__name__ + "::3")
 from mathutils import *
 # import rna_keymap_ui
+print(__name__ + "::4")
 from bpy.props import (StringProperty,
                        BoolProperty,
                        PointerProperty,
@@ -58,17 +60,20 @@ from bpy.props import (StringProperty,
                        EnumProperty,
                        IntProperty,
                        BoolVectorProperty)
-
-
+print(__name__ + "::5")
 # from .lattice import *
 # from .operators import *
 # from .modifiers_popup import *
 from .companion_text import *
 # from .primitives import *
+print(__name__ + "::6")
 from .functions import get_addon_preferences
 # from .addon_updater import AddonUpdater
-from . import developer_utils
+print(__name__ + "::7")
+# from . import developer_utils
+print(__name__ + "::8")
 from .icon.icons import load_icons
+print(__name__ + "::9")
 
 #### updater = AddonUpdater()
 

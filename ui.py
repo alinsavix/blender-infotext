@@ -15,10 +15,10 @@ import bpy
 from bpy.types import Menu, Panel
 from .icon.icons import load_icons
 from .functions import *
-from .modifiers_popup import *
-from .primitives import *
-from .lattice import *
-from .modals import*
+# from .modifiers_popup import *
+# from .primitives import *
+# from .lattice import *
+# from .modals import *
 from bpy.props import (StringProperty,
                        BoolProperty,
                        FloatVectorProperty,
@@ -45,9 +45,9 @@ from bpy.props import *
 # Simplify Popup
 
 
-class SFC_PT_simplify_popup(bpy.types.Operator):
-    # bl_idname = "SFC_PT_simplify_popup"
-    bl_idname = "sfc.simplify_popup"
+class INFOTEXT_simplify_popup(bpy.types.Operator):
+    # bl_idname = "INFOTEXT_simplify_popup"
+    bl_idname = "infotext.simplify_popup"
     bl_label = "Simplify Popup"
 
     def execute(self, context):
@@ -116,9 +116,9 @@ class SFC_PT_simplify_popup(bpy.types.Operator):
 
 
 # Vertex Groups
-class SFC_PT_vertex_group(bpy.types.Operator):
-    # bl_idname = "SFC_PT_vertex_group"
-    bl_idname = "sfc.vertex_group"
+class INFOTEXT_vertex_group(bpy.types.Operator):
+    # bl_idname = "INFOTEXT_vertex_group"
+    bl_idname = "infotext.vertex_group"
     bl_label = "Vertex Groups Popup"
 
     def execute(self, context):
@@ -175,8 +175,8 @@ class SFC_PT_vertex_group(bpy.types.Operator):
 
 
 # Show Random color Popup
-class SFC_PT_color_Popup(bpy.types.Operator):
-    # bl_idname = "SFC_PT_color_Popup"
+class INFOTEXT_color_Popup(bpy.types.Operator):
+    # bl_idname = "INFOTEXT_color_Popup"
     bl_idname = "object.random_color_popup"
     bl_label = "Material Popup"
     # bl_options = {'REGISTER', 'UNDO'}
@@ -220,9 +220,9 @@ class SFC_PT_color_Popup(bpy.types.Operator):
         # row = col.row(align=True)
         # row.scale_y = 1.5
         # if WM.random_or_color == 'color':
-        #     row.operator("object.sfc_random_color", text="Add Color", icon='COLOR_RED')
+        #     row.operator("object.infotext_random_color", text="Add Color", icon='COLOR_RED')
         # else:
-        #     row.operator("object.sfc_random_color", text="Add Random Color", icon='COLOR')
+        #     row.operator("object.infotext_random_color", text="Add Random Color", icon='COLOR')
 
         row = col.row(align=True)
         row.prop(WM, "material_alpha", text="Transparency")
@@ -232,7 +232,7 @@ class SFC_PT_color_Popup(bpy.types.Operator):
             row.scale_y = 1.5
         # if len(obj.material_slots):
 
-        row.operator("object.sfc_random_color", text="Add Material", icon='COLOR')
+        row.operator("object.infotext_random_color", text="Add Material", icon='COLOR')
 
         row = col.row(align=True)
         if len(obj.material_slots):
@@ -342,9 +342,9 @@ class SFC_PT_color_Popup(bpy.types.Operator):
 
 
 # LATTICE POPUP
-class SFC_PT_lattice_popup(bpy.types.Operator):
-    # bl_idname = "SFC_PT_lattice_popup"
-    bl_idname = "object.sfc_lattice_popup"
+class INFOTEXT_lattice_popup(bpy.types.Operator):
+    # bl_idname = "INFOTEXT_lattice_popup"
+    bl_idname = "object.infotext_lattice_popup"
     bl_label = "Lattice Popup"
     bl_options = {'REGISTER', 'UNDO'}
 
@@ -369,8 +369,8 @@ class SFC_PT_lattice_popup(bpy.types.Operator):
         row = col.row(align=True)
         if self.scale_y:
             row.scale_y = 1.5
-        row.operator("object.sfc_apply_lattice_objects", text="Apply Lattice", icon='FILE_TICK')
-        row.operator("object.sfc_remove_lattice_objects", text="", icon='X')
+        row.operator("object.infotext_apply_lattice_objects", text="Apply Lattice", icon='FILE_TICK')
+        row.operator("object.infotext_remove_lattice_objects", text="", icon='X')
         row = col.row(align=True)
         row.prop(context.object.data, "points_u")
         row = col.row(align=True)
@@ -387,8 +387,8 @@ class SFC_PT_lattice_popup(bpy.types.Operator):
 
 
 # Show Text Options Popup
-class SFC_PT_show_text_options_popup(bpy.types.Operator):
-    bl_idname = "object.sfc_text_options_popup"
+class INFOTEXT_show_text_options_popup(bpy.types.Operator):
+    bl_idname = "object.infotext_text_options_popup"
     bl_label = "Text Options"
     bl_options = {'REGISTER', 'UNDO'}
 
@@ -491,37 +491,37 @@ class SFC_PT_show_text_options_popup(bpy.types.Operator):
 
             row = col.row(align=True)
             row.label(text="Text Space")
-            row.prop(addon_pref, "sfc_text_space")
+            row.prop(addon_pref, "infotext_text_space")
 
             row = col.row(align=True)
             row.label(text="Text X position")
-            row.prop(addon_pref, "sfc_text_pos_x")
+            row.prop(addon_pref, "infotext_text_pos_x")
 
             row = col.row(align=True)
             row.label(text="Text Y position")
-            row.prop(addon_pref, "sfc_text_pos_y")
+            row.prop(addon_pref, "infotext_text_pos_y")
 
             row = col.row(align=True)
             row.label(text="Activate Shadows")
-            row.prop(addon_pref, "sfc_text_shadow", text="      ")
+            row.prop(addon_pref, "infotext_text_shadow", text="      ")
 
-            if addon_pref.sfc_text_shadow:
+            if addon_pref.infotext_text_shadow:
 
                 row = col.row(align=True)
                 row.label(text="Color")
-                row.prop(addon_pref, "sfc_shadow_color")
+                row.prop(addon_pref, "infotext_shadow_color")
 
                 row = col.row(align=True)
                 row.label(text="Transparency")
-                row.prop(addon_pref, "sfc_shadow_alpha")
+                row.prop(addon_pref, "infotext_shadow_alpha")
 
                 row = col.row(align=True)
                 row.label(text="Offset X")
-                row.prop(addon_pref, "sfc_offset_shadow_x")
+                row.prop(addon_pref, "infotext_offset_shadow_x")
 
                 row = col.row(align=True)
                 row.label(text="Offset Y")
-                row.prop(addon_pref, "sfc_offset_shadow_y")
+                row.prop(addon_pref, "infotext_offset_shadow_y")
 
         row = col.row(align=True)
         row.operator_context = 'EXEC_AREA'
@@ -536,8 +536,8 @@ class SFC_PT_show_text_options_popup(bpy.types.Operator):
 # Primitives Operations
 
 
-class SFC_OT_primitives_popup(bpy.types.Operator):
-    bl_idname = "sfc.primitives_popup"
+class INFOTEXT_primitives_popup(bpy.types.Operator):
+    bl_idname = "infotext.primitives_popup"
     bl_label = "Speedflow Companion Primitives"
 
     def execute(self, context):
@@ -551,89 +551,89 @@ class SFC_OT_primitives_popup(bpy.types.Operator):
     #     return context.active_object is not None
 
     def draw(self, context):
-        SFC_prim = context.window_manager.SFC_prim
+        INFOTEXT_prim = context.window_manager.INFOTEXT_prim
         icons = load_icons()
         layout = self.layout
         box = layout.box()
         row = box.row(align=True)
-        row.prop(SFC_prim, "align_cursor_rot", text="Cursor Rot")
-        row.prop(SFC_prim, "add_mirror", text="Mirror")
-        if SFC_prim.add_mirror:
+        row.prop(INFOTEXT_prim, "align_cursor_rot", text="Cursor Rot")
+        row.prop(INFOTEXT_prim, "add_mirror", text="Mirror")
+        if INFOTEXT_prim.add_mirror:
             row = box.row(align=True)
-            row.prop(SFC_prim, "mirror_axis_xyz", expand=True)
+            row.prop(INFOTEXT_prim, "mirror_axis_xyz", expand=True)
 
-        if SFC_prim.add_boolean == False:
-            SFC_prim.add_rebool = False
+        if INFOTEXT_prim.add_boolean == False:
+            INFOTEXT_prim.add_rebool = False
 
         row = box.row(align=True)
-        row.prop(SFC_prim, "add_boolean", text="Boolean")
-        if SFC_prim.add_boolean:
-            row.prop(SFC_prim, "add_rebool", text="Rebool")
+        row.prop(INFOTEXT_prim, "add_boolean", text="Boolean")
+        if INFOTEXT_prim.add_boolean:
+            row.prop(INFOTEXT_prim, "add_rebool", text="Rebool")
 
-        if SFC_prim.add_boolean or SFC_prim.add_rebool:
+        if INFOTEXT_prim.add_boolean or INFOTEXT_prim.add_rebool:
             row = box.row(align=True)
-            if SFC_prim.add_rebool:
-                SFC_prim.boolean_enum = 'DIFFERENCE'
-            row.prop(SFC_prim, "boolean_enum", expand=True)
+            if INFOTEXT_prim.add_rebool:
+                INFOTEXT_prim.boolean_enum = 'DIFFERENCE'
+            row.prop(INFOTEXT_prim, "boolean_enum", expand=True)
 
         # # -------DEFAULT PRIMITIVES
         #
         # layout.label(text="Default Primitives", icon='MESH_CUBE')
         # row = layout.row(align=True)
         # row.scale_x = 1.3
-        # op = row.operator("sfc.primitives_new", text="", icon='DOT')
+        # op = row.operator("infotext.primitives_new", text="", icon='DOT')
         # op.primitives_enum = "default_prim"
         # op.default_enum = 'vertex'
         #
-        # op = row.operator("sfc.primitives_new", text="", icon='MESH_PLANE')
+        # op = row.operator("infotext.primitives_new", text="", icon='MESH_PLANE')
         # op.primitives_enum = "default_prim"
         # op.default_enum = 'plane'
         #
-        # op = row.operator("sfc.primitives_new", text="", icon='MESH_CUBE')
+        # op = row.operator("infotext.primitives_new", text="", icon='MESH_CUBE')
         # op.primitives_enum = "default_prim"
         # op.default_enum = 'cube'
         #
-        # op = row.operator("sfc.primitives_new", text="", icon='MESH_CIRCLE')
+        # op = row.operator("infotext.primitives_new", text="", icon='MESH_CIRCLE')
         # op.primitives_enum = "default_prim"
         # op.default_enum = 'circle'
         #
-        # op = row.operator("sfc.primitives_new", text="", icon='MESH_UVSPHERE')
+        # op = row.operator("infotext.primitives_new", text="", icon='MESH_UVSPHERE')
         # op.primitives_enum = "default_prim"
         # op.default_enum = 'uv_sphere'
         #
-        # op = row.operator("sfc.primitives_new", text="", icon='MESH_ICOSPHERE')
+        # op = row.operator("infotext.primitives_new", text="", icon='MESH_ICOSPHERE')
         # op.primitives_enum = "default_prim"
         # op.default_enum = 'ico_sphere'
         #
-        # op = row.operator("sfc.primitives_new", text="", icon='MESH_CYLINDER')
+        # op = row.operator("infotext.primitives_new", text="", icon='MESH_CYLINDER')
         # op.primitives_enum = "default_prim"
         # op.default_enum = 'cylinder'
         #
-        # op = row.operator("sfc.primitives_new", text="", icon='MESH_CONE')
+        # op = row.operator("infotext.primitives_new", text="", icon='MESH_CONE')
         # op.primitives_enum = "default_prim"
         # op.default_enum = 'cone'
         #
-        # op = row.operator("sfc.primitives_new", text="", icon='MESH_TORUS')
+        # op = row.operator("infotext.primitives_new", text="", icon='MESH_TORUS')
         # op.primitives_enum = "default_prim"
         # op.default_enum = 'torus'
         #
         # row = layout.row(align=True)
         # row.scale_x = 1.5
-        # op = row.operator("sfc.primitives_new", text="", icon='MESH_GRID')
+        # op = row.operator("infotext.primitives_new", text="", icon='MESH_GRID')
         # op.primitives_enum = "default_prim"
         # op.default_enum = 'grid'
         #
-        # op = row.operator("sfc.primitives_new", text="", icon='CURVE_BEZCURVE')
+        # op = row.operator("infotext.primitives_new", text="", icon='CURVE_BEZCURVE')
         # op.primitives_enum = "default_prim"
         # op.default_enum = 'bezier_curve'
         #
-        # op = row.operator("sfc.primitives_new", text="", icon='CURVE_BEZCIRCLE')
+        # op = row.operator("infotext.primitives_new", text="", icon='CURVE_BEZCIRCLE')
         # op.primitives_enum = "default_prim"
         # op.default_enum = 'bezier_circle'
         #
-        # row.operator("sfc.cursor_line", text="", icon='LINE_DATA')
+        # row.operator("infotext.cursor_line", text="", icon='LINE_DATA')
         #
-        # op = row.operator("sfc.primitives_new", text="", icon='MESH_MONKEY')
+        # op = row.operator("infotext.primitives_new", text="", icon='MESH_MONKEY')
         # op.primitives_enum = "default_prim"
         # op.default_enum = 'monkey'
         #
@@ -641,35 +641,35 @@ class SFC_OT_primitives_popup(bpy.types.Operator):
         # layout.label(text="Screw Primitives", icon='MOD_SCREW')
         # row = layout.row(align=True)
         # row.scale_x = 1.3
-        # op = row.operator("sfc.primitives_new", text="", icon='DOT')
+        # op = row.operator("infotext.primitives_new", text="", icon='DOT')
         # op.primitives_enum = "screw_prim"
         # op.screw_enum = 'screw_7'
         #
-        # op = row.operator("sfc.primitives_new", text="", icon='MESH_CIRCLE')
+        # op = row.operator("infotext.primitives_new", text="", icon='MESH_CIRCLE')
         # op.primitives_enum = "screw_prim"
         # op.screw_enum = 'screw_6'
         #
-        # op = row.operator("sfc.primitives_new", text="", icon='MESH_CYLINDER')
+        # op = row.operator("infotext.primitives_new", text="", icon='MESH_CYLINDER')
         # op.primitives_enum = "screw_prim"
         # op.screw_enum = 'screw_1'
         #
         # screw = icons.get("prim_screw_2")
-        # op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+        # op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
         # op.primitives_enum = "screw_prim"
         # op.screw_enum = 'screw_2'
         #
         # screw = icons.get("prim_screw_3")
-        # op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+        # op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
         # op.primitives_enum = "screw_prim"
         # op.screw_enum = 'screw_3'
         #
         # screw = icons.get("prim_screw_4")
-        # op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+        # op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
         # op.primitives_enum = "screw_prim"
         # op.screw_enum = 'screw_4'
         #
         # screw = icons.get("prim_screw_5")
-        # op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+        # op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
         # op.primitives_enum = "screw_prim"
         # op.screw_enum = 'screw_5'
         #
@@ -677,39 +677,39 @@ class SFC_OT_primitives_popup(bpy.types.Operator):
         # layout.label(text="Editable Primitives", icon='MODIFIER')
         # row = layout.row(align=True)
         # row.scale_x = 1.3
-        # op = row.operator("sfc.primitives_new", icon='MESH_CUBE', text="")
+        # op = row.operator("infotext.primitives_new", icon='MESH_CUBE', text="")
         # op.primitives_enum = "editable_prim"
         # op.editable_enum = 'cube'
         #
-        # op = row.operator("sfc.primitives_new", icon='MESH_UVSPHERE', text="")
+        # op = row.operator("infotext.primitives_new", icon='MESH_UVSPHERE', text="")
         # op.primitives_enum = "editable_prim"
         # op.editable_enum = 'sphere'
         #
-        # op = row.operator("sfc.primitives_new", icon='MESH_CYLINDER', text="")
+        # op = row.operator("infotext.primitives_new", icon='MESH_CYLINDER', text="")
         # op.primitives_enum = "editable_prim"
         # op.editable_enum = 'cylinder'
         #
-        # op = row.operator("sfc.primitives_new", icon='MESH_CONE', text="")
+        # op = row.operator("infotext.primitives_new", icon='MESH_CONE', text="")
         # op.primitives_enum = "editable_prim"
         # op.editable_enum = 'cone'
         #
-        # op = row.operator("sfc.primitives_new", icon='MESH_TORUS', text="")
+        # op = row.operator("infotext.primitives_new", icon='MESH_TORUS', text="")
         # op.primitives_enum = "editable_prim"
         # op.editable_enum = 'torus'
         #
-        # op = row.operator("sfc.primitives_new", icon='MESH_GRID', text="")
+        # op = row.operator("infotext.primitives_new", icon='MESH_GRID', text="")
         # op.primitives_enum = "editable_prim"
         # op.editable_enum = 'grid'
         #
-        # op = row.operator("sfc.primitives_new", icon='MESH_CAPSULE', text="")
+        # op = row.operator("infotext.primitives_new", icon='MESH_CAPSULE', text="")
         # op.primitives_enum = "editable_prim"
         # op.editable_enum = 'capsule'
         #
-        # op = row.operator("sfc.primitives_new", icon='MATSPHERE', text="")
+        # op = row.operator("infotext.primitives_new", icon='MATSPHERE', text="")
         # op.primitives_enum = "editable_prim"
         # op.editable_enum = 'quad_sphere'
         #
-        # op = row.operator("sfc.primitives_new", icon='MESH_CIRCLE', text="")
+        # op = row.operator("infotext.primitives_new", icon='MESH_CIRCLE', text="")
         # op.primitives_enum = "editable_prim"
         # op.editable_enum = 'circle'
         #
@@ -718,39 +718,39 @@ class SFC_OT_primitives_popup(bpy.types.Operator):
         # row = layout.row(align=True)
         #
         # row.scale_x = 1.3
-        # op = row.operator("sfc.primitives_new", icon='META_CUBE', text="")
+        # op = row.operator("infotext.primitives_new", icon='META_CUBE', text="")
         # op.primitives_enum = "custom_prim"
         # op.custom_enum = 'rounded_cube'
         #
-        # op = row.operator("sfc.primitives_new", icon='META_PLANE', text="")
+        # op = row.operator("infotext.primitives_new", icon='META_PLANE', text="")
         # op.primitives_enum = "custom_prim"
         # op.custom_enum = 'rounded_plane'
         #
-        # op = row.operator("sfc.primitives_new", icon='META_CUBE', text="")
+        # op = row.operator("infotext.primitives_new", icon='META_CUBE', text="")
         # op.primitives_enum = "custom_prim"
         # op.custom_enum = 'rounded_plane_round'
         #
-        # op = row.operator("sfc.primitives_new", icon='META_CUBE', text="")
+        # op = row.operator("infotext.primitives_new", icon='META_CUBE', text="")
         # op.primitives_enum = "custom_prim"
         # op.custom_enum = 'rounded_plane_2'
         #
         # custom = icons.get("prim_cross")
-        # op = row.operator("sfc.primitives_new", icon_value=custom.icon_id, text="")
+        # op = row.operator("infotext.primitives_new", icon_value=custom.icon_id, text="")
         # op.custom_enum = 'cross'
         #
         # custom = icons.get("prim_cross_rounded")
-        # op = row.operator("sfc.primitives_new", icon_value=custom.icon_id, text="")
+        # op = row.operator("infotext.primitives_new", icon_value=custom.icon_id, text="")
         # op.custom_enum = 'rounded_cross'
         #
-        # op = row.operator("sfc.primitives_new", icon='MESH_CAPSULE', text="")
+        # op = row.operator("infotext.primitives_new", icon='MESH_CAPSULE', text="")
         # op.primitives_enum = "custom_prim"
         # op.custom_enum = 'long_cylinder'
         #
-        # op = row.operator("sfc.primitives_new", icon='IPO_CONSTANT', text="")
+        # op = row.operator("infotext.primitives_new", icon='IPO_CONSTANT', text="")
         # op.primitives_enum = "editable_prim"
         # op.editable_enum = 'line'
         #
-        # op = row.operator("sfc.primitives_new", icon='ANTIALIASED', text="")
+        # op = row.operator("infotext.primitives_new", icon='ANTIALIASED', text="")
         # op.primitives_enum = "editable_prim"
         # op.editable_enum = 'tube'
 
@@ -763,10 +763,10 @@ class SFC_OT_primitives_popup(bpy.types.Operator):
 
 
 # Primitives
-def SFC_Primitives(self, context):
+def INFOTEXT_Primitives(self, context):
     obj = context.active_object
-    SFC = bpy.context.window_manager.SFC
-    # align_to_view = SFC.align_to_view
+    INFOTEXT = bpy.context.window_manager.INFOTEXT
+    # align_to_view = INFOTEXT.align_to_view
 
     icons = load_icons()
     layout = self.layout
@@ -780,201 +780,201 @@ def SFC_Primitives(self, context):
     if self.scale_y:
         row.scale_y = 1.2
 
-    SFC_prim = context.window_manager.SFC_prim
+    INFOTEXT_prim = context.window_manager.INFOTEXT_prim
 
     row = col.row(align=True)
-    row.prop(SFC_prim, "align_cursor_rot", text="Align To C")
+    row.prop(INFOTEXT_prim, "align_cursor_rot", text="Align To C")
 
     # -------DEFAULT PRIMITIVES
 
     col.label(text="Default Primitives", icon='MESH_CUBE')
     row = col.row(align=True)
-    op = row.operator("sfc.primitives_new", text="", icon='DOT')
+    op = row.operator("infotext.primitives_new", text="", icon='DOT')
     op.primitives_enum = "default_prim"
     op.default_enum = 'vertex'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_PLANE')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_PLANE')
     op.primitives_enum = "default_prim"
     op.default_enum = 'plane'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_CUBE')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_CUBE')
     op.primitives_enum = "default_prim"
     op.default_enum = 'cube'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_CIRCLE')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_CIRCLE')
     op.primitives_enum = "default_prim"
     op.default_enum = 'circle'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_UVSPHERE')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_UVSPHERE')
     op.primitives_enum = "default_prim"
     op.default_enum = 'uv_sphere'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_ICOSPHERE')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_ICOSPHERE')
     op.primitives_enum = "default_prim"
     op.default_enum = 'ico_sphere'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_CYLINDER')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_CYLINDER')
     op.primitives_enum = "default_prim"
     op.default_enum = 'cylinder'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_CONE')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_CONE')
     op.primitives_enum = "default_prim"
     op.default_enum = 'cone'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_TORUS')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_TORUS')
     op.primitives_enum = "default_prim"
     op.default_enum = 'torus'
 
     row = col.row(align=True)
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_GRID')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_GRID')
     op.primitives_enum = "default_prim"
     op.default_enum = 'grid'
 
-    op = row.operator("sfc.primitives_new", text="", icon='CURVE_BEZCURVE')
+    op = row.operator("infotext.primitives_new", text="", icon='CURVE_BEZCURVE')
     op.primitives_enum = "default_prim"
     op.default_enum = 'bezier_curve'
 
-    op = row.operator("sfc.primitives_new", text="", icon='CURVE_BEZCIRCLE')
+    op = row.operator("infotext.primitives_new", text="", icon='CURVE_BEZCIRCLE')
     op.primitives_enum = "default_prim"
     op.default_enum = 'bezier_circle'
 
-    row.operator("sfc.cursor_line", text="", icon='LINE_DATA')
+    row.operator("infotext.cursor_line", text="", icon='LINE_DATA')
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_MONKEY')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_MONKEY')
     op.primitives_enum = "default_prim"
     op.default_enum = 'monkey'
 
     # -------SCREW PRIMITIVES
     col.label(text="Screw Primitives", icon='MOD_SCREW')
     row = col.row(align=True)
-    op = row.operator("sfc.primitives_new", text="", icon='DOT')
+    op = row.operator("infotext.primitives_new", text="", icon='DOT')
     op.primitives_enum = "screw_prim"
     op.screw_enum = 'screw_7'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_CIRCLE')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_CIRCLE')
     op.primitives_enum = "screw_prim"
     op.screw_enum = 'screw_6'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_CYLINDER')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_CYLINDER')
     op.primitives_enum = "screw_prim"
     op.screw_enum = 'screw_1'
 
     screw = icons.get("prim_screw_2")
-    op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+    op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
     op.primitives_enum = "screw_prim"
     op.screw_enum = 'screw_2'
 
     screw = icons.get("prim_screw_3")
-    op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+    op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
     op.primitives_enum = "screw_prim"
     op.screw_enum = 'screw_3'
 
     screw = icons.get("prim_screw_4")
-    op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+    op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
     op.primitives_enum = "screw_prim"
     op.screw_enum = 'screw_4'
 
     screw = icons.get("prim_screw_5")
-    op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+    op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
     op.primitives_enum = "screw_prim"
     op.screw_enum = 'screw_5'
 
     # -------EDITABLE PRIMITIVES
     col.label(text="Editable Primitives", icon='MODIFIER')
     row = col.row(align=True)
-    op = row.operator("sfc.primitives_new", icon='MESH_CUBE', text="")
+    op = row.operator("infotext.primitives_new", icon='MESH_CUBE', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'cube'
 
-    op = row.operator("sfc.primitives_new", icon='MESH_UVSPHERE', text="")
+    op = row.operator("infotext.primitives_new", icon='MESH_UVSPHERE', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'sphere'
 
-    op = row.operator("sfc.primitives_new", icon='MESH_CYLINDER', text="")
+    op = row.operator("infotext.primitives_new", icon='MESH_CYLINDER', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'cylinder'
 
-    op = row.operator("sfc.primitives_new", icon='MESH_CONE', text="")
+    op = row.operator("infotext.primitives_new", icon='MESH_CONE', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'cone'
 
-    op = row.operator("sfc.primitives_new", icon='MESH_TORUS', text="")
+    op = row.operator("infotext.primitives_new", icon='MESH_TORUS', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'torus'
 
-    op = row.operator("sfc.primitives_new", icon='MESH_GRID', text="")
+    op = row.operator("infotext.primitives_new", icon='MESH_GRID', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'grid'
 
-    op = row.operator("sfc.primitives_new", icon='MESH_CAPSULE', text="")
+    op = row.operator("infotext.primitives_new", icon='MESH_CAPSULE', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'capsule'
 
-    op = row.operator("sfc.primitives_new", icon='MATSPHERE', text="")
+    op = row.operator("infotext.primitives_new", icon='MATSPHERE', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'quad_sphere'
 
-    op = row.operator("sfc.primitives_new", icon='MESH_CIRCLE', text="")
+    op = row.operator("infotext.primitives_new", icon='MESH_CIRCLE', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'circle'
 
     # -------CUSTOM PRIMITIVES
     col.label(text="Custom Primitives", icon='META_CAPSULE')
     row = col.row(align=True)
-    op = row.operator("sfc.primitives_new", icon='META_CUBE', text="")
+    op = row.operator("infotext.primitives_new", icon='META_CUBE', text="")
     op.primitives_enum = "custom_prim"
     op.custom_enum = 'rounded_cube'
 
-    op = row.operator("sfc.primitives_new", icon='META_PLANE', text="")
+    op = row.operator("infotext.primitives_new", icon='META_PLANE', text="")
     op.primitives_enum = "custom_prim"
     op.custom_enum = 'rounded_plane'
 
-    op = row.operator("sfc.primitives_new", icon='META_CUBE', text="")
+    op = row.operator("infotext.primitives_new", icon='META_CUBE', text="")
     op.primitives_enum = "custom_prim"
     op.custom_enum = 'rounded_plane_round'
 
-    op = row.operator("sfc.primitives_new", icon='META_CUBE', text="")
+    op = row.operator("infotext.primitives_new", icon='META_CUBE', text="")
     op.primitives_enum = "custom_prim"
     op.custom_enum = 'rounded_plane_2'
 
     custom = icons.get("prim_cross")
-    op = row.operator("sfc.primitives_new", icon_value=custom.icon_id, text="")
+    op = row.operator("infotext.primitives_new", icon_value=custom.icon_id, text="")
     op.custom_enum = 'cross'
 
     custom = icons.get("prim_cross_rounded")
-    op = row.operator("sfc.primitives_new", icon_value=custom.icon_id, text="")
+    op = row.operator("infotext.primitives_new", icon_value=custom.icon_id, text="")
     op.custom_enum = 'rounded_cross'
 
-    op = row.operator("sfc.primitives_new", icon='MESH_CAPSULE', text="")
+    op = row.operator("infotext.primitives_new", icon='MESH_CAPSULE', text="")
     op.primitives_enum = "custom_prim"
     op.custom_enum = 'long_cylinder'
 
-    op = row.operator("sfc.primitives_new", icon='IPO_CONSTANT', text="")
+    op = row.operator("infotext.primitives_new", icon='IPO_CONSTANT', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'line'
 
-    op = row.operator("sfc.primitives_new", icon='ANTIALIASED', text="")
+    op = row.operator("infotext.primitives_new", icon='ANTIALIASED', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'tube'
 
     # -------TOOLS
     col.label(text="Tools", icon='TOOL_SETTINGS')
-    col.operator("sfc.cursor_tools", text="Copy Cursor Rotation",
+    col.operator("infotext.cursor_tools", text="Copy Cursor Rotation",
                  icon='PIVOT_CURSOR').cursor_tools = 'copy_cursor_rot'
-    col.operator("sfc.cursor_tools", text="Selection To Cursor",
+    col.operator("infotext.cursor_tools", text="Selection To Cursor",
                  icon='PIVOT_BOUNDBOX').cursor_tools = 'selection_to_cursor'
-    col.operator("sfc.cursor_tools", text="Cursor To Selection + Rotation",
+    col.operator("infotext.cursor_tools", text="Cursor To Selection + Rotation",
                  icon='PIVOT_CURSOR').cursor_tools = 'cursor_to_selection_rot'
-    col.operator("sfc.cursor_tools", text="Align View To Cursor Rotation",
+    col.operator("infotext.cursor_tools", text="Align View To Cursor Rotation",
                  icon='VIEW_PERSPECTIVE').cursor_tools = 'align_view_to_cursor_rot'
-    col.operator("sfc.cursor_tools", text="Align Cursor To Object Rotation",
+    col.operator("infotext.cursor_tools", text="Align Cursor To Object Rotation",
                  icon='EMPTY_AXIS').cursor_tools = 'align_cursor_to_object_rot'
 
 
 # --------------------------------------------------------------------------------
 #  4 - LEFT
 # --------------------------------------------------------------------------------
-def SFC_OBJMode_Modifiers(self, context):
+def INFOTEXT_OBJMode_Modifiers(self, context):
     obj = context.active_object
     icons = load_icons()
     layout = self.layout
@@ -989,15 +989,15 @@ def SFC_OBJMode_Modifiers(self, context):
 
     if self.use_normals_buttons:
         if obj.modifiers:
-            row.operator("object.sfc_hide_modifiers", text='', icon='RESTRICT_VIEW_OFF')
-            row.operator("object.sfc_apply_modifiers", text='', icon='FILE_TICK')
-            row.operator("object.sfc_remove_modifiers", text='', icon='X')
+            row.operator("object.infotext_hide_modifiers", text='', icon='RESTRICT_VIEW_OFF')
+            row.operator("object.infotext_apply_modifiers", text='', icon='FILE_TICK')
+            row.operator("object.infotext_remove_modifiers", text='', icon='X')
 # --------------------------------------------------------------------------------
 # 6 - RIGHT
 # --------------------------------------------------------------------------------
 
 
-def SFC_OBJMode_Right(self, context):
+def INFOTEXT_OBJMode_Right(self, context):
     icons = load_icons()
     layout = self.layout
     pie = layout.menu_pie()
@@ -1008,186 +1008,186 @@ def SFC_OBJMode_Right(self, context):
         row.scale_y = 1.5
     row.scale_x = 1.1
     subsurf = icons.get("icon_subsurf")
-    row.operator("object.sfc_subdiv_booleans_prepare", text="Subdiv Booleans", icon_value=subsurf.icon_id)
+    row.operator("object.infotext_subdiv_booleans_prepare", text="Subdiv Booleans", icon_value=subsurf.icon_id)
     if self.use_normals_buttons:
-        row.operator("object.sfc_clean_subdiv_booleans", text="", icon='X')
+        row.operator("object.infotext_clean_subdiv_booleans", text="", icon='X')
 
     row = col.row(align=True)
     if self.scale_y:
         row.scale_y = 1.5
     row.scale_x = 1.1
     boolean = icons.get("icon_add_boolean")
-    row.operator("object.sfc_show_bool_objects", text="Show/Hide Bool Object", icon_value=boolean.icon_id)
+    row.operator("object.infotext_show_bool_objects", text="Show/Hide Bool Object", icon_value=boolean.icon_id)
 # --------------------------------------------------------------------------------
 # 2 - BOTTOM
 # --------------------------------------------------------------------------------
 
 
-def SFC_OBJMode_Bottom(self, context):
+def INFOTEXT_OBJMode_Bottom(self, context):
 
     layout = self.layout
     pie = layout.menu_pie()
 
     # 2 - BOTTOM
     col = pie.column(align=True)
-    SFC_prim = context.window_manager.SFC_prim
+    INFOTEXT_prim = context.window_manager.INFOTEXT_prim
     icons = load_icons()
 
     row = col.row(align=True)
-    row.prop(SFC_prim, "align_cursor_rot", text="Cursor Rot")
-    row.prop(SFC_prim, "add_mirror", text="Mirror")
-    if SFC_prim.add_mirror:
+    row.prop(INFOTEXT_prim, "align_cursor_rot", text="Cursor Rot")
+    row.prop(INFOTEXT_prim, "add_mirror", text="Mirror")
+    if INFOTEXT_prim.add_mirror:
         row = col.row(align=True)
-        row.prop(SFC_prim, "mirror_axis_xyz", expand=True)
+        row.prop(INFOTEXT_prim, "mirror_axis_xyz", expand=True)
 
-    if SFC_prim.add_boolean == False:
-        SFC_prim.add_rebool = False
+    if INFOTEXT_prim.add_boolean == False:
+        INFOTEXT_prim.add_rebool = False
 
     row = col.row(align=True)
-    row.prop(SFC_prim, "add_boolean", text="Boolean")
-    if SFC_prim.add_boolean:
-        row.prop(SFC_prim, "add_rebool", text="Rebool")
+    row.prop(INFOTEXT_prim, "add_boolean", text="Boolean")
+    if INFOTEXT_prim.add_boolean:
+        row.prop(INFOTEXT_prim, "add_rebool", text="Rebool")
 
-    if SFC_prim.add_boolean or SFC_prim.add_rebool:
+    if INFOTEXT_prim.add_boolean or INFOTEXT_prim.add_rebool:
         row = col.row(align=True)
-        if SFC_prim.add_rebool:
-            SFC_prim.boolean_enum = 'DIFFERENCE'
-        row.prop(SFC_prim, "boolean_enum", expand=True)
+        if INFOTEXT_prim.add_rebool:
+            INFOTEXT_prim.boolean_enum = 'DIFFERENCE'
+        row.prop(INFOTEXT_prim, "boolean_enum", expand=True)
 
     row = col.row(align=True)
-    row.operator("sfc.primitives_popup", text="Popup Settings", icon='MODIFIER')
+    row.operator("infotext.primitives_popup", text="Popup Settings", icon='MODIFIER')
 
     # -------DEFAULT PRIMITIVES
 
     col.label(text="Default Primitives", icon='MESH_CUBE')
     row = col.row(align=True)
-    op = row.operator("sfc.primitives_new", text="", icon='DOT')
+    op = row.operator("infotext.primitives_new", text="", icon='DOT')
     op.primitives_enum = "default_prim"
     op.default_enum = 'vertex'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_PLANE')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_PLANE')
     op.primitives_enum = "default_prim"
     op.default_enum = 'plane'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_CUBE')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_CUBE')
     op.primitives_enum = "default_prim"
     op.default_enum = 'cube'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_CIRCLE')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_CIRCLE')
     op.primitives_enum = "default_prim"
     op.default_enum = 'circle'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_UVSPHERE')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_UVSPHERE')
     op.primitives_enum = "default_prim"
     op.default_enum = 'uv_sphere'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_ICOSPHERE')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_ICOSPHERE')
     op.primitives_enum = "default_prim"
     op.default_enum = 'ico_sphere'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_CYLINDER')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_CYLINDER')
     op.primitives_enum = "default_prim"
     op.default_enum = 'cylinder'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_CONE')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_CONE')
     op.primitives_enum = "default_prim"
     op.default_enum = 'cone'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_TORUS')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_TORUS')
     op.primitives_enum = "default_prim"
     op.default_enum = 'torus'
 
     row = col.row(align=True)
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_GRID')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_GRID')
     op.primitives_enum = "default_prim"
     op.default_enum = 'grid'
 
-    op = row.operator("sfc.primitives_new", text="", icon='CURVE_BEZCURVE')
+    op = row.operator("infotext.primitives_new", text="", icon='CURVE_BEZCURVE')
     op.primitives_enum = "default_prim"
     op.default_enum = 'bezier_curve'
 
-    op = row.operator("sfc.primitives_new", text="", icon='CURVE_BEZCIRCLE')
+    op = row.operator("infotext.primitives_new", text="", icon='CURVE_BEZCIRCLE')
     op.primitives_enum = "default_prim"
     op.default_enum = 'bezier_circle'
 
-    row.operator("sfc.cursor_line", text="", icon='LINE_DATA')
+    row.operator("infotext.cursor_line", text="", icon='LINE_DATA')
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_MONKEY')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_MONKEY')
     op.primitives_enum = "default_prim"
     op.default_enum = 'monkey'
 
     # -------SCREW PRIMITIVES
     col.label(text="Screw Primitives", icon='MOD_SCREW')
     row = col.row(align=True)
-    op = row.operator("sfc.primitives_new", text="", icon='DOT')
+    op = row.operator("infotext.primitives_new", text="", icon='DOT')
     op.primitives_enum = "screw_prim"
     op.screw_enum = 'screw_7'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_CIRCLE')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_CIRCLE')
     op.primitives_enum = "screw_prim"
     op.screw_enum = 'screw_6'
 
-    op = row.operator("sfc.primitives_new", text="", icon='MESH_CYLINDER')
+    op = row.operator("infotext.primitives_new", text="", icon='MESH_CYLINDER')
     op.primitives_enum = "screw_prim"
     op.screw_enum = 'screw_1'
 
     screw = icons.get("prim_screw_2")
-    op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+    op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
     op.primitives_enum = "screw_prim"
     op.screw_enum = 'screw_2'
 
     screw = icons.get("prim_screw_3")
-    op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+    op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
     op.primitives_enum = "screw_prim"
     op.screw_enum = 'screw_3'
 
     screw = icons.get("prim_screw_4")
-    op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+    op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
     op.primitives_enum = "screw_prim"
     op.screw_enum = 'screw_4'
 
     screw = icons.get("prim_screw_5")
-    op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+    op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
     op.primitives_enum = "screw_prim"
     op.screw_enum = 'screw_5'
 
     # -------EDITABLE PRIMITIVES
     col.label(text="Editable Primitives", icon='MODIFIER')
     row = col.row(align=True)
-    op = row.operator("sfc.primitives_new", icon='MESH_CUBE', text="")
+    op = row.operator("infotext.primitives_new", icon='MESH_CUBE', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'cube'
 
-    op = row.operator("sfc.primitives_new", icon='MESH_UVSPHERE', text="")
+    op = row.operator("infotext.primitives_new", icon='MESH_UVSPHERE', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'sphere'
 
-    op = row.operator("sfc.primitives_new", icon='MESH_CYLINDER', text="")
+    op = row.operator("infotext.primitives_new", icon='MESH_CYLINDER', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'cylinder'
 
-    op = row.operator("sfc.primitives_new", icon='MESH_CONE', text="")
+    op = row.operator("infotext.primitives_new", icon='MESH_CONE', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'cone'
 
-    op = row.operator("sfc.primitives_new", icon='MESH_TORUS', text="")
+    op = row.operator("infotext.primitives_new", icon='MESH_TORUS', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'torus'
 
-    op = row.operator("sfc.primitives_new", icon='MESH_GRID', text="")
+    op = row.operator("infotext.primitives_new", icon='MESH_GRID', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'grid'
 
-    op = row.operator("sfc.primitives_new", icon='MESH_CAPSULE', text="")
+    op = row.operator("infotext.primitives_new", icon='MESH_CAPSULE', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'capsule'
 
-    op = row.operator("sfc.primitives_new", icon='MATSPHERE', text="")
+    op = row.operator("infotext.primitives_new", icon='MATSPHERE', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'quad_sphere'
 
-    op = row.operator("sfc.primitives_new", icon='MESH_CIRCLE', text="")
+    op = row.operator("infotext.primitives_new", icon='MESH_CIRCLE', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'circle'
 
@@ -1195,53 +1195,53 @@ def SFC_OBJMode_Bottom(self, context):
     col.label(text="Custom Primitives", icon='META_CAPSULE')
     row = col.row(align=True)
 
-    op = row.operator("sfc.primitives_new", icon='META_CUBE', text="")
+    op = row.operator("infotext.primitives_new", icon='META_CUBE', text="")
     op.primitives_enum = "custom_prim"
     op.custom_enum = 'rounded_cube'
 
-    op = row.operator("sfc.primitives_new", icon='META_PLANE', text="")
+    op = row.operator("infotext.primitives_new", icon='META_PLANE', text="")
     op.primitives_enum = "custom_prim"
     op.custom_enum = 'rounded_plane'
 
-    op = row.operator("sfc.primitives_new", icon='META_CUBE', text="")
+    op = row.operator("infotext.primitives_new", icon='META_CUBE', text="")
     op.primitives_enum = "custom_prim"
     op.custom_enum = 'rounded_plane_round'
 
-    op = row.operator("sfc.primitives_new", icon='META_CUBE', text="")
+    op = row.operator("infotext.primitives_new", icon='META_CUBE', text="")
     op.primitives_enum = "custom_prim"
     op.custom_enum = 'rounded_plane_2'
 
     custom = icons.get("prim_cross")
-    op = row.operator("sfc.primitives_new", icon_value=custom.icon_id, text="")
+    op = row.operator("infotext.primitives_new", icon_value=custom.icon_id, text="")
     op.custom_enum = 'cross'
 
     custom = icons.get("prim_cross_rounded")
-    op = row.operator("sfc.primitives_new", icon_value=custom.icon_id, text="")
+    op = row.operator("infotext.primitives_new", icon_value=custom.icon_id, text="")
     op.custom_enum = 'rounded_cross'
 
-    op = row.operator("sfc.primitives_new", icon='MESH_CAPSULE', text="")
+    op = row.operator("infotext.primitives_new", icon='MESH_CAPSULE', text="")
     op.primitives_enum = "custom_prim"
     op.custom_enum = 'long_cylinder'
 
-    op = row.operator("sfc.primitives_new", icon='IPO_CONSTANT', text="")
+    op = row.operator("infotext.primitives_new", icon='IPO_CONSTANT', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'line'
 
-    op = row.operator("sfc.primitives_new", icon='ANTIALIASED', text="")
+    op = row.operator("infotext.primitives_new", icon='ANTIALIASED', text="")
     op.primitives_enum = "editable_prim"
     op.editable_enum = 'tube'
 
     # -------TOOLS
     col.label(text="Tools", icon='TOOL_SETTINGS')
-    col.operator("sfc.cursor_tools", text="Copy Cursor Rotation",
+    col.operator("infotext.cursor_tools", text="Copy Cursor Rotation",
                  icon='PIVOT_CURSOR').cursor_tools = 'copy_cursor_rot'
-    col.operator("sfc.cursor_tools", text="Selection To Cursor",
+    col.operator("infotext.cursor_tools", text="Selection To Cursor",
                  icon='PIVOT_BOUNDBOX').cursor_tools = 'selection_to_cursor'
-    col.operator("sfc.cursor_tools", text="Cursor To Selection + Rotation",
+    col.operator("infotext.cursor_tools", text="Cursor To Selection + Rotation",
                  icon='PIVOT_CURSOR').cursor_tools = 'cursor_to_selection_rot'
-    col.operator("sfc.cursor_tools", text="Align View To Cursor Rotation",
+    col.operator("infotext.cursor_tools", text="Align View To Cursor Rotation",
                  icon='VIEW_PERSPECTIVE').cursor_tools = 'align_view_to_cursor_rot'
-    col.operator("sfc.cursor_tools", text="Align Cursor To Object Rotation",
+    col.operator("infotext.cursor_tools", text="Align Cursor To Object Rotation",
                  icon='EMPTY_AXIS').cursor_tools = 'align_cursor_to_object_rot'
 
 # --------------------------------------------------------------------------------
@@ -1249,7 +1249,7 @@ def SFC_OBJMode_Bottom(self, context):
 # --------------------------------------------------------------------------------
 
 
-def SFC_OBJMode_Top(self, context):
+def INFOTEXT_OBJMode_Top(self, context):
     icons = load_icons()
     layout = self.layout
     pie = layout.menu_pie()
@@ -1267,14 +1267,14 @@ def SFC_OBJMode_Top(self, context):
         if self.scale_y:
             row.scale_y = 1.5
         row.scale_x = 1.1
-        row.operator("object.sfc_activate_line", text="Snap Utilities Line", icon='ERROR')
+        row.operator("object.infotext_activate_line", text="Snap Utilities Line", icon='ERROR')
 
 # --------------------------------------------------------------------------------
 # 7 - TOP - LEFT
 # --------------------------------------------------------------------------------
 
 
-def SFC_OBJMode_Top_Left(self, context):
+def INFOTEXT_OBJMode_Top_Left(self, context):
     addon_pref = get_addon_preferences()
 
     if bpy.context.object is not None:
@@ -1293,12 +1293,12 @@ def SFC_OBJMode_Top_Left(self, context):
     if bpy.context.object.type == 'MESH':
         if context.object.data.use_auto_smooth == True:
             autosmooth = icons.get("icon_autosmooth")
-            row.operator("object.sfc_toggle_smooth", text="AutoSmooth", icon_value=autosmooth.icon_id)
+            row.operator("object.infotext_toggle_smooth", text="AutoSmooth", icon_value=autosmooth.icon_id)
             row = col.row(align=True)
             row.prop(mesh, "auto_smooth_angle", text="Angle")
         else:
             autosmooth_off = icons.get("icon_autosmooth_off")
-            row.operator("object.sfc_toggle_smooth", text="AutoSmooth", icon_value=autosmooth_off.icon_id)
+            row.operator("object.infotext_toggle_smooth", text="AutoSmooth", icon_value=autosmooth_off.icon_id)
 
     if self.use_normals_buttons:
         row = col.row(align=True)
@@ -1306,18 +1306,18 @@ def SFC_OBJMode_Top_Left(self, context):
             row.scale_y = 1.5
         row.scale_x = 1.1
         wire = icons.get("icon_wire")
-        row.operator("object.sfc_wire_mode", text="Wire", icon_value=wire.icon_id)
+        row.operator("object.infotext_wire_mode", text="Wire", icon_value=wire.icon_id)
         solid = icons.get("icon_solid")
-        row.operator("object.sfc_solid_mode", text="Solid", icon_value=solid.icon_id)
+        row.operator("object.infotext_solid_mode", text="Solid", icon_value=solid.icon_id)
         bounds = icons.get("icon_bounds")
-        row.operator("object.sfc_bounds_mode", text="Bound", icon_value=bounds.icon_id)
+        row.operator("object.infotext_bounds_mode", text="Bound", icon_value=bounds.icon_id)
     else:
         row = col.row(align=True)
         if self.scale_y:
             row.scale_y = 1.5
         row.scale_x = 1.1
         wire = icons.get("icon_wire")
-        row.operator("object.sfc_display_mode", text="Display Mode", icon_value=wire.icon_id)
+        row.operator("object.infotext_display_mode", text="Display Mode", icon_value=wire.icon_id)
 
     draw_text = icons.get("draw_text")
     # row.prop(addon_pref, "drawText", text="", icon_value=draw_text.icon_id)
@@ -1329,7 +1329,7 @@ def SFC_OBJMode_Top_Left(self, context):
     #         row.scale_y = 1.5
     #     row.scale_x = 1.1
     #     sharp = icons.get("icon_sharp")
-    #     row.operator("object.sfc_make_solo", text="Solo", icon_value=sharp.icon_id)
+    #     row.operator("object.infotext_make_solo", text="Solo", icon_value=sharp.icon_id)
     #     row = col.row(align=True)
     #
     #     if bpy.data.materials.get('Transparent_shader'):
@@ -1340,9 +1340,9 @@ def SFC_OBJMode_Top_Left(self, context):
 # --------------------------------------------------------------------------------
 # 9 - TOP - RIGHT
 # --------------------------------------------------------------------------------
-def SFC_OBJMode_Top_Right_Shader(self, context):
+def INFOTEXT_OBJMode_Top_Right_Shader(self, context):
     WM = bpy.context.window_manager
-    SFC = context.window_manager.SFC
+    INFOTEXT = context.window_manager.INFOTEXT
     obj = context.active_object
     layout = self.layout
     pie = layout.menu_pie()
@@ -1364,24 +1364,24 @@ def SFC_OBJMode_Top_Right_Shader(self, context):
                 if self.scale_y:
                     row.scale_y = 1.5
 
-                # row.operator("object.sfc_add_lattice", text="Add Lattice", icon='OUTLINER_OB_LATTICE')
-                row.operator("sfc.add_lattice", text="Add Lattice", icon='OUTLINER_OB_LATTICE')
-                # row.operator("object.sfc_add_lattice_to_selection", text="Add Lattice", icon='OUTLINER_OB_LATTICE')
+                # row.operator("object.infotext_add_lattice", text="Add Lattice", icon='OUTLINER_OB_LATTICE')
+                row.operator("infotext.add_lattice", text="Add Lattice", icon='OUTLINER_OB_LATTICE')
+                # row.operator("object.infotext_add_lattice_to_selection", text="Add Lattice", icon='OUTLINER_OB_LATTICE')
 
             else:
                 if self.scale_y:
                     row.scale_y = 1.5
-                row.operator("object.sfc_edit_objects", text="Edit Lattice", icon='MOD_LATTICE')
+                row.operator("object.infotext_edit_objects", text="Edit Lattice", icon='MOD_LATTICE')
 
         elif len([obj for obj in context.selected_objects]) >= 2:
             if self.scale_y:
                 row.scale_y = 1.5
-            row.operator("object.sfc_connect_lattice", text="Connect Lattice", icon='MOD_LATTICE')
+            row.operator("object.infotext_connect_lattice", text="Connect Lattice", icon='MOD_LATTICE')
 
         elif len([obj for obj in context.selected_objects if obj.type == 'LATTICE']) == 1:
             if self.scale_y:
                 row.scale_y = 1.5
-            row.operator("object.sfc_edit_lattice", text="Edit Lattice", icon='LATTICE_DATA')
+            row.operator("object.infotext_edit_lattice", text="Edit Lattice", icon='LATTICE_DATA')
     # WM = bpy.context.window_manager
     # layout = self.layout
     # pie = layout.menu_pie()
@@ -1393,46 +1393,46 @@ def SFC_OBJMode_Top_Right_Shader(self, context):
     #
     # row = col.row(align=True)
     # red = icons.get("red")
-    # row.operator("object.sfc_material_dif_colors", text="", icon_value=red.icon_id).material_dif_colors = "red"
+    # row.operator("object.infotext_material_dif_colors", text="", icon_value=red.icon_id).material_dif_colors = "red"
     # orange = icons.get("orange")
-    # row.operator("object.sfc_material_dif_colors", text="", icon_value=orange.icon_id).material_dif_colors = "orange"
+    # row.operator("object.infotext_material_dif_colors", text="", icon_value=orange.icon_id).material_dif_colors = "orange"
     # yellow = icons.get("yellow")
-    # row.operator("object.sfc_material_dif_colors", text="", icon_value=yellow.icon_id).material_dif_colors = "yellow"
+    # row.operator("object.infotext_material_dif_colors", text="", icon_value=yellow.icon_id).material_dif_colors = "yellow"
     # green = icons.get("green")
-    # row.operator("object.sfc_material_dif_colors", text="", icon_value=green.icon_id).material_dif_colors = "green"
+    # row.operator("object.infotext_material_dif_colors", text="", icon_value=green.icon_id).material_dif_colors = "green"
     # cian = icons.get("cian")
-    # row.operator("object.sfc_material_dif_colors", text="", icon_value=cian.icon_id).material_dif_colors = "cian"
+    # row.operator("object.infotext_material_dif_colors", text="", icon_value=cian.icon_id).material_dif_colors = "cian"
     # blue = icons.get("blue")
-    # row.operator("object.sfc_material_dif_colors", text="", icon_value=blue.icon_id).material_dif_colors = "blue"
+    # row.operator("object.infotext_material_dif_colors", text="", icon_value=blue.icon_id).material_dif_colors = "blue"
     # purple = icons.get("purple")
-    # row.operator("object.sfc_material_dif_colors", text="", icon_value=purple.icon_id).material_dif_colors = "purple"
+    # row.operator("object.infotext_material_dif_colors", text="", icon_value=purple.icon_id).material_dif_colors = "purple"
     # pink = icons.get("pink")
-    # row.operator("object.sfc_material_dif_colors", text="", icon_value=pink.icon_id).material_dif_colors = "pink"
+    # row.operator("object.infotext_material_dif_colors", text="", icon_value=pink.icon_id).material_dif_colors = "pink"
     #
     # row = col.row(align=True)
     # nb_1 = icons.get("nb_1")
-    # row.operator("object.sfc_material_dif_colors", text="",
+    # row.operator("object.infotext_material_dif_colors", text="",
     #              icon_value=nb_1.icon_id).material_dif_colors = "nb_1"
     # nb_2 = icons.get("nb_2")
-    # row.operator("object.sfc_material_dif_colors", text="",
+    # row.operator("object.infotext_material_dif_colors", text="",
     #              icon_value=nb_2.icon_id).material_dif_colors = "nb_2"
     # nb_3 = icons.get("nb_3")
-    # row.operator("object.sfc_material_dif_colors", text="",
+    # row.operator("object.infotext_material_dif_colors", text="",
     #              icon_value=nb_3.icon_id).material_dif_colors = "nb_3"
     # nb_4 = icons.get("nb_4")
-    # row.operator("object.sfc_material_dif_colors", text="",
+    # row.operator("object.infotext_material_dif_colors", text="",
     #              icon_value=nb_4.icon_id).material_dif_colors = "nb_4"
     # nb_5 = icons.get("nb_5")
-    # row.operator("object.sfc_material_dif_colors", text="",
+    # row.operator("object.infotext_material_dif_colors", text="",
     #              icon_value=nb_5.icon_id).material_dif_colors = "nb_5"
     # nb_6 = icons.get("nb_6")
-    # row.operator("object.sfc_material_dif_colors", text="",
+    # row.operator("object.infotext_material_dif_colors", text="",
     #              icon_value=nb_6.icon_id).material_dif_colors = "nb_6"
     # nb_7 = icons.get("nb_7")
-    # row.operator("object.sfc_material_dif_colors", text="",
+    # row.operator("object.infotext_material_dif_colors", text="",
     #              icon_value=nb_7.icon_id).material_dif_colors = "nb_7"
     # nb_8 = icons.get("nb_8")
-    # row.operator("object.sfc_material_dif_colors", text="",
+    # row.operator("object.infotext_material_dif_colors", text="",
     #              icon_value=nb_8.icon_id).material_dif_colors = "nb_8"
     # if act_obj.active_material:
     #     row = col.row(align=True)
@@ -1447,7 +1447,7 @@ def SFC_OBJMode_Top_Right_Shader(self, context):
     # if self.scale_y:
     #     row.scale_y = 1.5
     # # row.scale_x = 0.8
-    # row.operator("object.sfc_random_color", text="Add Material", icon='COLOR')
+    # row.operator("object.infotext_random_color", text="Add Material", icon='COLOR')
     # if self.scale_y:
     #     row.scale_y = 1.5
     # # row.scale_x = 1.2
@@ -1458,15 +1458,15 @@ def SFC_OBJMode_Top_Right_Shader(self, context):
     #       if self.scale_y:
     #     #     row.scale_y = 1.5
     #     # row.scale_x = 0.8
-    #     row.operator("object.sfc_material_list_menu", text="", icon='MATERIAL_DATA')
+    #     row.operator("object.infotext_material_list_menu", text="", icon='MATERIAL_DATA')
     #     # row.scale_x = 1.2
-    #     row.operator("object.sfc_clean_unused_data", text="", icon='GHOST_DISABLED')
+    #     row.operator("object.infotext_clean_unused_data", text="", icon='GHOST_DISABLED')
 
 
 # --------------------------------------------------------------------------------
 # 1 - BOTTOM - LEFT
 # --------------------------------------------------------------------------------
-def SFC_OBJMode_Bottom_Left_Carver(self, context):
+def INFOTEXT_OBJMode_Bottom_Left_Carver(self, context):
     layout = self.layout
     pie = layout.menu_pie()
     pie.separator()
@@ -1506,7 +1506,7 @@ def SFC_OBJMode_Bottom_Left_Carver(self, context):
 # --------------------------------------------------------------------------------
 # 3 - BOTTOM - RIGHT
 # --------------------------------------------------------------------------------
-def SFC_OBJMode_Bottom_Right(self, context):
+def INFOTEXT_OBJMode_Bottom_Right(self, context):
     icons = load_icons()
     layout = self.layout
     pie = layout.menu_pie()
@@ -1516,19 +1516,19 @@ def SFC_OBJMode_Bottom_Right(self, context):
     #     row.scale_y = 1.5
     # row.scale_x = 1.5
     # project = icons.get("icon_project")
-    # row.operator("object.sfc_project_modal", text='Project', icon_value=project.icon_id)
+    # row.operator("object.infotext_project_modal", text='Project', icon_value=project.icon_id)
 
     row = col.row(align=True)
     if self.scale_y:
         row.scale_y = 1.5
     # row.scale_x = 1.5
     # faces = icons.get("icon_faces")
-    # row.operator("object.sfc_clean_mesh", text="Clean Meshes", icon_value=faces.icon_id)
+    # row.operator("object.infotext_clean_mesh", text="Clean Meshes", icon_value=faces.icon_id)
     modifiers = icons.get("icon_modifiers")
-    row.menu("SFC_MT_tools_menu", text='Companion Tools', icon_value=modifiers.icon_id)
+    row.menu("INFOTEXT_tools_menu", text='Companion Tools', icon_value=modifiers.icon_id)
 
 
-class SFC_MT_tools_menu(bpy.types.Menu):
+class INFOTEXT_tools_menu(bpy.types.Menu):
     bl_label = "Sc Tools Menu"
 
     def draw(self, context):
@@ -1538,9 +1538,9 @@ class SFC_MT_tools_menu(bpy.types.Menu):
         split = layout.split()
         col = split.column(align=True)
         project = icons.get("icon_project")
-        col.operator("object.sfc_project_modal", text='Project', icon_value=project.icon_id)
+        col.operator("object.infotext_project_modal", text='Project', icon_value=project.icon_id)
         faces = icons.get("icon_faces")
-        col.operator("object.sfc_clean_mesh", text="Clean Meshes", icon_value=faces.icon_id)
+        col.operator("object.infotext_clean_mesh", text="Clean Meshes", icon_value=faces.icon_id)
         intersection = icons.get("icon_intersection")
         col.operator("object.sc_fast_intersect", text='Fast Intersect', icon_value=intersection.icon_id)
         replace = icons.get("icon_replace")
@@ -1552,7 +1552,7 @@ class SFC_MT_tools_menu(bpy.types.Menu):
 
 
 # Menu
-class SFC_MT_pie_menu(Menu):
+class INFOTEXT_pie_menu(Menu):
     bl_label = "Speedflow Companion"
 
     def draw(self, context):
@@ -1564,7 +1564,7 @@ class SFC_MT_pie_menu(Menu):
         WM = bpy.context.window_manager
         layout = self.layout
         pie = layout.menu_pie()
-        SFC = context.window_manager.SFC
+        INFOTEXT = context.window_manager.INFOTEXT
 
         if bpy.context.object is not None:
             mesh = context.active_object.data
@@ -1584,14 +1584,14 @@ class SFC_MT_pie_menu(Menu):
                     row.scale_y = 1.5
                 row.scale_x = 1.3
                 row.prop(context.scene.render, "use_simplify", text="Simplify")
-                # row.operator("SFC_PT_simplify_popup", text="", icon='MODIFIER')
-                row.operator("sfc.simplify_popup", text="", icon='MODIFIER')
+                # row.operator("INFOTEXT_simplify_popup", text="", icon='MODIFIER')
+                row.operator("infotext.simplify_popup", text="", icon='MODIFIER')
 
             #6 - RIGHT
             pie.separator()
 
             #2 - BOTTOM
-            SFC_Primitives(self, context)
+            INFOTEXT_Primitives(self, context)
 
             #8 - TOP
             pie.separator()
@@ -1603,7 +1603,7 @@ class SFC_MT_pie_menu(Menu):
             pie.separator()
 
             #1 - BOTTOM - LEFT
-            SFC_OBJMode_Bottom_Left_Carver(self, context)
+            INFOTEXT_OBJMode_Bottom_Left_Carver(self, context)
 
             #3 - BOTTOM - RIGHT
             pie.separator()
@@ -1621,57 +1621,57 @@ class SFC_MT_pie_menu(Menu):
                     row.scale_y = 1.5
                 row.scale_x = 1.3
                 row.prop(context.scene.render, "use_simplify", text="Simplify")
-                # row.operator("SFC_PT_simplify_popup", text="", icon='MODIFIER')
-                row.operator("sfc.simplify_popup", text="", icon='MODIFIER')
+                # row.operator("INFOTEXT_simplify_popup", text="", icon='MODIFIER')
+                row.operator("infotext.simplify_popup", text="", icon='MODIFIER')
             else:
-                SFC_OBJMode_Modifiers(self, context)
+                INFOTEXT_OBJMode_Modifiers(self, context)
 
             #6 - RIGHT
-            SFC_OBJMode_Right(self, context)
+            INFOTEXT_OBJMode_Right(self, context)
 
             #2 - BOTTOM
-            SFC_OBJMode_Bottom(self, context)
+            INFOTEXT_OBJMode_Bottom(self, context)
 
             #8 - TOP
-            SFC_OBJMode_Top(self, context)
+            INFOTEXT_OBJMode_Top(self, context)
 
             #7 - TOP - LEFT
-            SFC_OBJMode_Top_Left(self, context)
+            INFOTEXT_OBJMode_Top_Left(self, context)
 
             #9 - TOP - RIGHT
-            SFC_OBJMode_Top_Right_Shader(self, context)
+            INFOTEXT_OBJMode_Top_Right_Shader(self, context)
 
             #1 - BOTTOM - LEFT
-            SFC_OBJMode_Bottom_Left_Carver(self, context)
+            INFOTEXT_OBJMode_Bottom_Left_Carver(self, context)
 
             #3 - BOTTOM - RIGHT
-            SFC_OBJMode_Bottom_Right(self, context)
+            INFOTEXT_OBJMode_Bottom_Right(self, context)
 
 # =================================================================#
 #  SCULPT Mode
 # =================================================================#
         if bpy.context.area.type == 'VIEW_3D' and context.object is not None and bpy.context.object.mode == 'SCULPT' and bpy.context.object.type == 'MESH':
             # 4 - LEFT
-            SFC_OBJMode_Modifiers(self, context)
+            INFOTEXT_OBJMode_Modifiers(self, context)
 
             # 6 - RIGHT
             pie.separator()
 
             # 2 - BOTTOM
-            SFC_OBJMode_Bottom(self, context)
+            INFOTEXT_OBJMode_Bottom(self, context)
 
             # 8 - TOP
             pie.separator()
-            # SFC_OBJMode_Top(self, context)
+            # INFOTEXT_OBJMode_Top(self, context)
 
             # 7 - TOP - LEFT
-            SFC_OBJMode_Top_Left(self, context)
+            INFOTEXT_OBJMode_Top_Left(self, context)
 
             # 9 - TOP - RIGHT
-            SFC_OBJMode_Top_Right_Shader(self, context)
+            INFOTEXT_OBJMode_Top_Right_Shader(self, context)
 
             # 1 - BOTTOM - LEFT
-            SFC_OBJMode_Bottom_Left_Carver(self, context)
+            INFOTEXT_OBJMode_Bottom_Left_Carver(self, context)
             # pie.separator()
 
             # 3 - BOTTOM - RIGHT
@@ -1683,26 +1683,26 @@ class SFC_MT_pie_menu(Menu):
 
         elif context.object is not None and bpy.context.area.type == 'VIEW_3D' and bpy.context.object.mode == 'OBJECT' and bpy.context.object.type == 'CURVE':
             # 4 - LEFT
-            SFC_OBJMode_Modifiers(self, context)
+            INFOTEXT_OBJMode_Modifiers(self, context)
 
             # 6 - RIGHT
             pie.separator()
 
             # 2 - BOTTOM
-            SFC_OBJMode_Bottom(self, context)
-            # SFC_Primitives(self, context)
+            INFOTEXT_OBJMode_Bottom(self, context)
+            # INFOTEXT_Primitives(self, context)
 
             # 8 - TOP
             pie.separator()
 
             # 7 - TOP - LEFT
-            SFC_OBJMode_Top_Left(self, context)
+            INFOTEXT_OBJMode_Top_Left(self, context)
 
             # 9 - TOP - RIGHT
-            SFC_OBJMode_Top_Right_Shader(self, context)
+            INFOTEXT_OBJMode_Top_Right_Shader(self, context)
 
             # 1 - BOTTOM - LEFT
-            SFC_OBJMode_Bottom_Left_Carver(self, context)
+            INFOTEXT_OBJMode_Bottom_Left_Carver(self, context)
 
             # 3 - BOTTOM - RIGHT
             pie.separator()
@@ -1718,7 +1718,7 @@ class SFC_MT_pie_menu(Menu):
             pie.separator()
 
             # 2 - BOTTOM
-            SFC_OBJMode_Bottom(self, context)
+            INFOTEXT_OBJMode_Bottom(self, context)
 
             # 8 - TOP
             pie.separator()
@@ -1727,11 +1727,11 @@ class SFC_MT_pie_menu(Menu):
             pie.separator()
 
             # 9 - TOP - RIGHT
-            SFC_OBJMode_Top_Right_Shader(self, context)
+            INFOTEXT_OBJMode_Top_Right_Shader(self, context)
 
             # 1 - BOTTOM - LEFT
 
-            SFC_OBJMode_Bottom_Left_Carver(self, context)
+            INFOTEXT_OBJMode_Bottom_Left_Carver(self, context)
 
             # 3 - BOTTOM - RIGHT
             pie.separator()
@@ -1756,15 +1756,15 @@ class SFC_MT_pie_menu(Menu):
 
                 if self.use_normals_buttons:
                     if obj.modifiers:
-                        row.operator("object.sfc_hide_modifiers", text='', icon='RESTRICT_VIEW_OFF')
-                        row.operator("object.sfc_apply_modifiers", text='', icon='FILE_TICK')
-                        row.operator("object.sfc_remove_modifiers", text='', icon='X')
+                        row.operator("object.infotext_hide_modifiers", text='', icon='RESTRICT_VIEW_OFF')
+                        row.operator("object.infotext_apply_modifiers", text='', icon='FILE_TICK')
+                        row.operator("object.infotext_remove_modifiers", text='', icon='X')
 
                 #6 - RIGHT
                 col = pie.column(align=True)
                 row = col.row(align=True)
                 bevel = icons.get("icon_bevel_1")
-                row.operator("object.sfc_bevel_weight", text="Bevel Weight", icon_value=bevel.icon_id)
+                row.operator("object.infotext_bevel_weight", text="Bevel Weight", icon_value=bevel.icon_id)
                 if self.use_normals_buttons:
                     row.operator("transform.edge_bevelweight", text="", icon='X').value = -1
 
@@ -1777,90 +1777,90 @@ class SFC_MT_pie_menu(Menu):
                 row = col.row(align=True)
                 row.separator()
 
-                SFC_prim = context.window_manager.SFC_prim
+                INFOTEXT_prim = context.window_manager.INFOTEXT_prim
 
                 row = col.row(align=True)
-                row.prop(SFC_prim, "align_cursor_rot", text="Cursor Rot")
-                row.prop(SFC_prim, "add_mirror", text="Mirror")
-                if SFC_prim.add_mirror:
+                row.prop(INFOTEXT_prim, "align_cursor_rot", text="Cursor Rot")
+                row.prop(INFOTEXT_prim, "add_mirror", text="Mirror")
+                if INFOTEXT_prim.add_mirror:
                     row = col.row(align=True)
-                    row.prop(SFC_prim, "mirror_axis_xyz", expand=True)
+                    row.prop(INFOTEXT_prim, "mirror_axis_xyz", expand=True)
 
-                if SFC_prim.add_boolean == False:
-                    SFC_prim.add_rebool = False
+                if INFOTEXT_prim.add_boolean == False:
+                    INFOTEXT_prim.add_rebool = False
 
                 row = col.row(align=True)
-                row.prop(SFC_prim, "add_boolean", text="Boolean")
-                if SFC_prim.add_boolean:
-                    row.prop(SFC_prim, "add_rebool", text="Rebool")
+                row.prop(INFOTEXT_prim, "add_boolean", text="Boolean")
+                if INFOTEXT_prim.add_boolean:
+                    row.prop(INFOTEXT_prim, "add_rebool", text="Rebool")
 
-                if SFC_prim.add_boolean or SFC_prim.add_rebool:
+                if INFOTEXT_prim.add_boolean or INFOTEXT_prim.add_rebool:
                     row = col.row(align=True)
-                    if SFC_prim.add_rebool:
-                        SFC_prim.boolean_enum = 'DIFFERENCE'
-                    row.prop(SFC_prim, "boolean_enum", expand=True)
+                    if INFOTEXT_prim.add_rebool:
+                        INFOTEXT_prim.boolean_enum = 'DIFFERENCE'
+                    row.prop(INFOTEXT_prim, "boolean_enum", expand=True)
                 row = col.row(align=True)
-                row.operator("sfc.primitives_popup", text="Popup Settings", icon='MODIFIER')
+                row.operator("infotext.primitives_popup", text="Popup Settings", icon='MODIFIER')
 
                 # -------DEFAULT PRIMITIVES
 
                 col.label(text="Default Primitives", icon='MESH_CUBE')
                 row = col.row(align=True)
                 # row.scale_x = 1.2
-                op = row.operator("sfc.primitives_new", text="", icon='DOT')
+                op = row.operator("infotext.primitives_new", text="", icon='DOT')
                 op.primitives_enum = "default_prim"
                 op.default_enum = 'vertex'
 
-                op = row.operator("sfc.primitives_new", text="", icon='MESH_PLANE')
+                op = row.operator("infotext.primitives_new", text="", icon='MESH_PLANE')
                 op.primitives_enum = "default_prim"
                 op.default_enum = 'plane'
 
-                op = row.operator("sfc.primitives_new", text="", icon='MESH_CUBE')
+                op = row.operator("infotext.primitives_new", text="", icon='MESH_CUBE')
                 op.primitives_enum = "default_prim"
                 op.default_enum = 'cube'
 
-                op = row.operator("sfc.primitives_new", text="", icon='MESH_CIRCLE')
+                op = row.operator("infotext.primitives_new", text="", icon='MESH_CIRCLE')
                 op.primitives_enum = "default_prim"
                 op.default_enum = 'circle'
 
-                op = row.operator("sfc.primitives_new", text="", icon='MESH_UVSPHERE')
+                op = row.operator("infotext.primitives_new", text="", icon='MESH_UVSPHERE')
                 op.primitives_enum = "default_prim"
                 op.default_enum = 'uv_sphere'
 
-                op = row.operator("sfc.primitives_new", text="", icon='MESH_ICOSPHERE')
+                op = row.operator("infotext.primitives_new", text="", icon='MESH_ICOSPHERE')
                 op.primitives_enum = "default_prim"
                 op.default_enum = 'ico_sphere'
 
-                op = row.operator("sfc.primitives_new", text="", icon='MESH_CYLINDER')
+                op = row.operator("infotext.primitives_new", text="", icon='MESH_CYLINDER')
                 op.primitives_enum = "default_prim"
                 op.default_enum = 'cylinder'
 
-                op = row.operator("sfc.primitives_new", text="", icon='MESH_CONE')
+                op = row.operator("infotext.primitives_new", text="", icon='MESH_CONE')
                 op.primitives_enum = "default_prim"
                 op.default_enum = 'cone'
 
-                op = row.operator("sfc.primitives_new", text="", icon='MESH_TORUS')
+                op = row.operator("infotext.primitives_new", text="", icon='MESH_TORUS')
                 op.primitives_enum = "default_prim"
                 op.default_enum = 'torus'
 
                 row = col.row(align=True)
                 # row.scale_x = 1
 
-                op = row.operator("sfc.primitives_new", text="", icon='MESH_GRID')
+                op = row.operator("infotext.primitives_new", text="", icon='MESH_GRID')
                 op.primitives_enum = "default_prim"
                 op.default_enum = 'grid'
 
-                op = row.operator("sfc.primitives_new", text="", icon='CURVE_BEZCURVE')
+                op = row.operator("infotext.primitives_new", text="", icon='CURVE_BEZCURVE')
                 op.primitives_enum = "default_prim"
                 op.default_enum = 'bezier_curve'
 
-                op = row.operator("sfc.primitives_new", text="", icon='CURVE_BEZCIRCLE')
+                op = row.operator("infotext.primitives_new", text="", icon='CURVE_BEZCIRCLE')
                 op.primitives_enum = "default_prim"
                 op.default_enum = 'bezier_circle'
 
-                row.operator("sfc.cursor_line", text="", icon='LINE_DATA')
+                row.operator("infotext.cursor_line", text="", icon='LINE_DATA')
 
-                op = row.operator("sfc.primitives_new", text="", icon='MESH_MONKEY')
+                op = row.operator("infotext.primitives_new", text="", icon='MESH_MONKEY')
                 op.primitives_enum = "default_prim"
                 op.default_enum = 'monkey'
 
@@ -1868,35 +1868,35 @@ class SFC_MT_pie_menu(Menu):
                 col.label(text="Screw Primitives", icon='MOD_SCREW')
                 row = col.row(align=True)
                 # row.scale_x = 1.3
-                op = row.operator("sfc.primitives_new", text="", icon='DOT')
+                op = row.operator("infotext.primitives_new", text="", icon='DOT')
                 op.primitives_enum = "screw_prim"
                 op.screw_enum = 'screw_7'
 
-                op = row.operator("sfc.primitives_new", text="", icon='MESH_CIRCLE')
+                op = row.operator("infotext.primitives_new", text="", icon='MESH_CIRCLE')
                 op.primitives_enum = "screw_prim"
                 op.screw_enum = 'screw_6'
 
-                op = row.operator("sfc.primitives_new", text="", icon='MESH_CYLINDER')
+                op = row.operator("infotext.primitives_new", text="", icon='MESH_CYLINDER')
                 op.primitives_enum = "screw_prim"
                 op.screw_enum = 'screw_1'
 
                 screw = icons.get("prim_screw_2")
-                op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+                op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
                 op.primitives_enum = "screw_prim"
                 op.screw_enum = 'screw_2'
 
                 screw = icons.get("prim_screw_3")
-                op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+                op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
                 op.primitives_enum = "screw_prim"
                 op.screw_enum = 'screw_3'
 
                 screw = icons.get("prim_screw_4")
-                op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+                op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
                 op.primitives_enum = "screw_prim"
                 op.screw_enum = 'screw_4'
 
                 screw = icons.get("prim_screw_5")
-                op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+                op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
                 op.primitives_enum = "screw_prim"
                 op.screw_enum = 'screw_5'
 
@@ -1904,39 +1904,39 @@ class SFC_MT_pie_menu(Menu):
                 col.label(text="Editable Primitives", icon='MODIFIER')
                 row = col.row(align=True)
                 # row.scale_x = 1.3
-                op = row.operator("sfc.primitives_new", icon='MESH_CUBE', text="")
+                op = row.operator("infotext.primitives_new", icon='MESH_CUBE', text="")
                 op.primitives_enum = "editable_prim"
                 op.editable_enum = 'cube'
 
-                op = row.operator("sfc.primitives_new", icon='MESH_UVSPHERE', text="")
+                op = row.operator("infotext.primitives_new", icon='MESH_UVSPHERE', text="")
                 op.primitives_enum = "editable_prim"
                 op.editable_enum = 'sphere'
 
-                op = row.operator("sfc.primitives_new", icon='MESH_CYLINDER', text="")
+                op = row.operator("infotext.primitives_new", icon='MESH_CYLINDER', text="")
                 op.primitives_enum = "editable_prim"
                 op.editable_enum = 'cylinder'
 
-                op = row.operator("sfc.primitives_new", icon='MESH_CONE', text="")
+                op = row.operator("infotext.primitives_new", icon='MESH_CONE', text="")
                 op.primitives_enum = "editable_prim"
                 op.editable_enum = 'cone'
 
-                op = row.operator("sfc.primitives_new", icon='MESH_TORUS', text="")
+                op = row.operator("infotext.primitives_new", icon='MESH_TORUS', text="")
                 op.primitives_enum = "editable_prim"
                 op.editable_enum = 'torus'
 
-                op = row.operator("sfc.primitives_new", icon='MESH_GRID', text="")
+                op = row.operator("infotext.primitives_new", icon='MESH_GRID', text="")
                 op.primitives_enum = "editable_prim"
                 op.editable_enum = 'grid'
 
-                op = row.operator("sfc.primitives_new", icon='MESH_CAPSULE', text="")
+                op = row.operator("infotext.primitives_new", icon='MESH_CAPSULE', text="")
                 op.primitives_enum = "editable_prim"
                 op.editable_enum = 'capsule'
 
-                op = row.operator("sfc.primitives_new", icon='MATSPHERE', text="")
+                op = row.operator("infotext.primitives_new", icon='MATSPHERE', text="")
                 op.primitives_enum = "editable_prim"
                 op.editable_enum = 'quad_sphere'
 
-                op = row.operator("sfc.primitives_new", icon='MESH_CIRCLE', text="")
+                op = row.operator("infotext.primitives_new", icon='MESH_CIRCLE', text="")
                 op.primitives_enum = "editable_prim"
                 op.editable_enum = 'circle'
 
@@ -1945,53 +1945,53 @@ class SFC_MT_pie_menu(Menu):
                 row = col.row(align=True)
 
                 # row.scale_x = 1.3
-                op = row.operator("sfc.primitives_new", icon='META_CUBE', text="")
+                op = row.operator("infotext.primitives_new", icon='META_CUBE', text="")
                 op.primitives_enum = "custom_prim"
                 op.custom_enum = 'rounded_cube'
 
-                op = row.operator("sfc.primitives_new", icon='META_PLANE', text="")
+                op = row.operator("infotext.primitives_new", icon='META_PLANE', text="")
                 op.primitives_enum = "custom_prim"
                 op.custom_enum = 'rounded_plane'
 
-                op = row.operator("sfc.primitives_new", icon='META_CUBE', text="")
+                op = row.operator("infotext.primitives_new", icon='META_CUBE', text="")
                 op.primitives_enum = "custom_prim"
                 op.custom_enum = 'rounded_plane_round'
 
-                op = row.operator("sfc.primitives_new", icon='META_CUBE', text="")
+                op = row.operator("infotext.primitives_new", icon='META_CUBE', text="")
                 op.primitives_enum = "custom_prim"
                 op.custom_enum = 'rounded_plane_2'
 
                 custom = icons.get("prim_cross")
-                op = row.operator("sfc.primitives_new", icon_value=custom.icon_id, text="")
+                op = row.operator("infotext.primitives_new", icon_value=custom.icon_id, text="")
                 op.custom_enum = 'cross'
 
                 custom = icons.get("prim_cross_rounded")
-                op = row.operator("sfc.primitives_new", icon_value=custom.icon_id, text="")
+                op = row.operator("infotext.primitives_new", icon_value=custom.icon_id, text="")
                 op.custom_enum = 'rounded_cross'
 
-                op = row.operator("sfc.primitives_new", icon='MESH_CAPSULE', text="")
+                op = row.operator("infotext.primitives_new", icon='MESH_CAPSULE', text="")
                 op.primitives_enum = "custom_prim"
                 op.custom_enum = 'long_cylinder'
 
-                op = row.operator("sfc.primitives_new", icon='IPO_CONSTANT', text="")
+                op = row.operator("infotext.primitives_new", icon='IPO_CONSTANT', text="")
                 op.primitives_enum = "editable_prim"
                 op.editable_enum = 'line'
 
-                op = row.operator("sfc.primitives_new", icon='ANTIALIASED', text="")
+                op = row.operator("infotext.primitives_new", icon='ANTIALIASED', text="")
                 op.primitives_enum = "editable_prim"
                 op.editable_enum = 'tube'
 
                 # -------TOOLS
                 col.label(text="Tools", icon='TOOL_SETTINGS')
-                col.operator("sfc.cursor_tools", text="Copy Cursor Rotation",
+                col.operator("infotext.cursor_tools", text="Copy Cursor Rotation",
                              icon='PIVOT_CURSOR').cursor_tools = 'copy_cursor_rot'
-                col.operator("sfc.cursor_tools", text="Selection To Cursor",
+                col.operator("infotext.cursor_tools", text="Selection To Cursor",
                              icon='PIVOT_BOUNDBOX').cursor_tools = 'selection_to_cursor'
-                col.operator("sfc.cursor_tools", text="Cursor To Selection + Rotation",
+                col.operator("infotext.cursor_tools", text="Cursor To Selection + Rotation",
                              icon='PIVOT_CURSOR').cursor_tools = 'cursor_to_selection_rot'
-                col.operator("sfc.cursor_tools", text="Align View To Cursor Rotation",
+                col.operator("infotext.cursor_tools", text="Align View To Cursor Rotation",
                              icon='VIEW_PERSPECTIVE').cursor_tools = 'align_view_to_cursor_rot'
-                col.operator("sfc.cursor_tools", text="Align Cursor To Object Rotation",
+                col.operator("infotext.cursor_tools", text="Align Cursor To Object Rotation",
                              icon='EMPTY_AXIS').cursor_tools = 'align_cursor_to_object_rot'
 
                 #8 - TOP
@@ -2008,7 +2008,7 @@ class SFC_MT_pie_menu(Menu):
                     if self.scale_y:
                         row.scale_y = 1.5
                     row.scale_x = 1.5
-                    row.operator("object.sfc_activate_line", text="Line", icon='ERROR')
+                    row.operator("object.infotext_activate_line", text="Line", icon='ERROR')
                     row.operator(
                         "wm.url_open", text="", icon='URL').url = "https://blenderartists.org/forum/showthread.php?363859-Addon-CAD-Snap-Utilities"
 
@@ -2021,12 +2021,13 @@ class SFC_MT_pie_menu(Menu):
                 if bpy.context.object.type == 'MESH':
                     if context.object.data.use_auto_smooth == True:
                         autosmooth = icons.get("icon_autosmooth")
-                        row.operator("object.sfc_toggle_smooth", text="AutoSmooth", icon_value=autosmooth.icon_id)
+                        row.operator("object.infotext_toggle_smooth", text="AutoSmooth", icon_value=autosmooth.icon_id)
                         row = col.row(align=True)
                         row.prop(mesh, "auto_smooth_angle", text="Angle")
                     else:
                         autosmooth_off = icons.get("icon_autosmooth_off")
-                        row.operator("object.sfc_toggle_smooth", text="AutoSmooth", icon_value=autosmooth_off.icon_id)
+                        row.operator("object.infotext_toggle_smooth", text="AutoSmooth",
+                                     icon_value=autosmooth_off.icon_id)
 
                 if self.use_normals_buttons:
                     row = col.row(align=True)
@@ -2034,18 +2035,18 @@ class SFC_MT_pie_menu(Menu):
                         row.scale_y = 1.5
                     row.scale_x = 1.1
                     wire = icons.get("icon_wire")
-                    row.operator("object.sfc_wire_mode", text="Wire", icon_value=wire.icon_id)
+                    row.operator("object.infotext_wire_mode", text="Wire", icon_value=wire.icon_id)
                     solid = icons.get("icon_solid")
-                    row.operator("object.sfc_solid_mode", text="Solid", icon_value=solid.icon_id)
+                    row.operator("object.infotext_solid_mode", text="Solid", icon_value=solid.icon_id)
                     bounds = icons.get("icon_bounds")
-                    row.operator("object.sfc_bounds_mode", text="Bound", icon_value=bounds.icon_id)
+                    row.operator("object.infotext_bounds_mode", text="Bound", icon_value=bounds.icon_id)
                 else:
                     row = col.row(align=True)
                     if self.scale_y:
                         row.scale_y = 1.5
                     row.scale_x = 1.1
                     wire = icons.get("icon_wire")
-                    row.operator("object.sfc_display_mode", text="Display Mode", icon_value=wire.icon_id)
+                    row.operator("object.infotext_display_mode", text="Display Mode", icon_value=wire.icon_id)
 
                 # draw_text = icons.get("draw_text")
                 # row.prop(addon_pref, "drawText", text="", icon_value=draw_text.icon_id)
@@ -2055,7 +2056,8 @@ class SFC_MT_pie_menu(Menu):
                     row.scale_y = 1.5
                 row.scale_x = 1.1
                 subsurf = icons.get("icon_subsurf")
-                row.operator("object.sfc_subdiv_booleans_prepare", text="Subdiv Booleans", icon_value=subsurf.icon_id)
+                row.operator("object.infotext_subdiv_booleans_prepare",
+                             text="Subdiv Booleans", icon_value=subsurf.icon_id)
                 if self.use_normals_buttons:
                     row.operator("object.clean_subdiv_booleans", text="", icon='X')
                 # row=col.row(align=True)
@@ -2063,12 +2065,12 @@ class SFC_MT_pie_menu(Menu):
                 #     row.scale_y = 1.5
                 # row.scale_x = 1.3
                 # mirror = icons.get("icon_mirror")
-                # row.operator("object.sfc_auto_mirror", text = "Automirror", icon_value=mirror.icon_id)
+                # row.operator("object.infotext_auto_mirror", text = "Automirror", icon_value=mirror.icon_id)
                 # if self.use_normals_buttons:
                 #     if obj.modifiers:
                 #         if "Mirror" in obj.modifiers:
-                #             row.operator("object.sfc_hide_mirror_modifier", text="", icon="RESTRICT_VIEW_OFF")
-                #             row.operator("object.sfc_apply_mirror_modifiers", text="", icon="FILE_TICK")
+                #             row.operator("object.infotext_hide_mirror_modifier", text="", icon="RESTRICT_VIEW_OFF")
+                #             row.operator("object.infotext_apply_mirror_modifiers", text="", icon="FILE_TICK")
                 #             row.operator("object.remove_bevel", text="", icon='X')
 
                 #9 - TOP - RIGHT
@@ -2081,12 +2083,12 @@ class SFC_MT_pie_menu(Menu):
                     row.scale_y = 1.2
                 row.scale_x = 0.9
                 if self.use_normals_buttons:
-                    row.operator("object.sfc_show_hide_sharps", text="Show Sharps")
-                    row.operator("object.sfc_hide_sharps", text="Hide Sharps")
+                    row.operator("object.infotext_show_hide_sharps", text="Show Sharps")
+                    row.operator("object.infotext_hide_sharps", text="Hide Sharps")
                 else:
-                    row.operator("object.sfc_show_hide_sharps", text="Show/Hide Sharps")
+                    row.operator("object.infotext_show_hide_sharps", text="Show/Hide Sharps")
 
-                # SFC_OBJMode_Bottom(self, context)
+                # INFOTEXT_OBJMode_Bottom(self, context)
                 row = col.row(align=True)
                 if self.scale_y:
                     row.scale_y = 1.2
@@ -2115,79 +2117,79 @@ class SFC_MT_pie_menu(Menu):
                             if self.scale_y:
                                 row.scale_y = 1.2
                             row.scale_x = 1.2
-                            row.operator("sfc.add_lattice", text="Add Lattice", icon='OUTLINER_OB_LATTICE')
-                            # row.operator("object.sfc_add_lattice_to_selection", text="Add Lattice",
+                            row.operator("infotext.add_lattice", text="Add Lattice", icon='OUTLINER_OB_LATTICE')
+                            # row.operator("object.infotext_add_lattice_to_selection", text="Add Lattice",
                             #              icon='OUTLINER_OB_LATTICE')
                         else:
                             if self.scale_y:
                                 row.scale_y = 1.2
                             row.scale_x = 1.2
-                            row.operator("object.sfc_edit_objects", text="Edit Lattice", icon='LATTICE_DATA')
+                            row.operator("object.infotext_edit_objects", text="Edit Lattice", icon='LATTICE_DATA')
 
                     elif len([obj for obj in context.selected_objects]) >= 2:
                         if self.scale_y:
                             row.scale_y = 1.2
                         row.scale_x = 1.2
-                        row.operator("object.sfc_connect_lattice", text="Connect Lattice", icon='MOD_LATTICE')
+                        row.operator("object.infotext_connect_lattice", text="Connect Lattice", icon='MOD_LATTICE')
 
                     elif len([obj for obj in context.selected_objects if obj.type == 'LATTICE']) == 1:
                         if self.scale_y:
                             row.scale_y = 1.2
                         row.scale_x = 1.2
-                        row.operator("object.sfc_edit_lattice", text="Edit Lattice", icon='LATTICE_DATA')
+                        row.operator("object.infotext_edit_lattice", text="Edit Lattice", icon='LATTICE_DATA')
 
                 # split = pie.split()
                 # col = split.column(align=True)
                 # row = col.row(align=True)
                 # red = icons.get("red")
-                # row.operator("object.sfc_material_dif_colors", text="",
+                # row.operator("object.infotext_material_dif_colors", text="",
                 #              icon_value=red.icon_id).material_dif_colors = "red"
                 # orange = icons.get("orange")
-                # row.operator("object.sfc_material_dif_colors", text="",
+                # row.operator("object.infotext_material_dif_colors", text="",
                 #              icon_value=orange.icon_id).material_dif_colors = "orange"
                 # yellow = icons.get("yellow")
-                # row.operator("object.sfc_material_dif_colors", text="",
+                # row.operator("object.infotext_material_dif_colors", text="",
                 #              icon_value=yellow.icon_id).material_dif_colors = "yellow"
                 # green = icons.get("green")
-                # row.operator("object.sfc_material_dif_colors", text="",
+                # row.operator("object.infotext_material_dif_colors", text="",
                 #              icon_value=green.icon_id).material_dif_colors = "green"
                 # cian = icons.get("cian")
-                # row.operator("object.sfc_material_dif_colors", text="",
+                # row.operator("object.infotext_material_dif_colors", text="",
                 #              icon_value=cian.icon_id).material_dif_colors = "cian"
                 # blue = icons.get("blue")
-                # row.operator("object.sfc_material_dif_colors", text="",
+                # row.operator("object.infotext_material_dif_colors", text="",
                 #              icon_value=blue.icon_id).material_dif_colors = "blue"
                 # purple = icons.get("purple")
-                # row.operator("object.sfc_material_dif_colors", text="",
+                # row.operator("object.infotext_material_dif_colors", text="",
                 #              icon_value=purple.icon_id).material_dif_colors = "purple"
                 # pink = icons.get("pink")
-                # row.operator("object.sfc_material_dif_colors", text="",
+                # row.operator("object.infotext_material_dif_colors", text="",
                 #              icon_value=pink.icon_id).material_dif_colors = "pink"
                 #
                 # row = col.row(align=True)
                 # nb_1 = icons.get("nb_1")
-                # row.operator("object.sfc_material_dif_colors", text="",
+                # row.operator("object.infotext_material_dif_colors", text="",
                 #              icon_value=nb_1.icon_id).material_dif_colors = "nb_1"
                 # nb_2 = icons.get("nb_2")
-                # row.operator("object.sfc_material_dif_colors", text="",
+                # row.operator("object.infotext_material_dif_colors", text="",
                 #              icon_value=nb_2.icon_id).material_dif_colors = "nb_2"
                 # nb_3 = icons.get("nb_3")
-                # row.operator("object.sfc_material_dif_colors", text="",
+                # row.operator("object.infotext_material_dif_colors", text="",
                 #              icon_value=nb_3.icon_id).material_dif_colors = "nb_3"
                 # nb_4 = icons.get("nb_4")
-                # row.operator("object.sfc_material_dif_colors", text="",
+                # row.operator("object.infotext_material_dif_colors", text="",
                 #              icon_value=nb_4.icon_id).material_dif_colors = "nb_4"
                 # nb_5 = icons.get("nb_5")
-                # row.operator("object.sfc_material_dif_colors", text="",
+                # row.operator("object.infotext_material_dif_colors", text="",
                 #              icon_value=nb_5.icon_id).material_dif_colors = "nb_5"
                 # nb_6 = icons.get("nb_6")
-                # row.operator("object.sfc_material_dif_colors", text="",
+                # row.operator("object.infotext_material_dif_colors", text="",
                 #              icon_value=nb_6.icon_id).material_dif_colors = "nb_6"
                 # nb_7 = icons.get("nb_7")
-                # row.operator("object.sfc_material_dif_colors", text="",
+                # row.operator("object.infotext_material_dif_colors", text="",
                 #              icon_value=nb_7.icon_id).material_dif_colors = "nb_7"
                 # nb_8 = icons.get("nb_8")
-                # row.operator("object.sfc_material_dif_colors", text="",
+                # row.operator("object.infotext_material_dif_colors", text="",
                 #              icon_value=nb_8.icon_id).material_dif_colors = "nb_8"
                 #
                 # if obj.active_material:
@@ -2203,7 +2205,7 @@ class SFC_MT_pie_menu(Menu):
                 # if self.scale_y:
                 #     row.scale_y = 1.5
                 # # row.scale_x = 0.8
-                # row.operator("object.sfc_random_color", text="Add Material", icon='COLOR')
+                # row.operator("object.infotext_random_color", text="Add Material", icon='COLOR')
                 # if self.scale_y:
                 #     row.scale_y = 1.5
                 # # row.scale_x = 1.2
@@ -2214,9 +2216,9 @@ class SFC_MT_pie_menu(Menu):
                 #       if self.scale_y:
                 #     #     row.scale_y = 1.5
                 #     # row.scale_x = 0.8
-                #     row.operator("object.sfc_material_list_menu", text="", icon='MATERIAL_DATA')
+                #     row.operator("object.infotext_material_list_menu", text="", icon='MATERIAL_DATA')
                 #     # row.scale_x = 1.2
-                #     row.operator("object.sfc_clean_unused_data", text="", icon='GHOST_DISABLED')
+                #     row.operator("object.infotext_clean_unused_data", text="", icon='GHOST_DISABLED')
                 #
                 # # col = pie.column(align=True)
                 # # row=col.row(align=True)
@@ -2224,7 +2226,7 @@ class SFC_MT_pie_menu(Menu):
                 # #     row.scale_y = 1.5
                 # # row.scale_x = 1.5
                 # # crease = icons.get("icon_crease")
-                # # row.operator("object.sfc_creases", text = "Creases", icon_value=crease.icon_id)
+                # # row.operator("object.infotext_creases", text = "Creases", icon_value=crease.icon_id)
                 # # if self.use_normals_buttons:
                 # #     row.operator("transform.edge_crease", text='',icon='X').value=-1
                 # # row = col.row(align=True)
@@ -2232,9 +2234,9 @@ class SFC_MT_pie_menu(Menu):
                 # #     row.scale_y = 1.5
                 # # row.scale_x = 1.5
                 # # sharps = icons.get("icon_sharp")
-                # # row.operator("object.sfc_sharps", text="Sharps", icon_value=sharps.icon_id)
+                # # row.operator("object.infotext_sharps", text="Sharps", icon_value=sharps.icon_id)
                 # # if self.use_normals_buttons:
-                # #     row.operator("object.sfc_unsharps", text="", icon='X')
+                # #     row.operator("object.infotext_unsharps", text="", icon='X')
 
                 #1 - BOTTOM - LEFT
                 col = pie.column(align=True)
@@ -2243,19 +2245,19 @@ class SFC_MT_pie_menu(Menu):
                     row.scale_y = 1.2
                 row.scale_x = 1.2
                 ngons = icons.get("icon_ngons")
-                row.operator("object.sfc_facetype_select", text="Select Ngons", icon_value=ngons.icon_id)
+                row.operator("object.infotext_facetype_select", text="Select Ngons", icon_value=ngons.icon_id)
                 row = col.row(align=True)
                 if self.scale_y:
                     row.scale_y = 1.2
                 row.scale_x = 1.2
                 faces = icons.get("icon_faces")
-                row.operator("object.sfc_clean_faces", text="Clean Faces", icon_value=faces.icon_id)
+                row.operator("object.infotext_clean_faces", text="Clean Faces", icon_value=faces.icon_id)
                 row = col.row(align=True)
                 if self.scale_y:
                     row.scale_y = 1.2
                 row.scale_x = 1.2
                 laprelax = icons.get("icon_laprelax")
-                row.operator("mesh.sfc_laprelax", text="Lap Relax", icon_value=laprelax.icon_id)
+                row.operator("mesh.infotext_laprelax", text="Lap Relax", icon_value=laprelax.icon_id)
                 row = col.row(align=True)
                 if self.scale_y:
                     row.scale_y = 1.2
@@ -2270,7 +2272,7 @@ class SFC_MT_pie_menu(Menu):
                     row.scale_y = 1.2
                 row.scale_x = 1.2
                 crease = icons.get("icon_crease")
-                row.operator("object.sfc_creases", text="Creases", icon_value=crease.icon_id)
+                row.operator("object.infotext_creases", text="Creases", icon_value=crease.icon_id)
                 if self.use_normals_buttons:
                     row.operator("transform.edge_crease", text='', icon='X').value = -1
                 row = col.row(align=True)
@@ -2278,36 +2280,36 @@ class SFC_MT_pie_menu(Menu):
                     row.scale_y = 1.2
                 row.scale_x = 1.2
                 sharps = icons.get("icon_sharp")
-                row.operator("object.sfc_sharps", text="Sharps", icon_value=sharps.icon_id)
+                row.operator("object.infotext_sharps", text="Sharps", icon_value=sharps.icon_id)
                 if self.use_normals_buttons:
-                    row.operator("object.sfc_unsharps", text="", icon='X')
+                    row.operator("object.infotext_unsharps", text="", icon='X')
 
                 row = col.row(align=True)
                 if self.scale_y:
                     row.scale_y = 1.2
                 row.scale_x = 1.2
                 sharps = icons.get("icon_sharp")
-                row.operator("object.sfc_seams", text="Seam", icon_value=sharps.icon_id)
+                row.operator("object.infotext_seams", text="Seam", icon_value=sharps.icon_id)
                 if self.use_normals_buttons:
-                    row.operator("object.sfc_unseam", text="", icon='X')
+                    row.operator("object.infotext_unseam", text="", icon='X')
 
                 row = col.row(align=True)
                 if self.scale_y:
                     row.scale_y = 1.2
                 row.scale_x = 1.2
                 sharp = icons.get("icon_sharp")
-                row.operator("object.sfc_sharp_all", text="All Sharps", icon_value=sharp.icon_id)
+                row.operator("object.infotext_sharp_all", text="All Sharps", icon_value=sharp.icon_id)
                 if self.use_normals_buttons:
-                    row.operator("object.sfc_unsharp_all", text="", icon='X')
+                    row.operator("object.infotext_unsharp_all", text="", icon='X')
 
                 row = col.row(align=True)
                 if self.scale_y:
                     row.scale_y = 1.2
                 row.scale_x = 1.2
                 vgroup = icons.get("icon_vgroup")
-                row.operator("object.sfc_vgroups", text="Vertex Groups", icon_value=vgroup.icon_id)
-                # row.operator("SFC_PT_vertex_group", text="", icon='MODIFIER')
-                row.operator("sfc.vertex_group", text="", icon='MODIFIER')
+                row.operator("object.infotext_vgroups", text="Vertex Groups", icon_value=vgroup.icon_id)
+                # row.operator("INFOTEXT_vertex_group", text="", icon='MODIFIER')
+                row.operator("infotext.vertex_group", text="", icon='MODIFIER')
 
             #=================================================================#
             #  Lattice
@@ -2330,25 +2332,25 @@ class SFC_MT_pie_menu(Menu):
                         if not lattice:
                             if self.scale_y:
                                 row.scale_y = 1.5
-                            row.operator("sfc.add_lattice", text="Add Lattice", icon='OUTLINER_OB_LATTICE')
-                            # row.operator("object.sfc_add_lattice_to_selection", text="Add Lattice",
+                            row.operator("infotext.add_lattice", text="Add Lattice", icon='OUTLINER_OB_LATTICE')
+                            # row.operator("object.infotext_add_lattice_to_selection", text="Add Lattice",
                             #              icon='OUTLINER_OB_LATTICE')
 
                         else:
                             if self.scale_y:
                                 row.scale_y = 1.5
-                            row.operator("object.sfc_edit_objects", text="Edit Lattice", icon='LATTICE_DATA')
+                            row.operator("object.infotext_edit_objects", text="Edit Lattice", icon='LATTICE_DATA')
 
                     elif len([obj for obj in context.selected_objects]) >= 2:
                         if self.scale_y:
                             row.scale_y = 1.5
-                        row.operator("object.sfc_connect_lattice", text="Connect Lattice", icon='MOD_LATTICE')
+                        row.operator("object.infotext_connect_lattice", text="Connect Lattice", icon='MOD_LATTICE')
 
                     # elif len([obj for obj in context.selected_objects if obj.type == 'LATTICE' ]) == 1:
                     elif obj.type == 'LATTICE':
                         if self.scale_y:
                             row.scale_y = 1.5
-                        row.operator("object.sfc_edit_lattice", text="Edit Lattice", icon='LATTICE_DATA')
+                        row.operator("object.infotext_edit_lattice", text="Edit Lattice", icon='LATTICE_DATA')
 
                 #8 - TOP
                 pie.separator()
@@ -2459,98 +2461,98 @@ class SFC_MT_pie_menu(Menu):
                 row.operator("curve.switch_direction", icon_value=switch_direction.icon_id)
 
 
-class SFC_PT_panel(Panel):
+class INFOTEXT_panel(Panel):
     bl_label = "COMPANION"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "Tools"
 
     def draw(self, context):
-        SFC_prim = context.window_manager.SFC_prim
+        INFOTEXT_prim = context.window_manager.INFOTEXT_prim
         layout = self.layout
         icons = load_icons()
 
         box = layout.box()
         row = box.row(align=True)
-        row.prop(SFC_prim, "align_cursor_rot", text="Cursor Rot")
-        row.prop(SFC_prim, "add_mirror", text="Mirror")
-        if SFC_prim.add_mirror:
+        row.prop(INFOTEXT_prim, "align_cursor_rot", text="Cursor Rot")
+        row.prop(INFOTEXT_prim, "add_mirror", text="Mirror")
+        if INFOTEXT_prim.add_mirror:
             row = box.row(align=True)
-            row.prop(SFC_prim, "mirror_axis_xyz", expand=True)
+            row.prop(INFOTEXT_prim, "mirror_axis_xyz", expand=True)
 
-        if SFC_prim.add_boolean == False:
-            SFC_prim.add_rebool = False
+        if INFOTEXT_prim.add_boolean == False:
+            INFOTEXT_prim.add_rebool = False
 
         row = box.row(align=True)
-        row.prop(SFC_prim, "add_boolean", text="Boolean")
-        if SFC_prim.add_boolean:
-            row.prop(SFC_prim, "add_rebool", text="Rebool")
+        row.prop(INFOTEXT_prim, "add_boolean", text="Boolean")
+        if INFOTEXT_prim.add_boolean:
+            row.prop(INFOTEXT_prim, "add_rebool", text="Rebool")
 
-        if SFC_prim.add_boolean or SFC_prim.add_rebool:
+        if INFOTEXT_prim.add_boolean or INFOTEXT_prim.add_rebool:
             row = box.row(align=True)
-            if SFC_prim.add_rebool:
-                SFC_prim.boolean_enum = 'DIFFERENCE'
-            row.prop(SFC_prim, "boolean_enum", expand=True)
+            if INFOTEXT_prim.add_rebool:
+                INFOTEXT_prim.boolean_enum = 'DIFFERENCE'
+            row.prop(INFOTEXT_prim, "boolean_enum", expand=True)
 
         # -------DEFAULT PRIMITIVES
 
         layout.label(text="Default Primitives", icon='MESH_CUBE')
         row = layout.row(align=True)
         row.scale_x = 1.3
-        op = row.operator("sfc.primitives_new", text="", icon='DOT')
+        op = row.operator("infotext.primitives_new", text="", icon='DOT')
         op.primitives_enum = "default_prim"
         op.default_enum = 'vertex'
 
-        op = row.operator("sfc.primitives_new", text="", icon='MESH_PLANE')
+        op = row.operator("infotext.primitives_new", text="", icon='MESH_PLANE')
         op.primitives_enum = "default_prim"
         op.default_enum = 'plane'
 
-        op = row.operator("sfc.primitives_new", text="", icon='MESH_CUBE')
+        op = row.operator("infotext.primitives_new", text="", icon='MESH_CUBE')
         op.primitives_enum = "default_prim"
         op.default_enum = 'cube'
 
-        op = row.operator("sfc.primitives_new", text="", icon='MESH_CIRCLE')
+        op = row.operator("infotext.primitives_new", text="", icon='MESH_CIRCLE')
         op.primitives_enum = "default_prim"
         op.default_enum = 'circle'
 
-        op = row.operator("sfc.primitives_new", text="", icon='MESH_UVSPHERE')
+        op = row.operator("infotext.primitives_new", text="", icon='MESH_UVSPHERE')
         op.primitives_enum = "default_prim"
         op.default_enum = 'uv_sphere'
 
-        op = row.operator("sfc.primitives_new", text="", icon='MESH_ICOSPHERE')
+        op = row.operator("infotext.primitives_new", text="", icon='MESH_ICOSPHERE')
         op.primitives_enum = "default_prim"
         op.default_enum = 'ico_sphere'
 
-        op = row.operator("sfc.primitives_new", text="", icon='MESH_CYLINDER')
+        op = row.operator("infotext.primitives_new", text="", icon='MESH_CYLINDER')
         op.primitives_enum = "default_prim"
         op.default_enum = 'cylinder'
 
-        op = row.operator("sfc.primitives_new", text="", icon='MESH_CONE')
+        op = row.operator("infotext.primitives_new", text="", icon='MESH_CONE')
         op.primitives_enum = "default_prim"
         op.default_enum = 'cone'
 
-        op = row.operator("sfc.primitives_new", text="", icon='MESH_TORUS')
+        op = row.operator("infotext.primitives_new", text="", icon='MESH_TORUS')
         op.primitives_enum = "default_prim"
         op.default_enum = 'torus'
 
         row = layout.row(align=True)
         row.scale_x = 2
 
-        op = row.operator("sfc.primitives_new", text="", icon='MESH_GRID')
+        op = row.operator("infotext.primitives_new", text="", icon='MESH_GRID')
         op.primitives_enum = "default_prim"
         op.default_enum = 'grid'
 
-        op = row.operator("sfc.primitives_new", text="", icon='CURVE_BEZCURVE')
+        op = row.operator("infotext.primitives_new", text="", icon='CURVE_BEZCURVE')
         op.primitives_enum = "default_prim"
         op.default_enum = 'bezier_curve'
 
-        op = row.operator("sfc.primitives_new", text="", icon='CURVE_BEZCIRCLE')
+        op = row.operator("infotext.primitives_new", text="", icon='CURVE_BEZCIRCLE')
         op.primitives_enum = "default_prim"
         op.default_enum = 'bezier_circle'
 
-        row.operator("sfc.cursor_line", text="", icon='LINE_DATA')
+        row.operator("infotext.cursor_line", text="", icon='LINE_DATA')
 
-        op = row.operator("sfc.primitives_new", text="", icon='MESH_MONKEY')
+        op = row.operator("infotext.primitives_new", text="", icon='MESH_MONKEY')
         op.primitives_enum = "default_prim"
         op.default_enum = 'monkey'
 
@@ -2558,35 +2560,35 @@ class SFC_PT_panel(Panel):
         layout.label(text="Screw Primitives", icon='MOD_SCREW')
         row = layout.row(align=True)
         row.scale_x = 2
-        op = row.operator("sfc.primitives_new", text="", icon='DOT')
+        op = row.operator("infotext.primitives_new", text="", icon='DOT')
         op.primitives_enum = "screw_prim"
         op.screw_enum = 'screw_7'
 
-        op = row.operator("sfc.primitives_new", text="", icon='MESH_CIRCLE')
+        op = row.operator("infotext.primitives_new", text="", icon='MESH_CIRCLE')
         op.primitives_enum = "screw_prim"
         op.screw_enum = 'screw_6'
 
-        op = row.operator("sfc.primitives_new", text="", icon='MESH_CYLINDER')
+        op = row.operator("infotext.primitives_new", text="", icon='MESH_CYLINDER')
         op.primitives_enum = "screw_prim"
         op.screw_enum = 'screw_1'
 
         screw = icons.get("prim_screw_2")
-        op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+        op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
         op.primitives_enum = "screw_prim"
         op.screw_enum = 'screw_2'
 
         screw = icons.get("prim_screw_3")
-        op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+        op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
         op.primitives_enum = "screw_prim"
         op.screw_enum = 'screw_3'
 
         screw = icons.get("prim_screw_4")
-        op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+        op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
         op.primitives_enum = "screw_prim"
         op.screw_enum = 'screw_4'
 
         screw = icons.get("prim_screw_5")
-        op = row.operator("sfc.primitives_new", text="", icon_value=screw.icon_id)
+        op = row.operator("infotext.primitives_new", text="", icon_value=screw.icon_id)
         op.primitives_enum = "screw_prim"
         op.screw_enum = 'screw_5'
 
@@ -2594,39 +2596,39 @@ class SFC_PT_panel(Panel):
         layout.label(text="Editable Primitives", icon='MODIFIER')
         row = layout.row(align=True)
         row.scale_x = 1.3
-        op = row.operator("sfc.primitives_new", icon='MESH_CUBE', text="")
+        op = row.operator("infotext.primitives_new", icon='MESH_CUBE', text="")
         op.primitives_enum = "editable_prim"
         op.editable_enum = 'cube'
 
-        op = row.operator("sfc.primitives_new", icon='MESH_UVSPHERE', text="")
+        op = row.operator("infotext.primitives_new", icon='MESH_UVSPHERE', text="")
         op.primitives_enum = "editable_prim"
         op.editable_enum = 'sphere'
 
-        op = row.operator("sfc.primitives_new", icon='MESH_CYLINDER', text="")
+        op = row.operator("infotext.primitives_new", icon='MESH_CYLINDER', text="")
         op.primitives_enum = "editable_prim"
         op.editable_enum = 'cylinder'
 
-        op = row.operator("sfc.primitives_new", icon='MESH_CONE', text="")
+        op = row.operator("infotext.primitives_new", icon='MESH_CONE', text="")
         op.primitives_enum = "editable_prim"
         op.editable_enum = 'cone'
 
-        op = row.operator("sfc.primitives_new", icon='MESH_TORUS', text="")
+        op = row.operator("infotext.primitives_new", icon='MESH_TORUS', text="")
         op.primitives_enum = "editable_prim"
         op.editable_enum = 'torus'
 
-        op = row.operator("sfc.primitives_new", icon='MESH_GRID', text="")
+        op = row.operator("infotext.primitives_new", icon='MESH_GRID', text="")
         op.primitives_enum = "editable_prim"
         op.editable_enum = 'grid'
 
-        op = row.operator("sfc.primitives_new", icon='MESH_CAPSULE', text="")
+        op = row.operator("infotext.primitives_new", icon='MESH_CAPSULE', text="")
         op.primitives_enum = "editable_prim"
         op.editable_enum = 'capsule'
 
-        op = row.operator("sfc.primitives_new", icon='MATSPHERE', text="")
+        op = row.operator("infotext.primitives_new", icon='MATSPHERE', text="")
         op.primitives_enum = "editable_prim"
         op.editable_enum = 'quad_sphere'
 
-        op = row.operator("sfc.primitives_new", icon='MESH_CIRCLE', text="")
+        op = row.operator("infotext.primitives_new", icon='MESH_CIRCLE', text="")
         op.primitives_enum = "editable_prim"
         op.editable_enum = 'circle'
 
@@ -2635,39 +2637,39 @@ class SFC_PT_panel(Panel):
         row = layout.row(align=True)
 
         row.scale_x = 1.3
-        op = row.operator("sfc.primitives_new", icon='META_CUBE', text="")
+        op = row.operator("infotext.primitives_new", icon='META_CUBE', text="")
         op.primitives_enum = "custom_prim"
         op.custom_enum = 'rounded_cube'
 
-        op = row.operator("sfc.primitives_new", icon='META_PLANE', text="")
+        op = row.operator("infotext.primitives_new", icon='META_PLANE', text="")
         op.primitives_enum = "custom_prim"
         op.custom_enum = 'rounded_plane'
 
-        op = row.operator("sfc.primitives_new", icon='META_CUBE', text="")
+        op = row.operator("infotext.primitives_new", icon='META_CUBE', text="")
         op.primitives_enum = "custom_prim"
         op.custom_enum = 'rounded_plane_round'
 
-        op = row.operator("sfc.primitives_new", icon='META_CUBE', text="")
+        op = row.operator("infotext.primitives_new", icon='META_CUBE', text="")
         op.primitives_enum = "custom_prim"
         op.custom_enum = 'rounded_plane_2'
 
         custom = icons.get("prim_cross")
-        op = row.operator("sfc.primitives_new", icon_value=custom.icon_id, text="")
+        op = row.operator("infotext.primitives_new", icon_value=custom.icon_id, text="")
         op.custom_enum = 'cross'
 
         custom = icons.get("prim_cross_rounded")
-        op = row.operator("sfc.primitives_new", icon_value=custom.icon_id, text="")
+        op = row.operator("infotext.primitives_new", icon_value=custom.icon_id, text="")
         op.custom_enum = 'rounded_cross'
 
-        op = row.operator("sfc.primitives_new", icon='MESH_CAPSULE', text="")
+        op = row.operator("infotext.primitives_new", icon='MESH_CAPSULE', text="")
         op.primitives_enum = "custom_prim"
         op.custom_enum = 'long_cylinder'
 
-        op = row.operator("sfc.primitives_new", icon='IPO_CONSTANT', text="")
+        op = row.operator("infotext.primitives_new", icon='IPO_CONSTANT', text="")
         op.primitives_enum = "editable_prim"
         op.editable_enum = 'line'
 
-        op = row.operator("sfc.primitives_new", icon='ANTIALIASED', text="")
+        op = row.operator("infotext.primitives_new", icon='ANTIALIASED', text="")
         op.primitives_enum = "editable_prim"
         op.editable_enum = 'tube'
 
@@ -2677,28 +2679,28 @@ class SFC_PT_panel(Panel):
         split = layout.split()
         col = split.column(align=True)
         col.scale_y = 1.5
-        col.operator("sfc.cursor_tools", text="Copy Cursor Rotation",
+        col.operator("infotext.cursor_tools", text="Copy Cursor Rotation",
                      icon='PIVOT_CURSOR').cursor_tools = 'copy_cursor_rot'
-        col.operator("sfc.cursor_tools", text="Selection To Cursor",
+        col.operator("infotext.cursor_tools", text="Selection To Cursor",
                      icon='PIVOT_BOUNDBOX').cursor_tools = 'selection_to_cursor'
-        col.operator("sfc.cursor_tools", text="Cursor To Selection + Rotation",
+        col.operator("infotext.cursor_tools", text="Cursor To Selection + Rotation",
                      icon='PIVOT_CURSOR').cursor_tools = 'cursor_to_selection_rot'
-        col.operator("sfc.cursor_tools", text="Align View To Cursor Rotation",
+        col.operator("infotext.cursor_tools", text="Align View To Cursor Rotation",
                      icon='VIEW_PERSPECTIVE').cursor_tools = 'align_view_to_cursor_rot'
-        col.operator("sfc.cursor_tools", text="Align Cursor To Object Rotation",
+        col.operator("infotext.cursor_tools", text="Align Cursor To Object Rotation",
                      icon='EMPTY_AXIS').cursor_tools = 'align_cursor_to_object_rot'
 
 
-UI_CLASSES = [SFC_PT_simplify_popup,
-              SFC_PT_vertex_group,
-              SFC_OT_primitives_popup,
-              SFC_PT_color_Popup,
-              SFC_PT_lattice_popup,
-              SFC_PT_show_text_options_popup,
-              SFC_MT_tools_menu,
-              SFC_PT_panel]
+UI_CLASSES = [INFOTEXT_simplify_popup,
+              INFOTEXT_vertex_group,
+              INFOTEXT_primitives_popup,
+              INFOTEXT_color_Popup,
+              INFOTEXT_lattice_popup,
+              INFOTEXT_show_text_options_popup,
+              INFOTEXT_tools_menu,
+              INFOTEXT_panel]
 
-EXTRA_CLASSES = [SFC_MT_pie_menu]
+EXTRA_CLASSES = [INFOTEXT_pie_menu]
 
 
 def register():
