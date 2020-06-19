@@ -1525,10 +1525,10 @@ def INFOTEXT_OBJMode_Bottom_Right(self, context):
     # faces = icons.get("icon_faces")
     # row.operator("object.infotext_clean_mesh", text="Clean Meshes", icon_value=faces.icon_id)
     modifiers = icons.get("icon_modifiers")
-    row.menu("INFOTEXT_tools_menu", text='Companion Tools', icon_value=modifiers.icon_id)
+    row.menu("INFOTEXT_MT_tools_menu", text='Companion Tools', icon_value=modifiers.icon_id)
 
 
-class INFOTEXT_tools_menu(bpy.types.Menu):
+class INFOTEXT_MT_tools_menu(bpy.types.Menu):
     bl_label = "Sc Tools Menu"
 
     def draw(self, context):
@@ -2461,7 +2461,7 @@ class INFOTEXT_pie_menu(Menu):
                 row.operator("curve.switch_direction", icon_value=switch_direction.icon_id)
 
 
-class INFOTEXT_panel(Panel):
+class INFOTEXT_PT_panel(Panel):
     bl_label = "COMPANION"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
@@ -2697,8 +2697,8 @@ UI_CLASSES = [INFOTEXT_simplify_popup,
               INFOTEXT_color_Popup,
               INFOTEXT_lattice_popup,
               INFOTEXT_show_text_options_popup,
-              INFOTEXT_tools_menu,
-              INFOTEXT_panel]
+              INFOTEXT_MT_tools_menu,
+              INFOTEXT_PT_panel]
 
 EXTRA_CLASSES = [INFOTEXT_pie_menu]
 

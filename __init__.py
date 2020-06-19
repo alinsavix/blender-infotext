@@ -131,7 +131,7 @@ keymaps_items_dict = {}
 #     update_pie_bl_label(self, context)
 
 # RESET PREFERENCES
-class infotext_Reset_Prefs(bpy.types.Operator):
+class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
     bl_idname = 'object.reset_prefs'
     bl_label = "Reset Addon Preferences"
     bl_options = {'REGISTER', "UNDO"}
@@ -489,8 +489,8 @@ class infotext_addon_prefs(bpy.types.AddonPreferences):
 
         box = layout.box()
         row = box.row(align=True)
-        row.label(text="Check For Updates")
-        row.prop(self, "show_update", text="      ")
+        # row.label(text="Check For Updates")
+        # row.prop(self, "show_update", text="      ")
 
         # if infotext.update_available and self.show_update:
         #     icons = load_icons()
@@ -838,7 +838,7 @@ addon_keymaps = []
 
 #         col.label(text="No hotkey entry found for {}".format(kmi_value))
 #         col.operator(
-#             infotext_add_hotkey.bl_idname, icon='ZOOMIN')
+#             INFOTEXT_OT_add_hotkey.bl_idname, icon='ZOOMIN')
 
 #     # for operators
 #     else:
@@ -849,10 +849,10 @@ addon_keymaps = []
 #         else:
 #             col.label(text="No hotkey entry found for {}".format(kmi_name))
 #             col.operator(
-#                 infotext_add_hotkey.bl_idname, icon='ZOOMIN')
+#                 INFOTEXT_OT_add_hotkey.bl_idname, icon='ZOOMIN')
 
 
-# class infotext_add_hotkey(bpy.types.Operator):
+# class INFOTEXT_OT_add_hotkey(bpy.types.Operator):
 #     ''' Add hotkey entry '''
 #     bl_idname = "template.add_hotkey"
 #     bl_label = "Add Hotkeys"
@@ -917,7 +917,7 @@ addon_keymaps = []
 # Property Group
 
 
-class infotext_property_group(bpy.types.PropertyGroup):
+class INFOTEXT_OT_property_group(bpy.types.PropertyGroup):
 
     # Poky count
     face_type_count = {}
@@ -1090,10 +1090,10 @@ class infotext_property_group(bpy.types.PropertyGroup):
 #            SFC_Primitives_PropertyGroup
 #            ]
 
-CLASSES = [infotext_Reset_Prefs,
+CLASSES = [INFOTEXT_OT_Reset_Prefs,
            infotext_addon_prefs,
-           #    infotext_add_hotkey,
-           infotext_property_group,
+           #    INFOTEXT_OT_add_hotkey,
+           INFOTEXT_OT_property_group,
            #    infotext_Primitives_PropertyGroup
            ]
 
@@ -1116,7 +1116,7 @@ def register():
             print(f"{cls.__name__} already registred")
 
     bpy.types.WindowManager.infotext = PointerProperty(
-        type=infotext_property_group)
+        type=INFOTEXT_OT_property_group)
     # bpy.types.WindowManager.infotext_prim = PointerProperty(
     #     type=infotext_Primitives_PropertyGroup)
 
