@@ -175,6 +175,8 @@ class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
         layout.prop(self, "text_shadows", text="Text Shadows")
         # layout.prop(self, "solo", text="Solo")
 
+    # FIXME: Why is all this set here, if it's also set inside
+    # INFOTEXT_MT_addon_prefs, and the stuff here seems to do nothing?
     def execute(self, context):
         addon_pref = get_addon_preferences()
 
@@ -203,8 +205,8 @@ class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
             addon_pref.text_size_max = 22
             addon_pref.text_size_mini = 10
             addon_pref.infotext_text_space = 2
-            addon_pref.infotext_text_pos_x = 19
-            addon_pref.infotext_text_pos_x = 29
+            addon_pref.infotext_text_pos_x = 38
+            addon_pref.infotext_text_pos_y = 170
 
         # SHADOWS
         if self.text_shadows:
@@ -433,14 +435,14 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
 
     infotext_text_pos_y: IntProperty(
         name="",
-        default=29,
+        default=170,
         min=0, max=2000,
         description="Position of the text in Y"
     )
 
     infotext_text_pos_x: IntProperty(
         name="",
-        default=19,
+        default=38,
         min=0, max=2000,
         description="Position of the text in X"
     )
