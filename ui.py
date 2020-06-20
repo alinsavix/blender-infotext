@@ -428,9 +428,9 @@ class INFOTEXT_show_text_options_popup(bpy.types.Operator):
             row.label(text="Object Mode")
             row.prop(addon_pref, "show_object_mode", text="")
 
-            # row = col.row(align=True)
-            # row.label(text="Object Type & Name")
-            # row.prop(addon_pref, "show_object_name", text="")
+            row = col.row(align=True)
+            row.label(text="Object Type & Name")
+            row.prop(addon_pref, "show_object_name", text="")
 
             row = col.row(align=True)
             row.label(text="Transforms")

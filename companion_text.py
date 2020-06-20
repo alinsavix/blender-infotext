@@ -315,59 +315,63 @@ def mode(test_text, CR, title_var, setting, value, text_size, hidden, option, te
 # NAME
 # ---------------------------------------------------------------
 
+# FIXME: Could 'title_var' perhaps have a better name?
 
-def name(test_text, CR, title_var, setting, value, text_size, hidden, option, space):
+
+def name(test_text, CR, title_var, setting, value, text_size, hidden, option, text_size_deux, space):
     obj = bpy.context.active_object
 
-    # if obj.type =='MESH':
+    test_text.extend([CR, CR, (obj.name, value, text_size_deux), (" (" + obj.type + ")", title_var, text_size)])
+    # test_text.extend([CR, (obj.type, title_var, text_size)])
+    # test_text.extend([CR, ("Name: ", title_var, text_size), (obj.name, value, text_size)])
+
+    # FIXME: enable icons once icon code is enabled
+    # if obj.type == 'MESH':
     #     # test_text.extend([CR, ('ICON', 'ICON_OUTLINER_OB_MESH.png'), ("    ", setting, text_size)])
-    #     test_text.extend([CR, ("Name: ", setting, text_size), (obj.name, value, text_size)])
+    #     test_text.extend([CR, ("    ", setting, text_size), (obj.name, value, text_size)])
     # elif obj.type == 'CURVE':
     #     # test_text.extend([CR, ('ICON', 'ICON_OUTLINER_OB_CURVE.png'), ("    ", setting, text_size)])
     #     test_text.extend([CR, ("    ", setting, text_size), (obj.name, value, text_size)])
     # elif obj.type == 'EMPTY':
     #     # test_text.extend([CR, ('ICON', 'ICON_OUTLINER_OB_EMPTY.png'), ("    ", setting, text_size)])
     #     test_text.extend([CR, ("    ", setting, text_size), (obj.name, value, text_size)])
-    #
+
     # elif obj.type == 'CAMERA':
     #     # test_text.extend([CR, ('ICON', 'ICON_OUTLINER_OB_CAMERA.png'), ("     ", setting, text_size)])
     #     test_text.extend([CR, ("     ", setting, text_size), (obj.name, value, text_size)])
-    #
+
     # elif obj.type == 'LATTICE':
     #     # test_text.extend([CR, ('ICON', 'ICON_OUTLINER_OB_LATTICE.png'), ("     ", setting, text_size)])
     #     test_text.extend([CR, ("     ", setting, text_size), (obj.name, value, text_size)])
-    #
+
     # elif obj.type == 'META':
     #     # test_text.extend([CR, ('ICON', 'ICON_OUTLINER_OB_META.png'), ("    ", setting, text_size)])
     #     test_text.extend([CR, ("    ", setting, text_size), (obj.name, value, text_size)])
-    #
+
     # elif obj.type == 'ARMATURE':
     #     # test_text.extend([CR, ('ICON', 'ICON_OUTLINER_OB_ARMATURE.png'), ("    ", setting, text_size)])
     #     test_text.extend([CR, ("    ", setting, text_size), (obj.name, value, text_size)])
-    #
+
     # elif obj.type == 'FONT':
     #     # test_text.extend([CR, ('ICON', 'ICON_OUTLINER_OB_FONT.png'), ("     ", setting, text_size)])
     #     test_text.extend([CR, ("     ", setting, text_size), (obj.name, value, text_size)])
-    #
+
     # elif obj.type == 'LATTICE':
     #     # test_text.extend([CR, ('ICON', 'ICON_OUTLINER_OB_LATTICE.png'), ("    ", setting, text_size)])
     #     test_text.extend([CR, ("    ", setting, text_size), (obj.name, value, text_size)])
-    #
+
     # elif obj.type == 'LAMP':
     #     # test_text.extend([CR, ('ICON', 'ICON_OUTLINER_OB_LAMP.png'), ("    ", setting, text_size)])
     #     test_text.extend([CR, ("    ", setting, text_size), (obj.name, value, text_size)])
-    #
+
     # elif obj.type == 'SURFACE':
     #     # test_text.extend([CR, ('ICON', 'ICON_OUTLINER_OB_SURFACE.png'), ("    ", setting, text_size)])
     #     test_text.extend([CR, ("    ", setting, text_size), (obj.name, value, text_size)])
-    #
+
     # elif obj.type == 'SPEAKER':
     #     # test_text.extend([CR, ('ICON', 'ICON_OUTLINER_OB_SPEAKER.png'), ("    ", setting, text_size)])
     #     test_text.extend([CR, ("    ", setting, text_size), (obj.name, value, text_size)])
 
-    # MESH NAME
-    # test_text.extend([CR, (obj.type, title_var, text_size)])
-    test_text.extend([CR, ("Name: ", title_var, text_size), (obj.name, value, text_size)])
 
 # ---------------------------------------------------------------
 # LOCATION / ROTATION / SCALE
@@ -2870,7 +2874,7 @@ def infotext_key_text():
     # SHOW TEXT
     show_object_mode = get_addon_preferences().show_object_mode
     show_vert_face_tris = get_addon_preferences().show_vert_face_tris
-    # show_object_name = get_addon_preferences().show_object_name
+    show_object_name = get_addon_preferences().show_object_name
     show_loc_rot_scale = get_addon_preferences().show_loc_rot_scale
     show_modifiers = get_addon_preferences().show_modifiers
     show_object_info = get_addon_preferences().show_object_info
@@ -2907,10 +2911,10 @@ def infotext_key_text():
         test_text.extend([("SPACE", title_var, space)])
 
     # NAME
-    # if show_object_name:
-    #     name(test_text, CR, title_var, setting, value, text_size, hidden, option, space)
-    #     # SPACE
-    #     test_text.extend([("SPACE", title_var, space)])
+    if show_object_name:
+        name(test_text, CR, title_var, setting, value, text_size, hidden, option, text_size_deux, space)
+        # SPACE
+        test_text.extend([("SPACE", title_var, space)])
 
     # LOCATION / ROTATION / SCALE
     if show_loc_rot_scale:

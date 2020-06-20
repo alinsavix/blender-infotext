@@ -622,9 +622,9 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
         row.label(text="Show Object Mode")
         row.prop(self, "show_object_mode", expand=True, text=" ")
 
-        # row = box.row(align=True)
-        # row.label(text="Show Object Type & Name")
-        # row.prop(self, "show_object_name", expand=True, text=" ")
+        row = box.row(align=True)
+        row.label(text="Show Object Type & Name")
+        row.prop(self, "show_object_name", expand=True, text=" ")
 
         row = box.row(align=True)
         row.label(text="Show Transforms")
