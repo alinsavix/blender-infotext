@@ -2875,7 +2875,7 @@ def infotext_key_text():
     show_modifiers = get_addon_preferences().show_modifiers
     show_object_info = get_addon_preferences().show_object_info
     simple_text_mode = get_addon_preferences().simple_text_mode
-    show_keymaps = get_addon_preferences().show_keymaps
+    # show_keymaps = get_addon_preferences().show_keymaps
     show_blender_keymaps = get_addon_preferences().show_blender_keymaps
 
     # TEXT OPTIONS
@@ -2892,8 +2892,8 @@ def infotext_key_text():
     CR = "Carriage return"
 
     # HELP
-    if show_keymaps:
-        keymaps(test_text, CR, title_var, setting, value, text_size, hidden, option, space)
+    # if show_keymaps:
+    #     keymaps(test_text, CR, title_var, setting, value, text_size, hidden, option, space)
 
     obj = bpy.context.object
     if obj is None:

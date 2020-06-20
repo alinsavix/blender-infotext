@@ -184,13 +184,13 @@ class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
         if self.show_text:
             addon_pref.drawText = True
             addon_pref.show_object_mode = True
-            addon_pref.show_vert_face_tris = False
+            addon_pref.show_vert_face_tris = True
             addon_pref.show_object_name = True
             addon_pref.show_loc_rot_scale = True
             addon_pref.show_modifiers = True
             addon_pref.show_object_info = True
             addon_pref.simple_text_mode = True
-            addon_pref.show_keymaps = True
+            # addon_pref.show_keymaps = True
             addon_pref.show_blender_keymaps = True
 
         # TEXT COLOR
@@ -273,10 +273,10 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
         default=True,
         description="Activate Text Modifiers in the viewport")
 
-    show_keymaps: BoolProperty(
-        name="Show Addons Keymaps",
-        default=True,
-        description="Show Addons Keymaps")
+    # show_keymaps: BoolProperty(
+    #     name="Show Addons Keymaps",
+    #     default=True,
+    #     description="Show Addons Keymaps")
 
     show_blender_keymaps: BoolProperty(
         name="Show Blender Keymaps",
@@ -291,7 +291,7 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
 
     show_vert_face_tris: BoolProperty(
         name="Show Vertex, Faces, Triangles & Ngons",
-        default=False,
+        default=True,
         description="Show Vertex, Faces, Triangles & Ngons"
     )
 
@@ -646,9 +646,9 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
         row.label(text="Simple Mode for Modifiers")
         row.prop(self, "simple_text_mode", expand=True, text=" ")
 
-        row = box.row(align=True)
-        row.label(text="Show Addons Keymaps")
-        row.prop(self, "show_keymaps", expand=True, text=" ")
+        # row = box.row(align=True)
+        # row.label(text="Show Addons Keymaps")
+        # row.prop(self, "show_keymaps", expand=True, text=" ")
 
         row = box.row(align=True)
         row.label(text="Show Blender Keymaps")
