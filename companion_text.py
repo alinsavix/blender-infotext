@@ -349,8 +349,12 @@ def mode(test_text, CR, color_title, color_setting, color_value, text_size_norma
 def name(test_text, CR, color_title, color_setting, color_value, text_size_normal, hidden, option, text_size_large, space):
     obj = bpy.context.active_object
 
-    test_text.extend([CR, CR, (obj.name, color_value, text_size_large),
-                      (" (" + obj.type + ")", color_title, text_size_normal)])
+    test_text.extend([CR, ("", color_setting, int(text_size_normal * 5)),
+                      CR,  # CR, CR,
+                      # (obj.type + ": ", color_title, text_size_normal),
+                      (obj.type, color_title, text_size_normal), CR, CR,
+                      (obj.name, color_value, int(text_size_large * 1.5)), CR,
+                      ])
     # test_text.extend([CR, (obj.type, color_title, text_size_normal)])
     # test_text.extend([CR, ("Name: ", color_title, text_size_normal), (obj.name, color_value, text_size_normal)])
 
