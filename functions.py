@@ -52,22 +52,21 @@ def get_face_type_count(infotext, obj):
 
 
 # Property Group
-class sf_companion(PropertyGroup):
-
+class infotext(PropertyGroup):
     active_modifier: IntProperty(default=-1)
 
 
 def register():
     try:
-        bpy.utils.register_class(sf_companion)
+        bpy.utils.register_class(infotext)
     except:
-        print("sf_companion already registred")
+        print("infotext already registred")
 
-    bpy.types.WindowManager.sf_companion = PointerProperty(type=sf_companion)
+    bpy.types.WindowManager.infotext = PointerProperty(type=infotext)
 
 
 def unregister():
-    bpy.utils.unregister_class(sf_companion)
+    bpy.utils.unregister_class(infotext)
     del bpy.types.WindowManager.infotext
 
 

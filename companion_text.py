@@ -515,6 +515,16 @@ def ngons(test_text, CR, color_title, color_value, text_size_normal, space):
 def mesh_options(test_text, CR, color_title, color_setting, color_value, text_size_normal, hidden, option, space):
     obj = bpy.context.active_object
 
+    # from ppretty import ppretty
+    # import pprint
+    # pp = pprint.PrettyPrinter(indent=4, depth=5)
+    # print("object:")
+    # print(ppretty(bpy.context.object, depth=2, seq_length=100))
+    # , depth=10, seq_length=50, show_protected=True,
+    #               show_private=True, show_static=True, show_properties=True))
+    # print("active_object:")
+    # print(ppretty(bpy.context.active_object))
+
     # MATERIALS
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         if obj.material_slots:
@@ -3043,7 +3053,11 @@ def infotext_key_text():
 # MODIFIERS ------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
     wm = bpy.context.window_manager
-    index = wm.sf_companion.active_modifier
+
+    # from ppretty import ppretty
+    # print("wm: ")
+    # print(ppretty(wm, depth=1, seq_length=100))
+    # index = wm.infotext.active_modifier
     # index = infotext.active_modifier
 
     GREEN = (0.5, 1, 0, 1)
@@ -3051,8 +3065,8 @@ def infotext_key_text():
     BLANC = (1, 1, 1, 1)
 
     index = -1
-    if hasattr(wm, 'sf_companion') and hasattr(wm.sf_companion, 'active_modifier'):
-        index = wm.sf_companion.active_modifier
+    if hasattr(wm, 'infotext') and hasattr(wm.infotext, 'active_modifier'):
+        index = wm.infotext.active_modifier
 
     if show_modifiers:
 
