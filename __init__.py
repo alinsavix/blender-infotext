@@ -1116,6 +1116,7 @@ def register():
 
     bpy.types.WindowManager.infotext = PointerProperty(
         type=INFOTEXT_OT_property_group)
+
     # bpy.types.WindowManager.infotext_prim = PointerProperty(
     #     type=infotext_Primitives_PropertyGroup)
 
