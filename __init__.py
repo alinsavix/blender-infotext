@@ -22,58 +22,27 @@ bl_info = {
     "category": "Tools"
 }
 
-# Import des modules
-if "bpy" in locals():
-    import importlib
-    reloadable_modules = [
-        "functions",
-        "ui",
-        "lattice",
-        "modals",
-        "operators",
-        "modifiers_popup",
-        "primitives"
-    ]
-    for module in reloadable_modules:
-        if module in locals():
-            importlib.reload(locals()[module])
+from . import (
+    functions,
+    ui,
+)
 
-print(__name__ + "::1")
-from . import (functions,
-               ui,
-               #    lattice,
-               #    modals,
-               #    operators,
-               #    modifiers_popup,
-               )
-print(__name__ + "::2")
 import bpy
-print(__name__ + "::3")
 from mathutils import *
-# import rna_keymap_ui
-print(__name__ + "::4")
-from bpy.props import (StringProperty,
-                       BoolProperty,
-                       PointerProperty,
-                       FloatVectorProperty,
-                       FloatProperty,
-                       EnumProperty,
-                       IntProperty,
-                       BoolVectorProperty)
-print(__name__ + "::5")
-# from .lattice import *
-# from .operators import *
-# from .modifiers_popup import *
+from bpy.props import (
+    StringProperty,
+    BoolProperty,
+    PointerProperty,
+    FloatVectorProperty,
+    FloatProperty,
+    EnumProperty,
+    IntProperty,
+    BoolVectorProperty
+)
+
 from .companion_text import *
-# from .primitives import *
-print(__name__ + "::6")
 from .functions import get_addon_preferences
-# from .addon_updater import AddonUpdater
-print(__name__ + "::7")
-# from . import developer_utils
-print(__name__ + "::8")
 from .icon.icons import load_icons
-print(__name__ + "::9")
 
 #### updater = AddonUpdater()
 
@@ -1081,32 +1050,15 @@ class INFOTEXT_OT_property_group(bpy.types.PropertyGroup):
 # Register
 ##################################
 
-
-# CLASSES = [SFC_OT_Reset_Prefs,
-#            INFOTEXT_MT_addon_prefs,
-#            SPEEDFLOW_COMPANION_OT_add_hotkey,
-#            SFC_OT_property_group,
-#            SFC_Primitives_PropertyGroup
-#            ]
-
 CLASSES = [INFOTEXT_OT_Reset_Prefs,
            INFOTEXT_MT_addon_prefs,
-           #    INFOTEXT_OT_add_hotkey,
            INFOTEXT_OT_property_group,
-           #    infotext_Primitives_PropertyGroup
            ]
-
-# Register
 
 
 def register():
     functions.register()
     ui.register()
-    # lattice.register()
-    # modals.register()
-    # operators.register()
-    # modifiers_popup.register()
-    # primitives.register()
 
     for cls in CLASSES:
         try:
@@ -1117,16 +1069,9 @@ def register():
     bpy.types.WindowManager.infotext = PointerProperty(
         type=INFOTEXT_OT_property_group)
 
-    # bpy.types.WindowManager.infotext_prim = PointerProperty(
-    #     type=infotext_Primitives_PropertyGroup)
-
-    # hotkey setup
-    # add_hotkey()
-
     # Check the addon version on Github
     context = bpy.context
     prefs = context.preferences.addons[__name__].preferences
-    #### check_for_update(prefs, context)
 
     # Add Text
     if infotext_text_Handle:
@@ -1140,17 +1085,9 @@ def register():
 def unregister():
     functions.unregister()
     ui.unregister()
-    # lattice.unregister()
-    # modals.unregister()
-    # operators.unregister()
-    # modifiers_popup.unregister()
-    # primitives.unregister()
 
     for cls in CLASSES:
         bpy.utils.unregister_class(cls)
-
-    # hotkey cleanup
-    # remove_hotkey()
 
     # Remove Text
     if infotext_text_Handle:

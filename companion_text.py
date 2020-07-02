@@ -14,18 +14,13 @@
 import bpy
 import blf
 import math
-print(__name__ + "1")
 from math import degrees
-print(__name__ + "2")
-# from .functions import get_addon_preferences, infotext_update_mesh_info_values
 from .functions import *
-print(__name__ + "3")
 import bmesh
 # from .icon.icons import load_icons
-print(__name__ + "4")
+
 from os.path import dirname, join
 from . import png
-print(__name__ + "::5")
 
 infotext_text_Handle = []
 TEXTURES = {}
@@ -464,6 +459,7 @@ def ngons(test_text, CR, color_title, color_value, text_size_normal, space):
 
     if not infotext.face_type_count:
         get_face_type_count(infotext, obj)
+
     # tcount = infotext_properties.face_type_count['TRIS']
     # ncount = infotext_properties.face_type_count['NGONS']
     vcount = len(obj.data.vertices)
