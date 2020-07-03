@@ -6,6 +6,7 @@ ignore =
   E266,   # Allow multiple # ahead of comments
   E402,   # Allow imports not at top of file
   F403,   # Don't complain about wildcard imports
+  F722,   # Murder bogus forward annotation messages
 
 max-line-length = 120
 

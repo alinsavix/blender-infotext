@@ -272,21 +272,6 @@ def blender_keymaps(test_text, CR, color_title, color_setting, color_value, text
 
 
 # ---------------------------------------------------------------
-# KEYMAPS
-# ---------------------------------------------------------------
-def keymaps(test_text, CR, color_title, color_setting, color_value, text_size_normal, hidden, option, space):
-    test_text.extend([CR, ("KEYMAPS:", color_value, text_size_normal)])
-    test_text.extend([CR, ("SPEEDFLOW: ", color_title, text_size_normal),
-                      ("SPACEBAR", color_setting, text_size_normal)])
-    test_text.extend([CR, ("COMPANION: ", color_title, text_size_normal),
-                      ("SHIFT + Q", color_setting, text_size_normal)])
-    test_text.extend([CR, ("Note: ", color_title, text_size_normal),
-                      ("You can change the keymaps in the add-ons preferences", color_value, text_size_normal)])
-    test_text.extend([CR, ("Note: ", color_title, text_size_normal),
-                      ("Hide this text in the add-ons preferences", color_value, text_size_normal)])
-    test_text.extend([CR, ("", color_title, text_size_normal)])
-
-# ---------------------------------------------------------------
 # MODE
 # ---------------------------------------------------------------
 

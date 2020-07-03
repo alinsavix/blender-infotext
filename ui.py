@@ -93,10 +93,6 @@ class INFOTEXT_show_text_options_popup(bpy.types.Operator):
             row.prop(addon_pref, "simple_text_mode", text="")
 
             row = col.row(align=True)
-            row.label(text="Show Addons Keymaps")
-            row.prop(addon_pref, "show_keymaps", text="")
-
-            row = col.row(align=True)
             row.label(text="Show Blender Keymaps")
             row.prop(addon_pref, "show_blender_keymaps", text="")
 
