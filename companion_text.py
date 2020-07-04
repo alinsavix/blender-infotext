@@ -288,7 +288,7 @@ view_orientation_dict = {
 }
 
 view_perspective_dict = {
-    "CAMERA": "Camera",
+    # "CAMERA": "Camera",
     "ORTHO": "Orthographic",
     "PERSP": "Perspective"
 }
@@ -302,12 +302,17 @@ view_perspective_dict = {
 
 
 def view(test_text, CR, color_title, color_setting, color_value, text_size_normal, hidden, option, text_size_large, space):
-    view_rot = bpy.context.region_data.view_rotation.to_euler()
-    orientation = view_orientation_dict.get(tuple(map(r, view_rot)), 'User')
-    perspective = view_perspective_dict.get(bpy.context.region_data.view_perspective)
+    rd = bpy.context.region_data
 
-    t = "%s %s" % (orientation, perspective)
-    test_text.extend([CR, (t, color_title, text_size_normal)])
+    if rd.view_perspective == "CAMERA":
+        test_text.extend([CR, ("Camera Perspective", color_title, text_size_normal)])
+    else:
+        view_rot = rd.view_rotation.to_euler()
+        orientation = view_orientation_dict.get(tuple(map(r, view_rot)), 'User')
+        perspective = view_perspective_dict.get(rd.view_perspective)
+
+        t = "%s %s" % (orientation, perspective)
+        test_text.extend([CR, (t, color_title, text_size_normal)])
 
 
 # ---------------------------------------------------------------
