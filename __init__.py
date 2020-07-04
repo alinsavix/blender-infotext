@@ -103,6 +103,7 @@ class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
         # TEXT OPTIONS
         if self.show_text:
             addon_pref.drawText = True
+            addon_pref.show_view_perspective = True
             addon_pref.show_object_mode = True
             addon_pref.show_vert_face_tris = True
             addon_pref.show_object_name = True
@@ -124,8 +125,8 @@ class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
             addon_pref.text_size_max = 22
             addon_pref.text_size_mini = 10
             addon_pref.infotext_text_space = 2
-            addon_pref.infotext_text_pos_x = 38
-            addon_pref.infotext_text_pos_y = 170
+            addon_pref.infotext_text_pos_x = 31
+            addon_pref.infotext_text_pos_y = 52
 
         # SHADOWS
         if self.text_shadows:
@@ -172,6 +173,12 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
         name="Show Blender Keymaps",
         default=True,
         description="Show Blender Keymaps"
+    )
+
+    show_view_perspective: BoolProperty(
+        name="Show View Perspective",
+        default=True,
+        description="Show View Perspective"
     )
 
     show_object_mode: BoolProperty(
@@ -327,14 +334,14 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
 
     infotext_text_pos_y: IntProperty(
         name="",
-        default=170,
+        default=52,
         min=0, max=2000,
         description="Position of the text in Y"
     )
 
     infotext_text_pos_x: IntProperty(
         name="",
-        default=38,
+        default=31,
         min=0, max=2000,
         description="Position of the text in X"
     )
@@ -380,6 +387,10 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
             row = box.row(align=True)
             row.label(text="Text in the viewport")
             row.prop(self, "drawText", expand=True, text=" ")
+
+            row = box.row(align=True)
+            row.label(text="Show View Perspective")
+            row.prop(self, "show_view_perspective", expand=True, text=" ")
 
             row = box.row(align=True)
             row.label(text="Show Object Mode")

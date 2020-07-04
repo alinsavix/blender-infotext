@@ -272,13 +272,49 @@ def blender_keymaps(test_text, CR, color_title, color_setting, color_value, text
 
 
 # ---------------------------------------------------------------
+# VIEW
+# ---------------------------------------------------------------
+def r(x):
+    return round(x, 3)
+
+
+view_orientation_dict = {
+    (0.0, 0.0, 0.0): 'Top',
+    (r(math.pi), 0.0, 0.0): 'Bottom',
+    (r(math.pi / 2), 0.0, 0.0): 'Front',
+    (r(math.pi / 2), 0.0, r(math.pi)): 'Back',
+    (r(math.pi / 2), 0.0, r(-math.pi / 2)): 'Left',
+    (r(math.pi / 2), 0.0, r(math.pi / 2)): 'Right',
+}
+
+view_perspective_dict = {
+    "CAMERA": "Camera",
+    "ORTHO": "Orthographic",
+    "PERSP": "Perspective"
+}
+
+# Example outputs:
+# Camera Perspective; User Orthographic; User Perspective; Bottom Perspective;
+# Bottom Orthographic
+#
+# FIXME: The top/bottom/side orthographic views normally show the grid scale, too,
+# probably
+
+
+def view(test_text, CR, color_title, color_setting, color_value, text_size_normal, hidden, option, text_size_large, space):
+    view_rot = bpy.context.region_data.view_rotation.to_euler()
+    orientation = view_orientation_dict.get(tuple(map(r, view_rot)), 'User')
+    perspective = view_perspective_dict.get(bpy.context.region_data.view_perspective)
+
+    t = "%s %s" % (orientation, perspective)
+    test_text.extend([CR, (t, color_title, text_size_normal)])
+
+
+# ---------------------------------------------------------------
 # MODE
 # ---------------------------------------------------------------
-
-
 def mode(test_text, CR, color_title, color_setting, color_value, text_size_normal, hidden, option, text_size_large, space):
     obj = bpy.context.active_object
-
     mode = obj.mode
 
     if bpy.context.object.mode == "OBJECT":
@@ -2905,6 +2941,7 @@ def infotext_key_text():
 
     test_text = []
     # SHOW TEXT
+    show_view_perspective = get_addon_preferences().show_view_perspective
     show_object_mode = get_addon_preferences().show_object_mode
     show_vert_face_tris = get_addon_preferences().show_vert_face_tris
     show_object_name = get_addon_preferences().show_object_name
@@ -2933,6 +2970,11 @@ def infotext_key_text():
     # HELP
     # if show_keymaps:
     #     keymaps(test_text, CR, color_title, color_setting, color_value, text_size_normal, hidden, option, space)
+    if show_view_perspective:
+        view(test_text, CR, color_title, color_setting, color_value,
+             text_size_normal, hidden, option, text_size_large, space)
+        # SPACE
+        test_text.extend([("SPACE", color_title, space)])
 
     obj = bpy.context.object
     if obj is None:

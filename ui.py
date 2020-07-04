@@ -60,9 +60,14 @@ class INFOTEXT_show_text_options_popup(bpy.types.Operator):
             box = layout.box()
             split = box.split()
             col = split.column(align=True)
+
             row = col.row(align=True)
             row.label(text="Text in the viewport")
             row.prop(addon_pref, "drawText", text="")
+
+            row = col.row(align=True)
+            row.label(text="View Perspective")
+            row.prop(addon_pref, "show_view_perspective", text="")
 
             row = col.row(align=True)
             row.label(text="Object Mode")
