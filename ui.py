@@ -50,6 +50,7 @@ class INFOTEXT_show_text_options_popup(bpy.types.Operator):
     def execute(self, context):
         return {'FINISHED'}
 
+    # FIXME: Do we need this?
     def draw(self, context):
         addon_pref = get_addon_preferences()
         layout = self.layout
@@ -63,7 +64,7 @@ class INFOTEXT_show_text_options_popup(bpy.types.Operator):
 
             row = col.row(align=True)
             row.label(text="Text in the viewport")
-            row.prop(addon_pref, "drawText", text="")
+            row.prop(addon_pref, "show_infotext", text="")
 
             row = col.row(align=True)
             row.label(text="View Perspective")
@@ -94,8 +95,8 @@ class INFOTEXT_show_text_options_popup(bpy.types.Operator):
             row.prop(addon_pref, "show_modifiers", text="")
 
             row = col.row(align=True)
-            row.label(text="Simple Mode for Modifiers")
-            row.prop(addon_pref, "simple_text_mode", text="")
+            row.label(text="Simplified Modifiers")
+            row.prop(addon_pref, "simplified_modifiers", text="")
 
             row = col.row(align=True)
             row.label(text="Show Blender Keymaps")

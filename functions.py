@@ -73,7 +73,7 @@ def unregister():
 # @persistent
 # def infotext_update_mesh_info_values(dummy):
 #     addon_prefs = get_addon_preferences()
-#     if addon_prefs.drawText:
+#     if addon_prefs.show_infotext:
 #         infotext_properties = bpy.context.window_manager.infotext_properties
 #         if bpy.context.object is not None:
 #             ob = bpy.context.scene.objects.active

@@ -95,7 +95,7 @@ class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
 
         # TEXT OPTIONS
         if self.show_text:
-            addon_pref.drawText = True
+            addon_pref.show_infotext = True
             addon_pref.show_view_perspective = True
             addon_pref.show_object_mode = True
             addon_pref.show_vert_face_tris = True
@@ -103,7 +103,7 @@ class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
             addon_pref.show_loc_rot_scale = True
             addon_pref.show_modifiers = True
             addon_pref.show_object_info = True
-            addon_pref.simple_text_mode = True
+            addon_pref.simplified_modifiers = False
             addon_pref.show_blender_keymaps = True
 
         # TEXT COLOR
@@ -151,10 +151,10 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
     )
 
     # SHOW TEXTS
-    drawText: BoolProperty(
-        name="Activate Text Modifiers in the viewport",
+    show_infotext: BoolProperty(
+        name="Enable Infotext in Viewport",
         default=True,
-        description="Activate Text Modifiers in the viewport"
+        description="Enable Infotext in Viewport"
     )
 
     show_blender_keymaps: BoolProperty(
@@ -205,10 +205,10 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
         description="Show Modifiers"
     )
 
-    simple_text_mode: BoolProperty(
-        name="Simple Text Mode",
+    simplified_modifiers: BoolProperty(
+        name="Simplified Modifiers",
         default=True,
-        description="Show only the name of modifiers"
+        description="Show Only the Names of Modifiers"
     )
 
     # TEXTS OPTIONS
@@ -358,106 +358,107 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
             box = layout.box()
 
             row = box.row(align=True)
-            row.label(text="Text in the viewport")
-            row.prop(self, "drawText", expand=True, text=" ")
+            row.label(text="Enable Infotext in Viewport")
+            row.prop(self, "show_infotext", expand=True, text=" ")
 
-            row = box.row(align=True)
-            row.label(text="Show View Perspective")
-            row.prop(self, "show_view_perspective", expand=True, text=" ")
-
-            row = box.row(align=True)
-            row.label(text="Show Object Mode")
-            row.prop(self, "show_object_mode", expand=True, text=" ")
-
-            row = box.row(align=True)
-            row.label(text="Show Object Type & Name")
-            row.prop(self, "show_object_name", expand=True, text=" ")
-
-            row = box.row(align=True)
-            row.label(text="Show Transforms")
-            row.prop(self, "show_loc_rot_scale", expand=True, text=" ")
-
-            row = box.row(align=True)
-            row.label(text="Show Vert/Faces/Tris/Ngons")
-            row.prop(self, "show_vert_face_tris", expand=True, text=" ")
-
-            row = box.row(align=True)
-            row.label(text="Show Object informations")
-            row.prop(self, "show_object_info", expand=True, text=" ")
-
-            row = box.row(align=True)
-            row.label(text="Show Modifiers")
-            row.prop(self, "show_modifiers", expand=True, text=" ")
-
-            row = box.row(align=True)
-            row.label(text="Simple Mode for Modifiers")
-            row.prop(self, "simple_text_mode", expand=True, text=" ")
-
-            row = box.row(align=True)
-            row.label(text="Show Blender Keymaps")
-            row.prop(self, "show_blender_keymaps", expand=True, text=" ")
-
-            row = box.row(align=True)
-            row.label(text="Title Color")
-            row.prop(self, "text_color")
-
-            row = box.row(align=True)
-            row.label(text="Settings Color")
-            row.prop(self, "text_color_1")
-
-            row = box.row(align=True)
-            row.label(text="Value Color")
-            row.prop(self, "text_color_2")
-
-            row = box.row(align=True)
-            row.label(text="Modifier Hidden")
-            row.prop(self, "hidden")
-
-            row = box.row(align=True)
-            row.label(text="Text Size Max")
-            row.prop(self, "text_size_max")
-
-            row = box.row(align=True)
-            row.label(text="Text Size Min")
-            row.prop(self, "text_size_mini")
-
-            row = box.row(align=True)
-            row.label(text="Text Space")
-            row.prop(self, "infotext_text_space")
-
-            row = box.row(align=True)
-            row.label(text="Text X position")
-            row.prop(self, "infotext_text_pos_x")
-
-            row = box.row(align=True)
-            row.label(text="Text Y position")
-            row.prop(self, "infotext_text_pos_y")
-
-            row = box.row(align=True)
-            row.label(text="Activate Shadows")
-            row.prop(self, "infotext_text_shadow", text="      ")
-
-            if self.infotext_text_shadow:
+            if self.show_infotext:
                 row = box.row(align=True)
-                row.label(text="Shadows Color")
-                row.prop(self, "infotext_shadow_color")
+                row.label(text="Show View Perspective")
+                row.prop(self, "show_view_perspective", expand=True, text=" ")
 
                 row = box.row(align=True)
-                row.label(text="Shadows Transparency")
-                row.prop(self, "infotext_shadow_alpha")
+                row.label(text="Show Object Mode")
+                row.prop(self, "show_object_mode", expand=True, text=" ")
 
                 row = box.row(align=True)
-                row.label(text="Offset Shadows X")
-                row.prop(self, "infotext_offset_shadow_x")
+                row.label(text="Show Object Type & Name")
+                row.prop(self, "show_object_name", expand=True, text=" ")
 
                 row = box.row(align=True)
-                row.label(text="Offset Shadows Y")
-                row.prop(self, "infotext_offset_shadow_y")
-                # End of original IF block above
+                row.label(text="Show Transforms")
+                row.prop(self, "show_loc_rot_scale", expand=True, text=" ")
 
-                # RESET PREFS
                 row = box.row(align=True)
-                row.operator("object.reset_prefs", text="Reset Preferences")
+                row.label(text="Show Vert/Faces/Tris/Ngons")
+                row.prop(self, "show_vert_face_tris", expand=True, text=" ")
+
+                row = box.row(align=True)
+                row.label(text="Show Object informations")
+                row.prop(self, "show_object_info", expand=True, text=" ")
+
+                row = box.row(align=True)
+                row.label(text="Show Modifiers")
+                row.prop(self, "show_modifiers", expand=True, text=" ")
+
+                row = box.row(align=True)
+                row.label(text="Simplified Modifiers")
+                row.prop(self, "simplified_modifiers", expand=True, text=" ")
+
+                row = box.row(align=True)
+                row.label(text="Show Blender Keymaps")
+                row.prop(self, "show_blender_keymaps", expand=True, text=" ")
+
+                row = box.row(align=True)
+                row.label(text="Title Color")
+                row.prop(self, "text_color")
+
+                row = box.row(align=True)
+                row.label(text="Settings Color")
+                row.prop(self, "text_color_1")
+
+                row = box.row(align=True)
+                row.label(text="Value Color")
+                row.prop(self, "text_color_2")
+
+                row = box.row(align=True)
+                row.label(text="Modifier Hidden")
+                row.prop(self, "hidden")
+
+                row = box.row(align=True)
+                row.label(text="Text Size Max")
+                row.prop(self, "text_size_max")
+
+                row = box.row(align=True)
+                row.label(text="Text Size Min")
+                row.prop(self, "text_size_mini")
+
+                row = box.row(align=True)
+                row.label(text="Text Space")
+                row.prop(self, "infotext_text_space")
+
+                row = box.row(align=True)
+                row.label(text="Text X position")
+                row.prop(self, "infotext_text_pos_x")
+
+                row = box.row(align=True)
+                row.label(text="Text Y position")
+                row.prop(self, "infotext_text_pos_y")
+
+                row = box.row(align=True)
+                row.label(text="Activate Shadows")
+                row.prop(self, "infotext_text_shadow", text="      ")
+
+                if self.infotext_text_shadow:
+                    row = box.row(align=True)
+                    row.label(text="Shadows Color")
+                    row.prop(self, "infotext_shadow_color")
+
+                    row = box.row(align=True)
+                    row.label(text="Shadows Transparency")
+                    row.prop(self, "infotext_shadow_alpha")
+
+                    row = box.row(align=True)
+                    row.label(text="Offset Shadows X")
+                    row.prop(self, "infotext_offset_shadow_x")
+
+                    row = box.row(align=True)
+                    row.label(text="Offset Shadows Y")
+                    row.prop(self, "infotext_offset_shadow_y")
+                    # End of original IF block above
+
+            # RESET PREFS
+            row = box.row(align=True)
+            row.operator("object.reset_prefs", text="Reset Preferences")
 
         # # ------URls
         if self.prefs_tabs == 'links':
