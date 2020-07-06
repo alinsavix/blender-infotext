@@ -79,12 +79,6 @@ class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
         default=True
     )
 
-    # solo : BoolProperty(
-    #     name="Solo",
-    #     description="Solo",
-    #     default=True
-    # )
-
     def draw(self, context):
         layout = self.layout
 
@@ -93,7 +87,6 @@ class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
         layout.prop(self, "text_color", text="Colorize the Text")
         layout.prop(self, "text_size_pos", text="Text Size & Position")
         layout.prop(self, "text_shadows", text="Text Shadows")
-        # layout.prop(self, "solo", text="Solo")
 
     # FIXME: Why is all this set here, if it's also set inside
     # INFOTEXT_MT_addon_prefs, and the stuff here seems to do nothing?
@@ -135,11 +128,6 @@ class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
             addon_pref.infotext_shadow_alpha = 1
             addon_pref.infotext_offset_shadow_x = 2
             addon_pref.infotext_offset_shadow_y = -2
-
-        # # SOLO
-        # if self.solo:
-        #     addon_pref.solo_color = (0.2, 0.7, 1, 1)
-        #     addon_pref.solo_alpha = 0.3
 
         bpy.context.area.tag_redraw()
         return {'FINISHED'}
@@ -345,21 +333,6 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
         min=0, max=2000,
         description="Position of the text in X"
     )
-
-    # SOLO
-    # solo_color : FloatVectorProperty(
-    #     name="Solo Color:",
-    #     default=(0.2, 0.7, 1, 1),
-    #     min=0, max=1, size=4,
-    #     # precision=3,
-    #     subtype='COLOR_GAMMA'
-    # )
-    #
-    # solo_alpha : FloatProperty(
-    #     default=0.3,
-    #     min=0, max=1,
-    #     precision=3
-    # )
 
     def draw(self, context):
         layout = self.layout
