@@ -13,6 +13,7 @@
 
 import bpy
 import blf
+from ctypes import *
 import math
 from math import degrees
 from .functions import *
@@ -272,8 +273,123 @@ def blender_keymaps(test_text, CR, color_title, color_setting, color_value, text
 
 
 # ---------------------------------------------------------------
+# TEST
+# ---------------------------------------------------------------
+
+# Handler type enum. Operator is 3
+WM_HANDLER_TYPE_GIZMO = 1
+WM_HANDLER_TYPE_UI = 2
+WM_HANDLER_TYPE_OP = 3
+WM_HANDLER_TYPE_DROPBOX = 4
+WM_HANDLER_TYPE_KEYMAP = 5
+
+# Generate listbase of appropriate type. None: generic
+
+
+def listbase(type_=None):
+    ptr = POINTER(type_)
+    fields = ("first", ptr), ("last", ptr)
+    return type("ListBase", (Structure,), {'_fields_': fields})
+
+# Mini struct for Op handlers. *not* bContext!
+
+
+class OpContext(Structure):
+    pass
+
+
+class wmEventHandler(Structure):  # Generic
+    pass
+
+
+class wmEventHandler_Op(Structure):  # Operator
+    pass
+
+
+class wmWindow(Structure):
+    pass
+
+
+wmEventHandler._fields_ = (
+    ("next", POINTER(wmEventHandler)),
+    ("prev", POINTER(wmEventHandler)),
+    ("type", c_int),  # Enum
+    ("flag", c_char),
+    ("poll", c_void_p),
+)
+
+wmWindow._fields_ = (  # from DNA_windowmanager_types.h
+    ("next", POINTER(wmWindow)),
+    ("prev", POINTER(wmWindow)),
+    ("ghostwin", c_void_p),
+    ("gpuctx", c_void_p),
+    ("parent", POINTER(wmWindow)),
+    ("scene", c_void_p),
+    ("new_scene", c_void_p),
+    ("view_layer_name", c_char * 64),
+    ("workspace_hook", c_void_p),
+    ("global_areas", listbase(type_=None) * 3),
+    ("screen", c_void_p),
+    ("posx", c_short),
+    ("posy", c_short),
+    ("sizex", c_short),
+    ("sizey", c_short),
+    ("windowstate", c_short),
+    ("monitor", c_short),
+    ("active", c_short),
+    ("cursor", c_short),
+    ("lastcursor", c_short),
+    ("modalcursor", c_short),
+    ("grabcursor", c_short),
+    ("addmousemove", c_short),
+    ("winid", c_int),
+    ("lock_pie_event", c_short),
+    ("last_pie_event", c_short),
+    ("eventstate", c_void_p),
+    ("tweak", c_void_p),
+    ("ime_data", c_void_p),
+    ("queue", listbase(type_=None)),
+    ("handlers", listbase(type_=None)),
+    ("modalhandlers", listbase(type_=wmEventHandler)),
+    ("gesture", listbase(type_=None)),
+    ("stereo3d_format", c_void_p),
+    ("drawcalls", listbase(type_=None)),
+    ("cursor_keymap_status", c_void_p)
+)
+OpContext._fields_ = (
+    ("win", POINTER(wmWindow)),
+    ("area", c_void_p),  # <-- ScrArea ptr
+    ("region", c_void_p),  # <-- ARegion ptr
+    ("region_type", c_short)
+)
+wmEventHandler_Op._fields_ = (
+    ("head", wmEventHandler),
+    ("op", c_void_p),  # <-- wmOperator
+    ("is_file_select", c_bool),
+    ("context", OpContext)
+)
+
+
+def modal(test_text, CR, color_title, color_setting, color_value, text_size_normal, hidden, option, text_size_large, space):
+    window = bpy.context.window
+    win = cast(window.as_pointer(), POINTER(wmWindow)).contents
+
+    handle = win.modalhandlers.first
+    while handle:
+        if handle.contents.type == WM_HANDLER_TYPE_OP:
+            test_text.extend([CR, ("Modal Running", color_title, text_size_normal)])
+            # print("Modal running")
+            break
+        handle = handle.contents.next
+    else:
+        test_text.extend([CR, ("No modal Running", color_title, text_size_normal)])
+        # print("No running modals")
+
+# ---------------------------------------------------------------
 # VIEW
 # ---------------------------------------------------------------
+
+
 def r(x):
     return round(x, 3)
 
@@ -292,6 +408,7 @@ view_perspective_dict = {
     "ORTHO": "Orthographic",
     "PERSP": "Perspective"
 }
+
 
 # Example outputs:
 # Camera Perspective; User Orthographic; User Perspective; Bottom Perspective;
@@ -2975,6 +3092,15 @@ def infotext_key_text():
     # HELP
     # if show_keymaps:
     #     keymaps(test_text, CR, color_title, color_setting, color_value, text_size_normal, hidden, option, space)
+
+    # EXPERIMENTAL
+    # detect a running modal, to display custom things if there
+    # is one, IF we can figure out which modal is actually active
+    # at any given moment
+    if False:
+        modal(test_text, CR, color_title, color_setting, color_value,
+              text_size_normal, hidden, option, text_size_large, space)
+
     if show_view_perspective:
         view(test_text, CR, color_title, color_setting, color_value,
              text_size_normal, hidden, option, text_size_large, space)
