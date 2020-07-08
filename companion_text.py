@@ -3102,6 +3102,12 @@ def infotext_key_text():
               text_size_normal, hidden, option, text_size_large, space)
 
     if show_view_perspective:
+        # Make sure we don't conflict with the existing information
+        # text, by telling it to fuck off if we have the view
+        # perspective text enabled. This is SUPER-jenky. Not sure
+        # if there's a better way to do this, but my money says 'yes'
+        bpy.context.space_data.overlay.show_text = False
+
         view(test_text, CR, color_title, color_setting, color_value,
              text_size_normal, hidden, option, text_size_large, space)
         # SPACE
