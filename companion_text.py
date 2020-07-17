@@ -385,18 +385,31 @@ def modal(test_text, CR, color_title, color_setting, color_value, text_size_norm
         test_text.extend([CR, ("No modal Running", color_title, text_size_normal)])
         # print("No running modals")
 
+
 # ---------------------------------------------------------------
 # VIEW
 # ---------------------------------------------------------------
-
-
 def r(x):
     return round(x, 3)
 
 
 view_orientation_dict = {
     (0.0, 0.0, 0.0): 'Top',
+    (r(-math.pi), 0.0, r(-math.pi)): 'Top',
+    (r(-math.pi), 0.0, r(math.pi)): 'Top',
+    (r(math.pi), 0.0, r(-math.pi)): 'Top',
+    (r(math.pi), 0.0, r(math.pi)): 'Top',
+    (0.0, 0.0, r(math.pi)): 'Top',  # 180 degree
+    (0.0, 0.0, r(-math.pi / 2)): 'Top',  # 90 degree
+    (0.0, 0.0, r(math.pi / 2)): 'Top',  # -90 degree
+
+    #  (0.0, 0.0, 0.0): 'Bottom',  # 180 degree    ???
     (r(math.pi), 0.0, 0.0): 'Bottom',
+    (r(math.pi), 0.0, r(math.pi / 2)): 'Bottom',  # 90 degree
+    (r(-math.pi), 0.0, 0.0): 'Bottom',
+    (r(-math.pi), 0.0, r(-math.pi / 2)): 'Bottom',  # -90 degree
+    (0.0, r(-math.pi), 0.0): 'Bottom',
+
     (r(math.pi / 2), 0.0, 0.0): 'Front',
     (r(math.pi / 2), 0.0, r(math.pi)): 'Back',
     (r(math.pi / 2), 0.0, r(-math.pi / 2)): 'Left',
@@ -425,9 +438,19 @@ def view(test_text, CR, color_title, color_setting, color_value, text_size_norma
         test_text.extend([CR, ("Camera Perspective", color_title, text_size_normal)])
     else:
         view_rot = rd.view_rotation.to_euler()
-        orientation = view_orientation_dict.get(tuple(map(r, view_rot)), 'User')
+        # from pprint import pprint
+        # print(pprint(tuple(map(r, view_rot))))
+        # print(pprint(view_rot))
+
+        # For figuring out what our perspective is, we don't care about what
+        # the y rotation is. Just ignore it so we don't have to care
+        x, y, z = tuple(map(r, view_rot))
+        # print(x, y, z)
+        # orientation = view_orientation_dict.get(tuple(map(r, view_rot)), 'User')
+        orientation = view_orientation_dict.get(tuple([x, y, z]), 'User')
         perspective = view_perspective_dict.get(rd.view_perspective)
 
+        # t = "%s %s (%0.3f %0.3f %0.3f %s)" % (orientation, perspective, x, y, z, view_rot.order)
         t = "%s %s" % (orientation, perspective)
         test_text.extend([CR, (t, color_title, text_size_normal)])
 
@@ -3106,7 +3129,7 @@ def infotext_key_text():
         # text, by telling it to fuck off if we have the view
         # perspective text enabled. This is SUPER-jenky. Not sure
         # if there's a better way to do this, but my money says 'yes'
-        bpy.context.space_data.overlay.show_text = False
+        # bpy.context.space_data.overlay.show_text = False
 
         view(test_text, CR, color_title, color_setting, color_value,
              text_size_normal, hidden, option, text_size_large, space)
