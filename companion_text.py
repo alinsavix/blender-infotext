@@ -2819,32 +2819,37 @@ def armature(test_text, CR, color_title, color_setting, color_value, text_size_n
 
 def camera(test_text, CR, color_title, color_setting, color_value, text_size_normal, hidden, option, units, space):
     obj = bpy.context.active_object
+    units_system = bpy.context.scene.unit_settings.system
 
     # LENS
-    test_text.extend([CR, ("LENS ", color_title, text_size_normal),
-                      (str(round(obj.data.lens, 2)), color_value, text_size_normal)])
+    test_text.extend([
+        CR,
+        ("LENS ", color_title, text_size_normal),
+        (str(round(obj.data.lens, 2)), color_value, text_size_normal),
+        ("mm", color_value, int(text_size_normal * 0.80)),
+    ])
+
     # FOCUS
-    if bpy.context.object.data.dof.use_dof and bpy.context.object.data.dof.focus_object:
-
-        test_text.extend([CR, ("FOCUS ", color_title, text_size_normal),
-                          (str(obj.dof.focus_object.name), color_value, text_size_normal)])
-
+    if obj.data.dof.use_dof and obj.data.dof.focus_object:
+        test_text.extend([
+            CR,
+            ("FOCUS ", color_title, text_size_normal),
+            (str(obj.data.dof.focus_object.name), color_value, text_size_normal),
+        ])
     else:
-        test_text.extend([CR, ("DISTANCE ", color_title, text_size_normal),
-                          (str(round(obj.data.dof.focus_distance, 2)), color_value, text_size_normal)])
-
-    # RADIUS / FSTOP
-    # if bpy.context.object.data.cycles.aperture_type == 'RADIUS': bpy.context.object.data.dof.focus_object = None
-    #     if obj.data.cycles.aperture_size:
-    #         test_text.extend([CR, ("RADIUS ", color_title, text_size_normal),
-    #                       (str(round(obj.data.cycles.aperture_size, 2)), color_value,
-    #                        text_size_normal)])
+        foc_dist = bpy.utils.units.to_string(units_system, 'LENGTH', obj.data.dof.focus_distance, precision=2)
+        test_text.extend([
+            CR,
+            ("DISTANCE ", color_title, text_size_normal),
+            (foc_dist, color_value, text_size_normal)
+        ])
 
     if bpy.context.object.data.dof.use_dof:
-
-        test_text.extend([CR, ("FSTOP ", color_title, text_size_normal),
-                          (str(round(obj.data.cycles.aperture_fstop, 2)), color_value,
-                           text_size_normal)])
+        test_text.extend([
+            CR,
+            ("FSTOP ", color_title, text_size_normal),
+            (str(round(obj.data.dof.aperture_fstop, 1)), color_value, text_size_normal)
+        ])
 
 # ---------------------------------------------------------------
 # CURVE / FONT
