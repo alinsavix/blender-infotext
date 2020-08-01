@@ -95,8 +95,8 @@ class INFOTEXT_show_text_options_popup(bpy.types.Operator):
             row.prop(addon_pref, "show_modifiers", text="")
 
             row = col.row(align=True)
-            row.label(text="Simplified Modifiers")
-            row.prop(addon_pref, "simplified_modifiers", text="")
+            row.label(text="Detailed Modifiers")
+            row.prop(addon_pref, "detailed_modifiers", text="")
 
             row = col.row(align=True)
             row.label(text="Show Blender Keymaps")

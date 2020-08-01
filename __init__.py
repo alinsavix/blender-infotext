@@ -103,7 +103,7 @@ class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
             addon_pref.show_loc_rot_scale = True
             addon_pref.show_modifiers = True
             addon_pref.show_object_info = True
-            addon_pref.simplified_modifiers = False
+            addon_pref.detailed_modifiers = False
             addon_pref.show_blender_keymaps = True
 
         # TEXT COLOR
@@ -205,10 +205,10 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
         description="Show Modifiers"
     )
 
-    simplified_modifiers: BoolProperty(
-        name="Simplified Modifiers",
+    detailed_modifiers: BoolProperty(
+        name="Detailed Modifiers",
         default=True,
-        description="Show Only the Names of Modifiers"
+        description="Show Detailed Modifier Properties"
     )
 
     # TEXTS OPTIONS
@@ -391,8 +391,8 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
                 row.prop(self, "show_modifiers", expand=True, text=" ")
 
                 row = box.row(align=True)
-                row.label(text="Simplified Modifiers")
-                row.prop(self, "simplified_modifiers", expand=True, text=" ")
+                row.label(text="Detailed Modifiers")
+                row.prop(self, "detailed_modifiers", expand=True, text=" ")
 
                 row = box.row(align=True)
                 row.label(text="Show Blender Keymaps")
