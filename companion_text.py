@@ -1858,6 +1858,9 @@ def mod_subsurf(test_text, mod, CR, color_title, color_setting, color_value, tex
 # TRIANGULATE
 # ---------------------------------------------------------------
 
+# FIXME: Needs to support 'keep normals'  minimum verts, and not have
+# underscores in the 'method' field
+
 
 def mod_triangulate(test_text, mod, CR, color_title, color_setting, color_value, text_size_normal, hidden, option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
@@ -3294,7 +3297,6 @@ def infotext_key_text():
         index = wm.infotext.active_modifier
 
     if show_modifiers:
-
         # for mod in bpy.context.active_object.modifiers:
         for i, mod in enumerate(bpy.context.object.modifiers):
 
@@ -3302,6 +3304,7 @@ def infotext_key_text():
             if i == index:
                 color_title = GREEN
 
+            # FIXME: explicitly support WELD
             if mod.type not in {'BEVEL', 'ARRAY', 'SUBSURF', 'LATTICE', 'BOOLEAN', 'MIRROR', 'SOLIDIFY',
                                 'DECIMATE', 'EDGE_SPLIT', 'DISPLACE', 'MULTIRES', 'BUILD', 'ARMATURE',
                                 'MASK', 'REMESH', 'TRIANGULATE', 'SHRINKWRAP', 'WIREFRAME', 'SKIN', 'SCREW',
