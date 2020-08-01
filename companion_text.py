@@ -1964,14 +1964,15 @@ def mod_armature(test_text, mod, CR, color_title, color_setting, color_value, te
         #                   (str(mod.name.upper()), color_title, text_size_normal)])
         test_text.extend([CR, (str(mod.name.upper()), color_title, text_size_normal)])
 
+        # FIXME: We should have a 'problem' color rather than reusing 'hidden'
         if mod.show_viewport:
             if detailed_modifiers:
+                test_text.extend([(" Object ", color_setting, text_size_normal)])
                 if mod.object:
                     # START
-                    test_text.extend([(" Object ", color_setting, text_size_normal),
-                                      (str(mod.object.name), color_value, text_size_normal)])
+                    test_text.extend([(str(mod.object.name), color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" No Armature Selected ", hidden, text_size_normal)])
+                    test_text.extend([(" None ", hidden, text_size_normal)])
 
                 # VERTEX GROUP
                 if mod.use_vertex_groups:
@@ -1979,7 +1980,7 @@ def mod_armature(test_text, mod, CR, color_title, color_setting, color_value, te
                     if mod.vertex_group:
                         test_text.extend([(str(mod.vertex_group), color_value, text_size_normal)])
                     else:
-                        test_text.extend([(" No Vertex Group Selected ", hidden, text_size_normal)])
+                        test_text.extend([(" None ", hidden, text_size_normal)])
 
                 # OPTIONS
                 if any([mod.use_deform_preserve_volume, mod.use_bone_envelopes, mod.use_multi_modifier]):
