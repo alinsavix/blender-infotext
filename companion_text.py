@@ -2238,11 +2238,11 @@ def mod_hook(test_text, mod, CR, color_title, color_setting, color_value, text_s
         if mod.show_viewport:
             if detailed_modifiers:
                 # OBJECT
+                test_text.extend([(" Object ", color_setting, text_size_normal)])
                 if mod.object:
-                    test_text.extend([(" Object ", color_setting, text_size_normal),
-                                      (mod.object.name, color_value, text_size_normal)])
+                    test_text.extend([(mod.object.name, color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" No Object Selected ", hidden, text_size_normal)])
+                    test_text.extend([(" None ", hidden, text_size_normal)])
 
                 # RADIUS
                 if mod.falloff_type != 'NONE':
