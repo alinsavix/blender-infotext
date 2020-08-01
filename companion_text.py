@@ -1488,30 +1488,40 @@ def mod_multires(test_text, mod, CR, color_title, color_setting, color_value, te
                 else:
                     test_text.extend([(" Catmull Clark ", color_setting, text_size_normal)])
 
-                if mod.levels >= 1:
-                    # LEVELS
-                    test_text.extend([(" Levels ", color_setting, text_size_normal),
-                                      (str(mod.levels), color_value, text_size_normal)])
+                # QUALITY
+                test_text.extend([
+                    (" Quality ", color_setting, text_size_normal),
+                    (str(mod.quality), color_value, text_size_normal)
+                ])
 
-                    # RENDER
-                    test_text.extend([(" Render ", color_setting, text_size_normal),
-                                      (str(mod.render_levels), color_value, text_size_normal)])
+                # RENDER SUBDIVISION LEVELS
+                test_text.extend([
+                    (" Render ", color_setting, text_size_normal),
+                    (str(mod.render_levels), color_value, text_size_normal)
+                ])
 
-                    # SCULPT
-                    test_text.extend([(" Sculpt ", color_setting, text_size_normal),
-                                      (str(mod.sculpt_levels), color_value, text_size_normal)])
+                # VIEWPORT SUBDIVISION LEVELS
+                test_text.extend([
+                    (" Preview ", color_setting, text_size_normal),
+                    (str(mod.levels), color_value, text_size_normal)
+                ])
 
-                # OPTIONS
-                if any([mod.use_subsurf_uv, mod.show_only_control_edges]):
+                # FIXME: We need a dynamic wrap here
+                if any([mod.uv_smooth == "PRESERVE_CORNERS", mod.show_only_control_edges, mod.use_creases]):
                     test_text.extend([CR, ("----", color_title, text_size_normal)])
 
-                    # UV's
-                    if mod.use_subsurf_uv:
-                        test_text.extend([(" UV's ", color_setting, text_size_normal)])
+                # UV SMOOTHING
+                if mod.uv_smooth == "PRESERVE_CORNERS":
+                    test_text.extend([
+                        (" UV Smoothing (keep corners) ", color_setting, text_size_normal),
+                    ])
 
-                    # OPTIMAL DISPLAY
-                    if mod.show_only_control_edges:
-                        test_text.extend([(" Optimal Display ", color_setting, text_size_normal)])
+                # OPTIMAL DISPLAY
+                if mod.show_only_control_edges:
+                    test_text.extend([(" Optimal Display ", color_setting, text_size_normal)])
+
+                if mod.use_creases:
+                    test_text.extend([(" Using Creases ", color_setting, text_size_normal)])
 
         else:
             test_text.extend([(" Hidden ", hidden, text_size_normal)])
