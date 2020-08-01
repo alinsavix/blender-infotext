@@ -2284,6 +2284,7 @@ def mod_laplacian_deformer(test_text, mod, CR, color_title, color_setting, color
         # NAME
         # test_text.extend([CR, ('ICON', 'ICON_MOD_MESHDEFORM.png'), ("    ", color_setting, text_size_normal),
         #                   (str(mod.name.upper()), color_title, text_size_normal)])
+        # FIXME: display this more readably
         test_text.extend([CR, (str(mod.name.upper()), color_title, text_size_normal)])
 
         if mod.show_viewport:
@@ -2293,11 +2294,11 @@ def mod_laplacian_deformer(test_text, mod, CR, color_title, color_setting, color
                                   (str(mod.iterations), color_value, text_size_normal)])
 
                 # VERTEX GROUP
+                test_text.extend([(" VGroup ", color_setting, text_size_normal)])
                 if mod.vertex_group:
-                    test_text.extend([(" VGroup ", color_setting, text_size_normal),
-                                      (str(mod.vertex_group), color_value, text_size_normal)])
+                    test_text.extend([(str(mod.vertex_group), color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" No VGroup Selected ", hidden, text_size_normal)])
+                    test_text.extend([(" None ", hidden, text_size_normal)])
 
         else:
             test_text.extend([(" Hidden ", hidden, text_size_normal)])
