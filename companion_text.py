@@ -1543,13 +1543,14 @@ def mod_remesh(test_text, mod, CR, color_title, color_setting, color_value, text
             if detailed_modifiers:
                 test_text.extend([(" ", color_title, text_size_normal), (str(mod.mode), color_value, text_size_normal)])
 
-                # OCTREE DEPTH
-                test_text.extend([(" Octree Depth ", color_setting, text_size_normal),
-                                  (str(mod.octree_depth), color_value, text_size_normal)])
+                if mod.mode != "VOXEL":
+                    # OCTREE DEPTH
+                    test_text.extend([(" Octree Depth ", color_setting, text_size_normal),
+                                      (str(mod.octree_depth), color_value, text_size_normal)])
 
-                # SCALE
-                test_text.extend([(" Scale ", color_setting, text_size_normal),
-                                  (str(round(mod.scale, 2)), color_value, text_size_normal)])
+                    # SCALE
+                    test_text.extend([(" Scale ", color_setting, text_size_normal),
+                                      (str(round(mod.scale, 2)), color_value, text_size_normal)])
 
                 # SHARPNESS
                 if mod.mode == 'SHARP':
@@ -1565,7 +1566,7 @@ def mod_remesh(test_text, mod, CR, color_title, color_setting, color_value, text
                         test_text.extend([(" Smooth Shading ", color_setting, text_size_normal)])
 
                     # REMOVE DISCONNECTED
-                    if mod.use_remove_disconnected:
+                    if mod.mode != "VOXEL" and mod.use_remove_disconnected:
                         test_text.extend([(" Remove Disconnected Pieces ", color_setting, text_size_normal),
                                           (str(round(mod.threshold, 2)), color_value, text_size_normal)])
 
