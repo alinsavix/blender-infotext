@@ -1578,6 +1578,7 @@ def mod_remesh(test_text, mod, CR, color_title, color_setting, color_value, text
 # ---------------------------------------------------------------
 
 
+# FIXME: AUpdate for 2.8x
 def mod_screw(test_text, mod, CR, color_title, color_setting, color_value, text_size_normal, hidden, option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
@@ -1704,6 +1705,8 @@ def mod_skin(test_text, mod, CR, color_title, color_setting, color_value, text_s
 # ---------------------------------------------------------------
 # SOLIDIFY
 # ---------------------------------------------------------------
+
+# FIXME: Needs to support 'complex' mode
 
 
 def mod_solidify(test_text, mod, CR, color_title, color_setting, color_value, text_size_normal, hidden, option, units, space, detailed_modifiers):
