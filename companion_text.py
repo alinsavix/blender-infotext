@@ -1800,33 +1800,56 @@ def mod_subsurf(test_text, mod, CR, color_title, color_setting, color_value, tex
         #                   (str(mod.name.upper()), color_title, text_size_normal)])
         test_text.extend([CR, (str(mod.name.upper()), color_title, text_size_normal)])
 
+        # FIXME: Almost all of this is the same as the multires modifier. Can
+        # we consolidate the code a bit?
         if mod.show_viewport:
             if detailed_modifiers:
-                # VIEW
-                test_text.extend([(" View ", color_setting, text_size_normal),
-                                  (str(mod.levels), color_value, text_size_normal)])
+                # SUBDIVISION TYPE
+                if mod.subdivision_type == 'SIMPLE':
+                    test_text.extend([(" Simple ", color_setting, text_size_normal)])
+                else:
+                    test_text.extend([(" Catmull Clark ", color_setting, text_size_normal)])
 
-                # RENDER
-                test_text.extend([(" Render ", color_setting, text_size_normal),
-                                  (str(mod.render_levels), color_value, text_size_normal)])
+                # QUALITY
+                test_text.extend([
+                    (" Quality ", color_setting, text_size_normal),
+                    (str(mod.quality), color_value, text_size_normal)
+                ])
 
-                # OPTIONS
-                # if any([mod.use_subsurf_uv, mod.show_only_control_edges, mod.use_opensubdiv]):
-                if any([mod.use_subsurf_uv, mod.show_only_control_edges]):
+                # RENDER SUBDIVISION LEVELS
+                test_text.extend([
+                    (" Render ", color_setting, text_size_normal),
+                    (str(mod.render_levels), color_value, text_size_normal)
+                ])
+
+                # VIEWPORT SUBDIVISION LEVELS
+                test_text.extend([
+                    (" Preview ", color_setting, text_size_normal),
+                    (str(mod.levels), color_value, text_size_normal)
+                ])
+
+                # FIXME: We need a dynamic wrap here
+                if any([mod.uv_smooth == "PRESERVE_CORNERS", mod.show_only_control_edges, mod.use_creases]):
                     test_text.extend([CR, ("----", color_title, text_size_normal)])
 
-                    # UV's
-                    if mod.use_subsurf_uv:
-                        test_text.extend([(" UV's ", color_setting, text_size_normal)])
+                # UV SMOOTHING
+                if mod.uv_smooth == "PRESERVE_CORNERS":
+                    test_text.extend([
+                        (" UV Smoothing (keep corners) ", color_setting, text_size_normal),
+                    ])
 
-                    # OPTIMAL DISPLAY
-                    if mod.show_only_control_edges:
-                        test_text.extend([(" Optimal Display ", color_setting, text_size_normal)])
+                # OPTIMAL DISPLAY
+                if mod.show_only_control_edges:
+                    test_text.extend([(" Optimal Display ", color_setting, text_size_normal)])
 
-                    # OPEN SUBDIV
-                    # if (hasattr(bpy.context.preferences.system, 'opensubdiv_compute_type')):
-                    #     if mod.use_opensubdiv:
-                    #         test_text.extend([(" Open Subdiv ", color_setting, text_size_normal)])
+                if mod.use_creases:
+                    test_text.extend([(" Using Creases ", color_setting, text_size_normal)])
+
+                # FIXME: Do we need to add code for this case? Does this case exist in 2.8x?
+                # OPEN SUBDIV
+                # if (hasattr(bpy.context.preferences.system, 'opensubdiv_compute_type')):
+                #     if mod.use_opensubdiv:
+                #         test_text.extend([(" Open Subdiv ", color_setting, text_size_normal)])
 
         else:
             test_text.extend([(" Hidden ", hidden, text_size_normal)])
