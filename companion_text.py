@@ -2417,9 +2417,10 @@ def mod_simple_deform(test_text, mod, CR, color_title, color_setting, color_valu
 
         if mod.show_viewport:
             if detailed_modifiers:
-
-                test_text.extend([(" ", color_setting, text_size_normal),
-                                  (str(mod.deform_method.upper()), color_value, text_size_normal)])
+                test_text.extend([
+                    (" ", color_setting, text_size_normal),
+                    (str(mod.deform_method.upper()), color_value, text_size_normal)
+                ])
 
                 # ORIGIN
                 if mod.origin:
@@ -2429,16 +2430,27 @@ def mod_simple_deform(test_text, mod, CR, color_title, color_setting, color_valu
                 # ANGLE/FACTOR
                 if mod.deform_method in ['TWIST', 'BEND']:
                     # Angle
-                    test_text.extend([(" Angle ", color_setting, text_size_normal),
-                                      (str(round(math.degrees(mod.factor), 1)), color_value, text_size_normal),
-                                      ("°", color_value, text_size_normal)])
+                    test_text.extend([
+                        (" Angle ", color_setting, text_size_normal),
+                        (str(round(math.degrees(mod.factor), 1)), color_value, text_size_normal),
+                        ("°", color_value, text_size_normal)
+                    ])
 
                 elif mod.deform_method in ['TAPER', 'STRETCH']:
-                    test_text.extend([(" Factor ", color_setting, text_size_normal),
-                                      (str(round(mod.factor, 2)), color_value, text_size_normal)])
+                    test_text.extend([
+                        (" Factor ", color_setting, text_size_normal),
+                        (str(round(mod.factor, 2)), color_value, text_size_normal)
+                    ])
 
                 # OPTIONS
                 test_text.extend([CR, ("----", color_title, text_size_normal)])
+
+                # AXIS
+                # FIXME: Should we always show this?
+                test_text.extend([
+                    (" Axis ", color_setting, text_size_normal),
+                    (mod.deform_axis, color_value, text_size_normal)
+                ])
 
                 # VERTEX GROUP
                 if mod.vertex_group:
@@ -2457,12 +2469,12 @@ def mod_simple_deform(test_text, mod, CR, color_title, color_setting, color_valu
                             test_text.extend([(" Y ", color_value, text_size_normal)])
 
                 # LIMIT
-                test_text.extend([(" Limit ", color_setting, text_size_normal)])
-
-                test_text.extend([(str(round(mod.limits[0], 2)), color_value, text_size_normal)])
-
-                test_text.extend([(" ", color_setting, text_size_normal),
-                                  (str(round(mod.limits[1], 2)), color_value, text_size_normal)])
+                test_text.extend([
+                    (" Limit ", color_setting, text_size_normal),
+                    (str(round(mod.limits[0], 2)), color_value, text_size_normal),
+                    (" – ", color_setting, text_size_normal),
+                    (str(round(mod.limits[1], 2)), color_value, text_size_normal)
+                ])
 
         else:
             test_text.extend([(" Hidden ", hidden, text_size_normal)])
