@@ -2856,70 +2856,99 @@ def mod_wave(test_text, mod, CR, color_title, color_setting, color_value, text_s
                 if any([mod.start_position_x, mod.start_position_y, mod.falloff_radius]) != 0:
                     test_text.extend([CR, ("----", color_title, text_size_normal)])
                     # TIME
+                    # FIXME: shows m when scale is cm
                     test_text.extend([(" Position ", color_setting, text_size_normal)])
 
                     # POS X
-                    test_text.extend([(" X ", color_setting, text_size_normal),
-                                      (str(round(mod.start_position_x, 2)), color_value, text_size_normal), (units, color_value, text_size_normal)])
+                    test_text.extend([
+                        (" X ", color_setting, text_size_normal),
+                        (str(round(mod.start_position_x, 2)), color_value,
+                         text_size_normal), (units, color_value, text_size_normal)
+                    ])
 
                     # POS Y
-                    test_text.extend([(" Y ", color_setting, text_size_normal),
-                                      (str(round(mod.start_position_y, 2)), color_value, text_size_normal), (units, color_value, text_size_normal)])
+                    test_text.extend([
+                        (" Y ", color_setting, text_size_normal),
+                        (str(round(mod.start_position_y, 2)), color_value,
+                         text_size_normal), (units, color_value, text_size_normal)
+                    ])
 
                     # FALLOFF
-                    test_text.extend([(" Y ", color_setting, text_size_normal),
-                                      (str(round(mod.falloff_radius, 2)), color_value, text_size_normal), (units, color_value, text_size_normal)])
+                    test_text.extend([
+                        (" Falloff ", color_setting, text_size_normal),
+                        (str(round(mod.falloff_radius, 2)), color_value,
+                         text_size_normal), (units, color_value, text_size_normal)
+                    ])
 
                 if any([mod.start_position_object, mod.vertex_group, mod.texture_coords]) != 0:
                     test_text.extend([CR, ("----", color_title, text_size_normal)])
 
                     # FROM
                     if mod.start_position_object:
-                        test_text.extend([(" From ", color_setting, text_size_normal),
-                                          (str(mod.start_position_object.name), color_value, text_size_normal)])
+                        test_text.extend([
+                            (" From ", color_setting, text_size_normal),
+                            (str(mod.start_position_object.name), color_value, text_size_normal)
+                        ])
 
                     # VERTEX GROUP
                     if mod.vertex_group:
-                        test_text.extend([(" VGroup ", color_setting, text_size_normal),
-                                          (str(mod.vertex_group), color_value, text_size_normal)])
+                        test_text.extend([
+                            (" VGroup ", color_setting, text_size_normal),
+                            (str(mod.vertex_group), color_value, text_size_normal)
+                        ])
 
                     # TEXTURES COORD
-                    test_text.extend([(" Texture Coords ", color_setting, text_size_normal),
-                                      (str(mod.texture_coords.lower().capitalize()), color_value, text_size_normal)])
+                    test_text.extend([
+                        (" Texture Coords ", color_setting, text_size_normal),
+                        (mod.texture_coords, color_value, text_size_normal)
+                    ])
 
                     # OBJECT
                     if mod.texture_coords == "OBJECT":
                         if mod.texture_coords_object:
-                            test_text.extend([(" Object ", color_setting, text_size_normal),
-                                              (str(mod.texture_coords_object.name), color_value, text_size_normal)])
+                            test_text.extend([
+                                (" Object ", color_setting, text_size_normal),
+                                (str(mod.texture_coords_object.name), color_value, text_size_normal)
+                            ])
                         else:
                             test_text.extend([(" No Object Selected ", hidden, text_size_normal)])
 
                     # UVs
                     if mod.texture_coords == "UV":
+                        test_text.extend([(" UVMap ", color_setting, text_size_normal)])
                         if mod.uv_layer:
-                            test_text.extend([(" UVMap ", color_setting, text_size_normal),
-                                              (str(mod.uv_layer), color_value, text_size_normal)])
+                            test_text.extend([(mod.uv_layer, color_value, text_size_normal)])
                         else:
-                            test_text.extend([(" No UV's Selected ", hidden, text_size_normal)])
+                            test_text.extend([(" None ", hidden, text_size_normal)])
 
                 test_text.extend([CR, ("----", color_title, text_size_normal)])
 
                 # SPEED
-                test_text.extend([(" Speed ", color_setting, text_size_normal),
-                                  (str(round(mod.speed, 2)), color_value, text_size_normal)])
+                test_text.extend([
+                    (" Speed ", color_setting, text_size_normal),
+                    (str(round(mod.speed, 2)), color_value, text_size_normal)
+                ])
 
                 # SPEED
-                test_text.extend([(" Height ", color_setting, text_size_normal),
-                                  (str(round(mod.height, 2)), color_value, text_size_normal), (units, color_value, text_size_normal)])
+                # FIXME: Shows m when scale is cm
+                test_text.extend([
+                    (" Height ", color_setting, text_size_normal),
+                    (str(round(mod.height, 2)), color_value, text_size_normal), (units, color_value, text_size_normal),
+                ])
 
                 # SPEED
-                test_text.extend([(" Width ", color_setting, text_size_normal),
-                                  (str(round(mod.width, 2)), color_value, text_size_normal), (units, color_value, text_size_normal)])
+                test_text.extend([
+                    (" Width ", color_setting, text_size_normal),
+                    (str(round(mod.width, 2)), color_value, text_size_normal),
+                    (units, color_value, text_size_normal),
+                ])
 
                 # SPEED
-                test_text.extend([(" Narrowness ", color_setting, text_size_normal),
-                                  (str(round(mod.narrowness, 2)), color_value, text_size_normal), (units, color_value, text_size_normal)])
+                test_text.extend([
+                    (" Narrowness ", color_setting, text_size_normal),
+                    (str(round(mod.narrowness, 2)), color_value, text_size_normal),
+                    (units, color_value, text_size_normal),
+                ])
 
         else:
             test_text.extend([(" Hidden ", hidden, text_size_normal)])
