@@ -2096,12 +2096,23 @@ def mod_corrective_smooth(test_text, mod, CR, color_title, color_setting, color_
                                   (str(round(mod.factor, 2)), color_value, text_size_normal)])
 
                 # ITERATIONS
-                test_text.extend([(" Repeat ", color_setting, text_size_normal),
-                                  (str(mod.iterations), color_value, text_size_normal)])
+                test_text.extend([
+                    (" Repeat ", color_setting, text_size_normal),
+                    (str(mod.iterations), color_value, text_size_normal)
+                ])
+
+                # SCALE
+                if mod.scale != 1.0:
+                    test_text.extend([
+                        (" Scale ", color_setting, text_size_normal),
+                        (str(round(mod.scale, 2)), color_value, text_size_normal)
+                    ])
 
                 # SMOOTH TYPE
-                test_text.extend([(" Smooth Type ", color_setting, text_size_normal), (str(
-                    mod.smooth_type.lower().capitalize()), color_setting, text_size_normal)])
+                test_text.extend([
+                    (" Type ", color_setting, text_size_normal),
+                    (str(mod.smooth_type.lower().capitalize()), color_value, text_size_normal)
+                ])
 
                 # OPTIONS
                 if any([mod.use_only_smooth, mod.vertex_group, mod.use_pin_boundary, mod.rest_source]):
@@ -2121,7 +2132,7 @@ def mod_corrective_smooth(test_text, mod, CR, color_title, color_setting, color_
                         test_text.extend([(" Pin Boundaries ", color_setting, text_size_normal)])
 
                     # OBJECT
-                    test_text.extend([(" Rest Sources ", color_setting, text_size_normal),
+                    test_text.extend([(" Rest Source ", color_setting, text_size_normal),
                                       (mod.rest_source.lower().capitalize(), color_value, text_size_normal)])
 
         else:
