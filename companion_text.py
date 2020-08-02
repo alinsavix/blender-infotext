@@ -2329,28 +2329,38 @@ def mod_laplacian_smooth(test_text, mod, CR, color_title, color_setting, color_v
 
         if mod.show_viewport:
             if detailed_modifiers:
+                # REPEAT
+                test_text.extend([
+                    (" Repeat ", color_setting, text_size_normal),
+                    (str(mod.iterations), color_value, text_size_normal),
+                ])
+
                 # TYPE
                 if any([mod.use_x, mod.use_y, mod.use_z]):
-                    test_text.extend([(" Axis ", color_setting, text_size_normal)])
+                    test_text.extend([(" Axis", color_setting, text_size_normal)])
 
                     if mod.use_x:
-                        test_text.extend([(" X ", color_value, text_size_normal)])
+                        test_text.extend([(" X", color_value, text_size_normal)])
 
                     if mod.use_y:
-                        test_text.extend([(" Y ", color_value, text_size_normal)])
+                        test_text.extend([(" Y", color_value, text_size_normal)])
 
                     if mod.use_z:
-                        test_text.extend([(" Z ", color_value, text_size_normal)])
+                        test_text.extend([(" Z", color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" No Axis Selected ", hidden, text_size_normal)])
+                    test_text.extend([(" None", hidden, text_size_normal)])
 
                 # FACTOR
-                test_text.extend([(" Factor ", color_setting, text_size_normal),
-                                  (str(round(mod.lambda_factor, 2)), color_value, text_size_normal)])
+                test_text.extend([
+                    (" Factor ", color_setting, text_size_normal),
+                    (str(round(mod.lambda_factor, 2)), color_value, text_size_normal)
+                ])
 
                 # BORDER
-                test_text.extend([(" Border ", color_setting, text_size_normal),
-                                  (str(round(mod.lambda_border, 2)), color_value, text_size_normal)])
+                test_text.extend([
+                    (" Border ", color_setting, text_size_normal),
+                    (str(round(mod.lambda_border, 2)), color_value, text_size_normal)
+                ])
 
                 # OPTIONS
                 if any([mod.use_volume_preserve, mod.use_normalized, mod.vertex_group]):
@@ -2365,8 +2375,10 @@ def mod_laplacian_smooth(test_text, mod, CR, color_title, color_setting, color_v
                         test_text.extend([(" Normalized ", color_setting, text_size_normal)])
 
                     if mod.vertex_group:
-                        test_text.extend([(" VGroup ", color_setting, text_size_normal),
-                                          (mod.vertex_group, color_value, text_size_normal)])
+                        test_text.extend([
+                            (" VGroup ", color_setting, text_size_normal),
+                            (mod.vertex_group, color_value, text_size_normal),
+                        ])
 
         else:
             test_text.extend([(" Hidden ", hidden, text_size_normal)])
