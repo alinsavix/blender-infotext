@@ -2713,29 +2713,40 @@ def mod_warp(test_text, mod, CR, color_title, color_setting, color_value, text_s
         if mod.show_viewport:
             if detailed_modifiers:
                 # FROM
+                test_text.extend([(" From ", color_setting, text_size_normal)])
                 if mod.object_from:
-                    test_text.extend([(" From ", color_setting, text_size_normal),
-                                      (str(mod.object_from.name), color_value, text_size_normal)])
+                    test_text.extend([(str(mod.object_from.name), color_value, text_size_normal)])
 
                 else:
-                    test_text.extend([(" No Object From ", hidden, text_size_normal)])
+                    test_text.extend([(" None ", hidden, text_size_normal)])
 
                 # TO
+                test_text.extend([(" To ", color_setting, text_size_normal)])
                 if mod.object_to:
-                    test_text.extend([(" To ", color_setting, text_size_normal),
-                                      (str(mod.object_to.name), color_value, text_size_normal)])
+                    test_text.extend([(str(mod.object_to.name), color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" No Object To ", hidden, text_size_normal)])
+                    test_text.extend([(" None ", hidden, text_size_normal)])
 
                 # STRENGTH
-                test_text.extend([(" Strength ", color_setting, text_size_normal),
-                                  (str(round(mod.strength, 2)), color_value, text_size_normal)])
+                test_text.extend([
+                    (" Strength ", color_setting, text_size_normal),
+                    (str(round(mod.strength, 2)), color_value, text_size_normal),
+                ])
+
+                test_text.extend([
+                    (" Falloff ", color_setting, text_size_normal),
+                    (mod.falloff_type.lower().capitalize(), color_value, text_size_normal),
+                ])
 
                 # RADIUS
                 if mod.falloff_type != 'NONE':
+                    # FIXME: Radius showing in m when units are cm
                     if mod.falloff_radius != 0:
-                        test_text.extend([(" Radius ", color_setting, text_size_normal),
-                                          (str(round(mod.falloff_radius, 2)), color_value, text_size_normal), (units, color_value, text_size_normal)])
+                        test_text.extend([
+                            (" Radius ", color_setting, text_size_normal),
+                            (str(round(mod.falloff_radius, 2)), color_value, text_size_normal),
+                            (units, color_value, text_size_normal),
+                        ])
 
                 # OPTIONS
                 if any([mod.vertex_group, mod.use_volume_preserve, mod.texture_coords]):
@@ -2743,32 +2754,48 @@ def mod_warp(test_text, mod, CR, color_title, color_setting, color_value, text_s
 
                     # VERTEX GROUP
                     if mod.vertex_group:
-                        test_text.extend([(" VGroup ", color_setting, text_size_normal),
-                                          (str(mod.vertex_group), color_value, text_size_normal)])
+                        test_text.extend([
+                            (" VGroup ", color_setting, text_size_normal),
+                            (str(mod.vertex_group), color_value, text_size_normal),
+                        ])
 
                     # OFFSET
                     if mod.use_volume_preserve:
                         test_text.extend([(" Preserve Volume ", color_setting, text_size_normal)])
 
+                    # TEXTURE
+                    if mod.texture:
+                        test_text.extend([
+                            (" Texture ", color_setting, text_size_normal),
+                            (mod.texture.name, color_value, text_size_normal),
+                        ])
+
                     # TEXTURES COORD
-                    test_text.extend([(" Texture Coords ", color_setting, text_size_normal),
-                                      (str(mod.texture_coords.lower().capitalize()), color_value, text_size_normal)])
+                    test_text.extend([
+                        (" Texture Coords ", color_setting, text_size_normal),
+                        (mod.texture_coords, color_value, text_size_normal),
+                    ])
 
                     # OBJECT
                     if mod.texture_coords == "OBJECT":
                         if mod.texture_coords_object:
-                            test_text.extend([(" Object ", color_setting, text_size_normal),
-                                              (str(mod.texture_coords_object.name), color_value, text_size_normal)])
+                            test_text.extend([(" Object ", color_setting, text_size_normal)])
+                            test_text.extend([
+                                (str(mod.texture_coords_object.name), color_value, text_size_normal),
+                            ])
                         else:
-                            test_text.extend([(" No Object Selected ", hidden, text_size_normal)])
+                            test_text.extend([(" None ", hidden, text_size_normal)])
 
                     # UVs
                     if mod.texture_coords == "UV":
+                        test_text.extend([(" UVMap ", color_setting, text_size_normal)])
+
                         if mod.uv_layer:
-                            test_text.extend([(" UVMap ", color_setting, text_size_normal),
-                                              (str(mod.uv_layer), color_value, text_size_normal)])
+                            test_text.extend([
+                                (str(mod.uv_layer), color_value, text_size_normal)
+                            ])
                         else:
-                            test_text.extend([(" No UV's Selected ", hidden, text_size_normal)])
+                            test_text.extend([(" None ", hidden, text_size_normal)])
 
         else:
             test_text.extend([(" Hidden ", hidden, text_size_normal)])
