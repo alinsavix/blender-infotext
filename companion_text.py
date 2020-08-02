@@ -2376,11 +2376,11 @@ def mod_mesh_deform(test_text, mod, CR, color_title, color_setting, color_value,
         if mod.show_viewport:
             if detailed_modifiers:
                 # OBJECT
+                test_text.extend([(" Object ", color_setting, text_size_normal)])
                 if mod.object:
-                    test_text.extend([(" Object ", color_setting, text_size_normal),
-                                      (mod.object.name, color_value, text_size_normal)])
+                    test_text.extend([(mod.object.name, color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" No Object Selected ", hidden, text_size_normal)])
+                    test_text.extend([(" None ", hidden, text_size_normal)])
 
                 # PRECISION
                 test_text.extend([(" Precision ", color_setting, text_size_normal),
@@ -2484,11 +2484,11 @@ def mod_shrinkwrap(test_text, mod, CR, color_title, color_setting, color_value, 
         if mod.show_viewport:
             if detailed_modifiers:
                 # TARGET
+                test_text.extend([(" Target ", color_setting, text_size_normal)])
                 if mod.target:
-                    test_text.extend([(" Target ", color_setting, text_size_normal),
-                                      (str(mod.target.name), color_value, text_size_normal)])
+                    test_text.extend([(str(mod.target.name), color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" No Target Selected ", hidden, text_size_normal)])
+                    test_text.extend([(" None ", hidden, text_size_normal)])
 
                 # OFFSET
                 test_text.extend([(" Offset ", color_setting, text_size_normal),
@@ -2504,18 +2504,22 @@ def mod_shrinkwrap(test_text, mod, CR, color_title, color_setting, color_value, 
                 # NEAREST SURFACEPOINT
                 if mod.wrap_method == 'NEAREST_SURFACEPOINT':
                     # MODE
-                    test_text.extend([(" Mode ", color_setting, text_size_normal),
-                                      (str(mod.wrap_method.lower().capitalize()), color_value, text_size_normal)])
-
-                    # KEEP ABOVE SURFACE
-                    if mod.use_keep_above_surface:
-                        test_text.extend([(" Keep Above Surface ", color_setting, text_size_normal)])
+                    test_text.extend([
+                        (" Method ", color_setting, text_size_normal),
+                        (str(mod.wrap_method.lower().capitalize()), color_value, text_size_normal),
+                        (" Mode ", color_setting, text_size_normal),
+                        (str(mod.wrap_mode.lower().capitalize()), color_value, text_size_normal),
+                    ])
 
                 # PROJECT
                 elif mod.wrap_method == 'PROJECT':
                     # MODE
-                    test_text.extend([(" Mode ", color_setting, text_size_normal),
-                                      (str(mod.wrap_method.lower().capitalize()), color_value, text_size_normal)])
+                    test_text.extend([
+                        (" Method ", color_setting, text_size_normal),
+                        (str(mod.wrap_method.lower().capitalize()), color_value, text_size_normal),
+                        (" Mode ", color_setting, text_size_normal),
+                        (str(mod.wrap_mode.lower().capitalize()), color_value, text_size_normal),
+                    ])
 
                     # AXIS
                     if any([mod.use_project_x, mod.use_project_y, mod.use_project_z]):
@@ -2531,12 +2535,16 @@ def mod_shrinkwrap(test_text, mod, CR, color_title, color_setting, color_value, 
                             test_text.extend([(" Z ", color_value, text_size_normal)])
 
                     # LEVELS
-                    test_text.extend([(" Subsurf Levels ", color_setting, text_size_normal),
-                                      (str(mod.subsurf_levels), color_value, text_size_normal)])
+                    test_text.extend([
+                        (" Subsurf ", color_setting, text_size_normal),
+                        (str(mod.subsurf_levels), color_value, text_size_normal)
+                    ])
 
                     # PROJECT LIMIT
-                    test_text.extend([(" Limit ", color_setting, text_size_normal),
-                                      (str(round(mod.project_limit, 2)), color_value, text_size_normal)])
+                    test_text.extend([
+                        (" Limit ", color_setting, text_size_normal),
+                        (str(round(mod.project_limit, 2)), color_value, text_size_normal)
+                    ])
 
                     test_text.extend([CR, ("----", color_title, text_size_normal)])
 
@@ -2552,12 +2560,16 @@ def mod_shrinkwrap(test_text, mod, CR, color_title, color_setting, color_value, 
                                       (str(mod.cull_face.lower().capitalize()), color_value, text_size_normal)])
                     # AUXILIARY TARGET
                     if mod.auxiliary_target:
-                        test_text.extend([(" Auxiliary Target ", color_setting, text_size_normal),
-                                          (mod.auxiliary_target.name, color_value, text_size_normal)])
+                        test_text.extend([
+                            (" Auxiliary Target ", color_setting, text_size_normal),
+                            (mod.auxiliary_target.name, color_value, text_size_normal)
+                        ])
                 else:
                     # MODE
-                    test_text.extend([(" Mode ", color_setting, text_size_normal),
-                                      (str(mod.wrap_method.lower().capitalize()), color_value, text_size_normal)])
+                    test_text.extend([
+                        (" Mode ", color_setting, text_size_normal),
+                        (str(mod.wrap_method.lower().capitalize()), color_value, text_size_normal)
+                    ])
         else:
             test_text.extend([(" Hidden ", hidden, text_size_normal)])
 
