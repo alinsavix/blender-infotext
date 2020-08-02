@@ -2377,7 +2377,7 @@ def mod_laplacian_smooth(test_text, mod, CR, color_title, color_setting, color_v
                     if mod.vertex_group:
                         test_text.extend([
                             (" VGroup ", color_setting, text_size_normal),
-                            (mod.vertex_group, color_value, text_size_normal),
+                            (mod.vertex_group, color_value, text_size_normal)
                         ])
 
         else:
@@ -2671,15 +2671,29 @@ def mod_surface_deform(test_text, mod, CR, color_title, color_setting, color_val
         if mod.show_viewport:
             if detailed_modifiers:
                 # TARGET
+                test_text.extend([(" Target ", color_setting, text_size_normal)])
                 if mod.target:
-                    test_text.extend([(" Target ", color_setting, text_size_normal),
-                                      (str(mod.target.name), color_value, text_size_normal)])
+                    test_text.extend([(str(mod.target.name), color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" No Target Selected ", hidden, text_size_normal)])
+                    test_text.extend([(" None ", hidden, text_size_normal)])
 
                 # FALLOFF
-                test_text.extend([(" Interpolation Falloff ", color_setting, text_size_normal),
-                                  (str(round(mod.falloff, 2)), color_value, text_size_normal)])
+                test_text.extend([
+                    (" Falloff ", color_setting, text_size_normal),
+                    (str(round(mod.falloff, 2)), color_value, text_size_normal),
+                ])
+
+                if mod.vertex_group:
+                    test_text.extend([CR, ("----", color_title, text_size_normal)])
+                    test_text.extend([
+                        (" VGroup ", color_setting, text_size_normal),
+                        (mod.vertex_group, color_value, text_size_normal),
+                    ])
+
+                test_text.extend([
+                    (" Strength ", color_setting, text_size_normal),
+                    (str(round(mod.strength, 2)), color_value, text_size_normal),
+                ])
         else:
             test_text.extend([(" Hidden ", hidden, text_size_normal)])
 
