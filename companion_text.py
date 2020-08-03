@@ -606,8 +606,15 @@ def loc(test_text, CR, color_title, color_setting, color_value, text_size_normal
         test_text.extend([CR, ("S: ", color_title, text_size_normal)])
 
         for idx, axis in enumerate(axis_list):
-            test_text.extend([(axis, color_setting, text_size_normal),
-                              (str(round(obj.scale[idx], 2)), color_value, text_size_normal)])
+            test_text.extend([
+                (axis, color_setting, text_size_normal),
+                (str(round(obj.scale[idx], 2)), color_value, text_size_normal),
+            ])
+
+        if (obj.scale[0] != obj.scale[1]) or (obj.scale[1] != obj.scale[2]):
+            test_text.extend([
+                (" Non-uniform ", hidden, text_size_normal),
+            ])
 
     if any([tuple(obj.location) != (0.0, 0.0, 0.0), tuple(obj.rotation_euler) != (0.0, 0.0, 0.0), tuple(obj.scale) != (1, 1, 1)]):
         # SPACE
