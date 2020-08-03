@@ -104,7 +104,7 @@ class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
             addon_pref.show_modifiers = True
             addon_pref.show_object_info = True
             addon_pref.detailed_modifiers = False
-            addon_pref.show_blender_keymaps = True
+            addon_pref.show_blender_keymaps = False
 
         # TEXT COLOR
         if self.text_color:
@@ -159,7 +159,7 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
 
     show_blender_keymaps: BoolProperty(
         name="Show Blender Keymaps",
-        default=True,
+        default=False,
         description="Show Blender Keymaps"
     )
 
