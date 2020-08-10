@@ -174,6 +174,11 @@ def infotext_draw_text_array(infotext_key_text):
     bpy.context.area.tag_redraw()
 
 
+# utility function for floating point comparisons (needs python 3.6+)
+def is_close(a, b, precision):
+    return f'{a:.{precision}f}' == f'{b:.{precision}f}'
+
+
 # ---------------------------------------------------------------
 # BLENDER KEYMAPS
 # ---------------------------------------------------------------
@@ -611,7 +616,7 @@ def loc(test_text, CR, color_title, color_setting, color_value, text_size_normal
                 (str(round(obj.scale[idx], 2)), color_value, text_size_normal),
             ])
 
-        if (obj.scale[0] != obj.scale[1]) or (obj.scale[1] != obj.scale[2]):
+        if not is_close(obj.scale[0], obj.scale[1], 3) or not is_close(obj.scale[1], obj.scale[2], 3):
             test_text.extend([
                 (" Non-uniform ", hidden, text_size_normal),
             ])
