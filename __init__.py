@@ -18,6 +18,7 @@ bl_info = {
     "version": (0, 0, 1),
     "blender": (2, 80, 0),
     "location": "View3D",
+    "warning": "WIP",
     "wiki_url": "",
     "category": "Tools"
 }
