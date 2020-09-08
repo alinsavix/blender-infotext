@@ -4,5 +4,10 @@
         "/Applications/Blender.app//Contents/Resources/2.83/scripts/modules",
         "/usr/local/lib/python3.8/site-packages/"
     ],
-    "python.linting.flake8Enabled": true
+    "python.linting.flake8Enabled": true,
+    "python.pythonPath": "/usr/local/opt/python@3.8/bin/python3.8",
+    "python.analysis.extraPaths": [
+        "/Applications/Blender.app//Contents/Resources/2.83/scripts/modules",
+        "/usr/local/lib/python3.8/site-packages/"
+    ]
 }
