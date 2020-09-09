@@ -119,8 +119,8 @@ class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
             addon_pref.text_size_max = 22
             addon_pref.text_size_mini = 10
             addon_pref.infotext_text_space = 2
-            addon_pref.infotext_text_pos_x = 31
-            addon_pref.infotext_text_pos_y = 140
+            addon_pref.infotext_text_pos_x = 20
+            addon_pref.infotext_text_pos_y = 105
 
         # SHADOWS
         if self.text_shadows:
@@ -323,14 +323,14 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
 
     infotext_text_pos_y: IntProperty(
         name="",
-        default=140,
+        default=105,
         min=0, max=2000,
         description="Position of the text in Y"
     )
 
     infotext_text_pos_x: IntProperty(
         name="",
-        default=31,
+        default=20,
         min=0, max=2000,
         description="Position of the text in X"
     )

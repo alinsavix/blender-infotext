@@ -3309,6 +3309,8 @@ def infotext_key_text():
         # FIXME: This also turns off measurements of sides/angles/etc, so
         # we don't really want to force this off until... uh... sometime.
         # bpy.context.space_data.overlay.show_text = False
+        bpy.context.preferences.view.show_object_info = False
+        bpy.context.preferences.view.show_view_name = False
 
         view(test_text, CR, color_title, color_setting, color_value,
              text_size_normal, hidden, option, text_size_large, space)
