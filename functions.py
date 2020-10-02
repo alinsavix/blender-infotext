@@ -53,7 +53,8 @@ def get_face_type_count(infotext, obj):
 
 # Property Group
 class infotext(PropertyGroup):
-    active_modifier: IntProperty(default=-1)
+    # active_modifier: IntProperty(default=-1)
+    pass
 
 
 def register():

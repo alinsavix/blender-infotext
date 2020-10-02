@@ -1047,9 +1047,6 @@ def mod_bevel(test_text, mod, CR, color_title, color_setting, color_value, text_
         # test_text.extend([CR, ('ICON', 'ICON_MOD_BEVEL.png'), ("     ", color_setting, text_size_normal),
         #                   (str(mod.name.upper()), color_title, text_size_normal)])
 
-        # if self.active_mod:
-        #     test_text.extend([CR, (str(mod.name.upper()), hidden, text_size_normal)])
-        # else:
         test_text.extend([CR, (str(mod.name.upper()), color_title, text_size_normal)])
 
         if mod.show_viewport:
@@ -3418,27 +3415,14 @@ def infotext_key_text():
 # ----------------------------------------------------------------------------------------------------------------------
     wm = bpy.context.window_manager
 
-    # from ppretty import ppretty
-    # print("wm: ")
-    # print(ppretty(wm, depth=1, seq_length=100))
-    # index = wm.infotext.active_modifier
-    # index = infotext.active_modifier
-
     GREEN = (0.5, 1, 0, 1)
     NOIR = (0, 0, 0, 1)
     BLANC = (1, 1, 1, 1)
 
-    index = -1
-    if hasattr(wm, 'infotext') and hasattr(wm.infotext, 'active_modifier'):
-        index = wm.infotext.active_modifier
-
     if show_modifiers:
         # for mod in bpy.context.active_object.modifiers:
         for i, mod in enumerate(bpy.context.object.modifiers):
-
             color_title = BLANC
-            if i == index:
-                color_title = GREEN
 
             # FIXME: explicitly support WELD
             if mod.type not in {'BEVEL', 'ARRAY', 'SUBSURF', 'LATTICE', 'BOOLEAN', 'MIRROR', 'SOLIDIFY',
