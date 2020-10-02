@@ -13,7 +13,7 @@
 
 import bpy
 from bpy.types import Menu, Panel
-from .icon.icons import load_icons
+# from .icon.icons import load_icons
 from .functions import *
 
 from bpy.props import (

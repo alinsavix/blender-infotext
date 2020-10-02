@@ -15,13 +15,13 @@ import bpy
 import blf
 from ctypes import *
 import math
-from math import degrees
+# from math import degrees
 from .functions import *
-import bmesh
+# import bmesh
 # from .icon.icons import load_icons
 
-from os.path import dirname, join
-from . import png
+# from os.path import dirname, join
+# from . import png
 
 infotext_text_Handle = []
 TEXTURES = {}

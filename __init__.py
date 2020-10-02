@@ -43,7 +43,7 @@ from bpy.props import (
 
 from .companion_text import *
 from .functions import get_addon_preferences
-from .icon.icons import load_icons
+# from .icon.icons import load_icons
 
 
 # RESET PREFERENCES
