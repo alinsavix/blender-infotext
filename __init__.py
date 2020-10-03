@@ -83,8 +83,7 @@ class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
     def draw(self, context):
         layout = self.layout
 
-        layout.prop(self, "show_text",
-                    text="Show/Hide the text in the viewport")
+        layout.prop(self, "show_text", text="Show/Hide the text in the viewport")
         layout.prop(self, "text_color", text="Colorize the Text")
         layout.prop(self, "text_size_pos", text="Text Size & Position")
         layout.prop(self, "text_shadows", text="Text Shadows")
