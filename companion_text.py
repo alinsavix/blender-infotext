@@ -1241,12 +1241,33 @@ def mod_bevel(test_text, mod, CR, color_title, color_setting, color_value, text_
 
         if mod.show_viewport:
             if detailed_modifiers:
+                # AFFECT
+                test_text.extend([
+                    (" Affect ", color_setting, text_size_normal),
+                    (mod.affect, color_value, text_size_normal),
+                ])
+
+                # OFFSET TYPE
+                test_text.extend([
+                    (" Method ", color_setting, text_size_normal),
+                    (str(mod.offset_type.lower().capitalize()), color_value, text_size_normal),
+                ])
+
                 # WIDTH
                 test_text.extend([
                     (" Width ", color_setting, text_size_normal),
                     (str(round(mod.width, 2)), color_value, text_size_normal),
-                    (units, color_value, text_size_normal),
+
                 ])
+
+                if mod.offset_type == "PERCENT":
+                    test_text.extend([
+                        ("%", color_value, text_size_normal),
+                    ])
+                else:
+                    test_text.extend([
+                        (units, color_value, text_size_normal),
+                    ])
 
                 # SEGMENTS
                 test_text.extend([
@@ -1260,58 +1281,61 @@ def mod_bevel(test_text, mod, CR, color_title, color_setting, color_value, text_
                     (str(round(mod.profile, 2)), color_value, text_size_normal),
                 ])
 
+                # FIXME: Support material index
+                # MATERIAL
+                # test_text.extend([])
+
+                # OPTIONS
+                test_text.extend([CR, ("----", color_title, text_size_normal)])
+
                 # LIMIT METHOD
                 test_text.extend([
-                    (" ", color_setting, text_size_normal),
-                    (str(mod.limit_method.lower().capitalize()), color_setting, text_size_normal),
+                    (" Limit ", color_setting, text_size_normal),
+                    (str(mod.limit_method.lower().capitalize()), color_value, text_size_normal),
                 ])
 
                 # ANGLE
                 if mod.limit_method == 'ANGLE':
                     test_text.extend([
-                        ("  ", color_setting, text_size_normal),
+                        (":", color_setting, text_size_normal),
                         (str(round(math.degrees(mod.angle_limit), 2)), color_value, text_size_normal),
                         ("°", color_value, text_size_normal),
                     ])
+
                 # VERTEX GROUP
                 elif mod.limit_method == 'VGROUP':
-
                     if mod.vertex_group:
                         test_text.extend([
-                            ("  ", color_setting, text_size_normal),
+                            (":", color_setting, text_size_normal),
                             (str(mod.vertex_group), color_value, text_size_normal),
                         ])
                     else:
-                        test_text.extend([(" No Vertex Group Selected ", color_hidden, text_size_normal)])
+                        test_text.extend([
+                            (":", color_setting, text_size_normal),
+                            ("None", color_hidden, text_size_normal),
+                        ])
 
-                # SPEEDFLOW
-                if obj.get('SpeedFlow') and 'Bevel' in obj['SpeedFlow']:
-                    if obj['SpeedFlow']['Bevel']:
-                        test_text.extend([(" SUBDIV ", color_value, text_size_normal)])
-                    else:
-                        test_text.extend([(" NO-SUBDIV ", color_value, text_size_normal)])
+                # LOOP SLIDE
+                if mod.loop_slide:
+                    test_text.extend([(" Loop Slide ", color_setting, text_size_normal)])
 
-                # OPTIONS
-                if any([mod.use_clamp_overlap, mod.loop_slide, mod.use_only_vertices, mod.offset_type]):
-                    test_text.extend([CR, ("----", color_title, text_size_normal)])
+                # CLAMP
+                if mod.use_clamp_overlap:
+                    test_text.extend([(" Clamp ", color_setting, text_size_normal)])
 
-                    # LOOP SLIDE
-                    if mod.loop_slide:
-                        test_text.extend([(" Loop Slide ", color_setting, text_size_normal)])
+                # HARDEN NORMALS
+                if mod.harden_normals:
+                    test_text.extend([(" Harden ", color_setting, text_size_normal)])
 
-                    # CLAMP
-                    if mod.use_clamp_overlap:
-                        test_text.extend([(" Clamp ", color_setting, text_size_normal)])
+                if mod.mark_seam:
+                    test_text.extend([(" Mark Seam ", color_setting, text_size_normal)])
 
-                    # ONLY VERTICES
-                    if mod.use_only_vertices:
-                        test_text.extend([(" Only Vertices ", color_setting, text_size_normal)])
+                if mod.mark_sharp:
+                    test_text.extend([(" Mark Sharp ", color_setting, text_size_normal)])
 
-                    # OFFSET TYPE
-                    test_text.extend([
-                        (" Width Method ", color_setting, text_size_normal),
-                        (str(mod.offset_type.lower().capitalize()), color_value, text_size_normal),
-                    ])
+                # ONLY VERTICES
+                # if mod.use_only_vertices:
+                #     test_text.extend([(" Only Vertices ", color_setting, text_size_normal)])
 
         else:
             test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
@@ -1669,8 +1693,11 @@ def mod_mirror(test_text, mod, CR, color_title, color_setting, color_value,
 
                 # MERGE
                 if mod.use_mirror_merge:
-                    test_text.extend([(" Merge ", color_setting, text_size_normal),
-                                      (str(round(mod.merge_threshold, 3)), color_value, text_size_normal), (units, color_value, text_size_normal)])
+                    test_text.extend([
+                        (" Merge ", color_setting, text_size_normal),
+                        (str(round(mod.merge_threshold, 3)), color_value, text_size_normal),
+                        (units, color_value, text_size_normal),
+                    ])
 
                 # OPTIONS
                 if any([mod.use_clip, mod.use_mirror_vertex_groups, mod.use_mirror_u, mod.use_mirror_v]):
@@ -1689,13 +1716,19 @@ def mod_mirror(test_text, mod, CR, color_title, color_setting, color_value,
 
                     # TEXTURE U
                     if mod.use_mirror_u:
-                        test_text.extend([(" U ", color_setting, text_size_normal),
-                                          (str(round(mod.mirror_offset_u, 3)), color_value, text_size_normal), (units, color_value, text_size_normal)])
+                        test_text.extend([
+                            (" U ", color_setting, text_size_normal),
+                            (str(round(mod.mirror_offset_u, 3)), color_value, text_size_normal),
+                            (units, color_value, text_size_normal)
+                        ])
 
                     # TEXTURE V
                     if mod.use_mirror_v:
-                        test_text.extend([(" V ", color_setting, text_size_normal),
-                                          (str(round(mod.mirror_offset_v, 3)), color_value, text_size_normal), (units, color_value, text_size_normal)])
+                        test_text.extend([
+                            (" V ", color_setting, text_size_normal),
+                            (str(round(mod.mirror_offset_v, 3)), color_value, text_size_normal),
+                            (units, color_value, text_size_normal)
+                        ])
 
         else:
             test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
@@ -1827,30 +1860,43 @@ def mod_screw(test_text, mod, CR, color_title, color_setting, color_value,
         if mod.show_viewport:
             if detailed_modifiers:
                 # AXIS
-                test_text.extend([(" Axis ", color_setting, text_size_normal),
-                                  (str(mod.axis), color_value, text_size_normal)])
+                test_text.extend([
+                    (" Axis ", color_setting, text_size_normal),
+                    (str(mod.axis), color_value, text_size_normal)
+                ])
 
                 # AXIS OBJECT
                 if mod.object:
-                    test_text.extend([(" Axis Object ", color_setting, text_size_normal),
-                                      (str(mod.object.name), color_value, text_size_normal)])
+                    test_text.extend([
+                        (" Axis Object ", color_setting, text_size_normal),
+                        (str(mod.object.name), color_value, text_size_normal)
+                    ])
 
                 # SCREW
-                test_text.extend([(" Screw ", color_setting, text_size_normal),
-                                  (str(round(mod.screw_offset, 2)), color_value, text_size_normal), (units, color_value, text_size_normal)])
+                test_text.extend([
+                    (" Screw ", color_setting, text_size_normal),
+                    (str(round(mod.screw_offset, 2)), color_value, text_size_normal),
+                    (units, color_value, text_size_normal)
+                ])
 
                 # ITERATIONS
-                test_text.extend([(" Iterations ", color_setting, text_size_normal),
-                                  (str(round(mod.iterations, 2)), color_value, text_size_normal)])
+                test_text.extend([
+                    (" Iterations ", color_setting, text_size_normal),
+                    (str(round(mod.iterations, 2)), color_value, text_size_normal)
+                ])
 
                 # Angle
-                test_text.extend([(" Angle ", color_setting, text_size_normal),
-                                  (str(round(math.degrees(mod.angle), 1)), color_value, text_size_normal),
-                                  ("°", color_value, text_size_normal)])
+                test_text.extend([
+                    (" Angle ", color_setting, text_size_normal),
+                    (str(round(math.degrees(mod.angle), 1)), color_value, text_size_normal),
+                    ("°", color_value, text_size_normal)
+                ])
 
                 # STEPS
-                test_text.extend([(" Steps ", color_setting, text_size_normal),
-                                  (str(round(mod.steps, 2)), color_value, text_size_normal)])
+                test_text.extend([
+                    (" Steps ", color_setting, text_size_normal),
+                    (str(round(mod.steps, 2)), color_value, text_size_normal)
+                ])
 
                 # OPTIONS LINE 1
                 if any([mod.use_normal_flip, mod.use_smooth_shade, mod.use_object_screw_offset,
@@ -1879,8 +1925,11 @@ def mod_screw(test_text, mod, CR, color_title, color_setting, color_value,
                     test_text.extend([CR, ("----", color_title, text_size_normal)])
                     # USE MERGE VERTICES
                     if mod.use_merge_vertices:
-                        test_text.extend([(" Merge Vertices ", color_setting, text_size_normal),
-                                          (str(round(mod.merge_threshold, 2)), color_value, text_size_normal), (units, color_value, text_size_normal)])
+                        test_text.extend([
+                            (" Merge Vertices ", color_setting, text_size_normal),
+                            (str(round(mod.merge_threshold, 2)), color_value, text_size_normal),
+                            (units, color_value, text_size_normal)
+                        ])
 
                     # STRETCH U
                     if mod.use_stretch_u:
@@ -1959,26 +2008,37 @@ def mod_solidify(test_text, mod, CR, color_title, color_setting, color_value,
         if mod.show_viewport:
             if detailed_modifiers:
                 # THICKNESS
-                test_text.extend([(" Thickness ", color_setting, text_size_normal),
-                                  (str(round(mod.thickness, 3)), color_value, text_size_normal), (units, color_value, text_size_normal)])
+                test_text.extend([
+                    (" Thickness ", color_setting, text_size_normal),
+                    (str(round(mod.thickness, 3)), color_value, text_size_normal),
+                    (units, color_value, text_size_normal)
+                ])
 
                 # OFFSET
-                test_text.extend([(" Offset ", color_setting, text_size_normal),
-                                  (str(round(mod.offset, 2)), color_value, text_size_normal)])
+                test_text.extend([
+                    (" Offset ", color_setting, text_size_normal),
+                    (str(round(mod.offset, 2)), color_value, text_size_normal)
+                ])
 
                 # CLAMP
                 if mod.thickness_clamp != 0:
-                    test_text.extend([(" Clamp ", color_setting, text_size_normal),
-                                      (str(round(mod.thickness_clamp, 2)), color_value, text_size_normal)])
+                    test_text.extend([
+                        (" Clamp ", color_setting, text_size_normal),
+                        (str(round(mod.thickness_clamp, 2)), color_value, text_size_normal)
+                    ])
 
                 # VERTEX GROUP
                 if mod.vertex_group:
-                    test_text.extend([(" VGroup ", color_setting, text_size_normal),
-                                      (str(mod.vertex_group), color_value, text_size_normal)])
+                    test_text.extend([
+                        (" VGroup ", color_setting, text_size_normal),
+                        (str(mod.vertex_group), color_value, text_size_normal)
+                    ])
 
                     # THICKNESS VGROUP
-                    test_text.extend([(" Clamp ", color_setting, text_size_normal),
-                                      (str(round(mod.thickness_vertex_group, 2)), color_value, text_size_normal)])
+                    test_text.extend([
+                        (" Clamp ", color_setting, text_size_normal),
+                        (str(round(mod.thickness_vertex_group, 2)), color_value, text_size_normal)
+                    ])
 
                 # OPTIONS LIGNE 1
                 if any([mod.use_flip_normals, mod.use_even_offset, mod.use_quality_normals, mod.use_rim]):
@@ -2010,18 +2070,24 @@ def mod_solidify(test_text, mod, CR, color_title, color_setting, color_value,
 
                     # INNER
                     if mod.edge_crease_inner != 0:
-                        test_text.extend([(" Inner ", color_setting, text_size_normal),
-                                          (str(round(mod.edge_crease_inner, 2)), color_value, text_size_normal)])
+                        test_text.extend([
+                            (" Inner ", color_setting, text_size_normal),
+                            (str(round(mod.edge_crease_inner, 2)), color_value, text_size_normal)
+                        ])
 
                     # OUTER
                     if mod.edge_crease_outer != 0:
-                        test_text.extend([(" Outer ", color_setting, text_size_normal),
-                                          (str(round(mod.edge_crease_outer, 2)), color_value, text_size_normal)])
+                        test_text.extend([
+                            (" Outer ", color_setting, text_size_normal),
+                            (str(round(mod.edge_crease_outer, 2)), color_value, text_size_normal)
+                        ])
 
                     # RIM
                     if mod.edge_crease_rim != 0:
-                        test_text.extend([(" Rim ", color_setting, text_size_normal),
-                                          (str(round(mod.edge_crease_rim, 2)), color_value, text_size_normal)])
+                        test_text.extend([
+                            (" Rim ", color_setting, text_size_normal),
+                            (str(round(mod.edge_crease_rim, 2)), color_value, text_size_normal)
+                        ])
 
         else:
             test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
@@ -2287,13 +2353,18 @@ def mod_cast(test_text, mod, CR, color_title, color_setting, color_value,
 
                 # RADIUS
                 if mod.radius != 0:
-                    test_text.extend([(" Radius ", color_setting, text_size_normal),
-                                      (str(round(mod.radius, 2)), color_value, text_size_normal), (units, color_value, text_size_normal)])
+                    test_text.extend([
+                        (" Radius ", color_setting, text_size_normal),
+                        (str(round(mod.radius, 2)), color_value, text_size_normal),
+                        (units, color_value, text_size_normal)
+                    ])
 
                 # SIZE
                 if mod.size != 0:
-                    test_text.extend([(" Size ", color_setting, text_size_normal),
-                                      (str(round(mod.size, 2)), color_value, text_size_normal)])
+                    test_text.extend([
+                        (" Size ", color_setting, text_size_normal),
+                        (str(round(mod.size, 2)), color_value, text_size_normal)
+                    ])
 
                 # OPTIONS
                 if any([mod.use_radius_as_size, mod.vertex_group, mod.object, mod.use_transform]):
@@ -2301,8 +2372,10 @@ def mod_cast(test_text, mod, CR, color_title, color_setting, color_value,
 
                     # VERTEX GROUP
                     if mod.vertex_group:
-                        test_text.extend([(" VGroup ", color_setting, text_size_normal),
-                                          (mod.vertex_group, color_value, text_size_normal)])
+                        test_text.extend([
+                            (" VGroup ", color_setting, text_size_normal),
+                            (mod.vertex_group, color_value, text_size_normal)
+                        ])
 
                     # FROM RADIUS
                     if mod.use_radius_as_size:
@@ -2310,8 +2383,10 @@ def mod_cast(test_text, mod, CR, color_title, color_setting, color_value,
 
                     # OBJECT
                     if mod.object:
-                        test_text.extend([(" Control Object ", color_setting, text_size_normal),
-                                          (mod.object.name, color_value, text_size_normal)])
+                        test_text.extend([
+                            (" Control Object ", color_setting, text_size_normal),
+                            (mod.object.name, color_value, text_size_normal)
+                        ])
 
                     # USE TRANSFORM
                     if mod.use_transform:
@@ -2337,8 +2412,10 @@ def mod_corrective_smooth(test_text, mod, CR, color_title, color_setting,
         if mod.show_viewport:
             if detailed_modifiers:
                 # FACTOR
-                test_text.extend([(" Factor ", color_setting, text_size_normal),
-                                  (str(round(mod.factor, 2)), color_value, text_size_normal)])
+                test_text.extend([
+                    (" Factor ", color_setting, text_size_normal),
+                    (str(round(mod.factor, 2)), color_value, text_size_normal)
+                ])
 
                 # ITERATIONS
                 test_text.extend([
@@ -2377,8 +2454,10 @@ def mod_corrective_smooth(test_text, mod, CR, color_title, color_setting,
                         test_text.extend([(" Pin Boundaries ", color_setting, text_size_normal)])
 
                     # OBJECT
-                    test_text.extend([(" Rest Source ", color_setting, text_size_normal),
-                                      (mod.rest_source.lower().capitalize(), color_value, text_size_normal)])
+                    test_text.extend([
+                        (" Rest Source ", color_setting, text_size_normal),
+                        (mod.rest_source.lower().capitalize(), color_value, text_size_normal)
+                    ])
 
         else:
             test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
@@ -2429,8 +2508,10 @@ def mod_curve(test_text, mod, CR, color_title, color_setting, color_value,
                 # VERTEX GROUP
                 if mod.vertex_group:
                     test_text.extend([CR, ("----", color_title, text_size_normal)])
-                    test_text.extend([(" VGroup ", color_setting, text_size_normal),
-                                      (str(mod.vertex_group), color_value, text_size_normal)])
+                    test_text.extend([
+                        (" VGroup ", color_setting, text_size_normal),
+                        (str(mod.vertex_group), color_value, text_size_normal)
+                    ])
 
         else:
             test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
@@ -2474,8 +2555,10 @@ def mod_displace(test_text, mod, CR, color_title, color_setting, color_value,
                 # VERTEX GROUP
                 if mod.vertex_group:
                     test_text.extend([CR, ("----", color_title, text_size_normal)])
-                    test_text.extend([(" VGroup ", color_setting, text_size_normal),
-                                      (str(mod.vertex_group), color_value, text_size_normal)])
+                    test_text.extend([
+                        (" VGroup ", color_setting, text_size_normal),
+                        (str(mod.vertex_group), color_value, text_size_normal)
+                    ])
 
         else:
             test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
@@ -2506,12 +2589,17 @@ def mod_hook(test_text, mod, CR, color_title, color_setting, color_value,
                 # RADIUS
                 if mod.falloff_type != 'NONE':
                     if mod.falloff_radius != 0:
-                        test_text.extend([(" Radius ", color_setting, text_size_normal),
-                                          (str(round(mod.falloff_radius, 2)), color_value, text_size_normal), (units, color_value, text_size_normal)])
+                        test_text.extend([
+                            (" Radius ", color_setting, text_size_normal),
+                            (str(round(mod.falloff_radius, 2)), color_value, text_size_normal),
+                            (units, color_value, text_size_normal)
+                        ])
 
                 # STRENGTH
-                test_text.extend([(" Strength ", color_setting, text_size_normal),
-                                  (str(round(mod.strength, 2)), color_value, text_size_normal)])
+                test_text.extend([
+                    (" Strength ", color_setting, text_size_normal),
+                    (str(round(mod.strength, 2)), color_value, text_size_normal)
+                ])
 
                 # OPTIONS
                 test_text.extend([CR, ("----", color_title, text_size_normal)])
@@ -2522,8 +2610,10 @@ def mod_hook(test_text, mod, CR, color_title, color_setting, color_value,
                                       (mod.vertex_group, color_value, text_size_normal)])
 
                 # FALLOF TYPE
-                test_text.extend([(" Fallof Type ", color_setting, text_size_normal),
-                                  (str(mod.falloff_type.upper()), color_value, text_size_normal)])
+                test_text.extend([
+                    (" Fallof Type ", color_setting, text_size_normal),
+                    (str(mod.falloff_type.upper()), color_value, text_size_normal)
+                ])
 
                 # UNIFORM FALLOFF
                 if mod.use_falloff_uniform:
@@ -2551,8 +2641,10 @@ def mod_laplacian_deformer(test_text, mod, CR, color_title, color_setting,
         if mod.show_viewport:
             if detailed_modifiers:
                 # ITERATIONS
-                test_text.extend([(" Repeat ", color_setting, text_size_normal),
-                                  (str(mod.iterations), color_value, text_size_normal)])
+                test_text.extend([
+                    (" Repeat ", color_setting, text_size_normal),
+                    (str(mod.iterations), color_value, text_size_normal)
+                ])
 
                 # VERTEX GROUP
                 test_text.extend([(" VGroup ", color_setting, text_size_normal)])
@@ -3128,21 +3220,24 @@ def mod_wave(test_text, mod, CR, color_title, color_setting, color_value,
                     test_text.extend([
                         (" X ", color_setting, text_size_normal),
                         (str(round(mod.start_position_x, 2)), color_value,
-                         text_size_normal), (units, color_value, text_size_normal)
+                         text_size_normal),
+                        (units, color_value, text_size_normal)
                     ])
 
                     # POS Y
                     test_text.extend([
                         (" Y ", color_setting, text_size_normal),
                         (str(round(mod.start_position_y, 2)), color_value,
-                         text_size_normal), (units, color_value, text_size_normal)
+                         text_size_normal),
+                        (units, color_value, text_size_normal)
                     ])
 
                     # FALLOFF
                     test_text.extend([
                         (" Falloff ", color_setting, text_size_normal),
                         (str(round(mod.falloff_radius, 2)), color_value,
-                         text_size_normal), (units, color_value, text_size_normal)
+                         text_size_normal),
+                        (units, color_value, text_size_normal)
                     ])
 
                 if any([mod.start_position_object, mod.vertex_group, mod.texture_coords]) != 0:
