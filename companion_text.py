@@ -183,7 +183,7 @@ def is_close(a, b, precision):
 # BLENDER KEYMAPS
 # ---------------------------------------------------------------
 def blender_keymaps(test_text, CR, color_title, color_setting, color_value,
-                    text_size_normal, color_hidden, option, space):
+                    text_size_normal, color_warning, color_option, space):
     test_text.extend([CR, ("BLENDER KEYMAPS:", color_value, text_size_normal)])
     test_text.extend([CR, ("", color_title, text_size_normal)])
     test_text.extend([
@@ -452,7 +452,7 @@ wmEventHandler_Op._fields_ = (
 
 
 def modal(test_text, CR, color_title, color_setting, color_value,
-          text_size_normal, color_hidden, option, text_size_large, space):
+          text_size_normal, color_warning, color_option, text_size_large, space):
     window = bpy.context.window
     win = cast(window.as_pointer(), POINTER(wmWindow)).contents
 
@@ -512,7 +512,7 @@ view_perspective_dict = {
 # FIXME: The top/bottom/side orthographic views normally show the grid scale, too,
 # probably
 def view(test_text, CR, color_title, color_setting, color_value,
-         text_size_normal, color_hidden, option, text_size_large, space):
+         text_size_normal, color_warning, color_option, text_size_large, space):
     rd = bpy.context.region_data
 
     if rd.view_perspective == "CAMERA":
@@ -540,7 +540,7 @@ def view(test_text, CR, color_title, color_setting, color_value,
 # MODE
 # ---------------------------------------------------------------
 def mode(test_text, CR, color_title, color_setting, color_value,
-         text_size_normal, color_hidden, option, text_size_large, space):
+         text_size_normal, color_warning, color_option, text_size_large, space):
     obj = bpy.context.active_object
     mode = obj.mode
 
@@ -590,7 +590,7 @@ def mode(test_text, CR, color_title, color_setting, color_value,
 
 
 def name(test_text, CR, color_title, color_setting, color_value,
-         text_size_normal, color_hidden, option, text_size_large, space):
+         text_size_normal, color_warning, color_option, text_size_large, space):
     obj = bpy.context.active_object
 
     test_text.extend([CR, ("", color_setting, int(text_size_normal * 5)),
@@ -656,7 +656,7 @@ def name(test_text, CR, color_title, color_setting, color_value,
 
 
 def loc(test_text, CR, color_title, color_setting, color_value,
-        text_size_normal, color_hidden, option, units, space):
+        text_size_normal, color_warning, color_option, units, space):
     obj = bpy.context.active_object
 
     axis_list = (" X ", " Y ", " Z ")
@@ -702,7 +702,7 @@ def loc(test_text, CR, color_title, color_setting, color_value,
 
         if not is_close(obj.scale[0], obj.scale[1], 3) or not is_close(obj.scale[1], obj.scale[2], 3):
             test_text.extend([
-                (" Non-uniform ", color_hidden, text_size_normal),
+                (" Non-uniform ", color_warning, text_size_normal),
             ])
 
     if any([tuple(obj.location) != (0.0, 0.0, 0.0), tuple(obj.rotation_euler) != (0.0, 0.0, 0.0), tuple(obj.scale) != (1, 1, 1)]):
@@ -786,7 +786,7 @@ def ngons(test_text, CR, color_title, color_value, text_size_normal, space):
 
 
 def mesh_options(test_text, CR, color_title, color_setting, color_value,
-                 text_size_normal, color_hidden, option, space):
+                 text_size_normal, color_warning, color_option, space):
     obj = bpy.context.active_object
 
     # from ppretty import ppretty
@@ -921,7 +921,7 @@ def mesh_options(test_text, CR, color_title, color_setting, color_value,
 
 
 def sculpt(test_text, CR, color_title, color_setting, color_value,
-           text_size_normal, color_hidden, option, text_size_large, units, space):
+           text_size_normal, color_warning, color_option, text_size_large, units, space):
     obj = bpy.context.active_object
     toolsettings = bpy.context.tool_settings
     sculpt = toolsettings.sculpt
@@ -1095,7 +1095,7 @@ def sculpt(test_text, CR, color_title, color_setting, color_value,
 
 
 def mod_array(test_text, mod, CR, color_title, color_setting, color_value,
-              text_size_normal, color_hidden, option, units, space,
+              text_size_normal, color_warning, color_option, units, space,
               detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
@@ -1117,7 +1117,7 @@ def mod_array(test_text, mod, CR, color_title, color_setting, color_value,
                         test_text.extend([(" Curve ", color_setting, text_size_normal),
                                           (mod.curve.name, color_value, text_size_normal)])
                     else:
-                        test_text.extend([(" No Curve Selected", color_hidden, text_size_normal)])
+                        test_text.extend([(" No Curve Selected", color_warning, text_size_normal)])
 
                 else:
                     test_text.extend([(" Length ", color_setting, text_size_normal),
@@ -1204,7 +1204,7 @@ def mod_array(test_text, mod, CR, color_title, color_setting, color_value,
                             ])
                         else:
                             test_text.extend([
-                                (" No Object Selected", color_hidden, text_size_normal),
+                                (" No Object Selected", color_warning, text_size_normal),
                             ])
 
                     # STAR CAP
@@ -1222,13 +1222,13 @@ def mod_array(test_text, mod, CR, color_title, color_setting, color_value,
                         ])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 
 # ---------------------------------------------------------------
 # BEVEL
 # ---------------------------------------------------------------
-def mod_bevel(test_text, mod, CR, color_title, color_setting, color_value, text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+def mod_bevel(test_text, mod, CR, color_title, color_setting, color_value, text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     wm = bpy.context.window_manager
     obj = bpy.context.active_object
 
@@ -1312,7 +1312,7 @@ def mod_bevel(test_text, mod, CR, color_title, color_setting, color_value, text_
                     else:
                         test_text.extend([
                             (":", color_setting, text_size_normal),
-                            ("None", color_hidden, text_size_normal),
+                            ("None", color_warning, text_size_normal),
                         ])
 
                 # LOOP SLIDE
@@ -1338,7 +1338,7 @@ def mod_bevel(test_text, mod, CR, color_title, color_setting, color_value, text_
                 #     test_text.extend([(" Only Vertices ", color_setting, text_size_normal)])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # BOOLEAN
@@ -1346,7 +1346,7 @@ def mod_bevel(test_text, mod, CR, color_title, color_setting, color_value, text_
 
 
 def mod_boolean(test_text, mod, CR, color_title, color_setting, color_value,
-                text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+                text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -1364,7 +1364,7 @@ def mod_boolean(test_text, mod, CR, color_title, color_setting, color_value,
                     test_text.extend([(" Object ", color_setting, text_size_normal),
                                       (mod.object.name, color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" No object Selected", color_hidden, text_size_normal)])
+                    test_text.extend([(" No object Selected", color_warning, text_size_normal)])
 
                 # SOLVER
                 # if (hasattr(bpy.context.preferences.system, 'opensubdiv_compute_type')):
@@ -1379,7 +1379,7 @@ def mod_boolean(test_text, mod, CR, color_title, color_setting, color_value,
                 #                           (str(round(mod.double_threshold,2)), color_value, text_size_normal)])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # BUILD
@@ -1387,7 +1387,7 @@ def mod_boolean(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_build(test_text, mod, CR, color_title, color_setting, color_value,
-              text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+              text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -1420,7 +1420,7 @@ def mod_build(test_text, mod, CR, color_title, color_setting, color_value,
                     test_text.extend([(" Reversed ", color_setting, text_size_normal)])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # DECIMATE
@@ -1428,7 +1428,7 @@ def mod_build(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_decimate(test_text, mod, CR, color_title, color_setting, color_value,
-                 text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+                 text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -1506,7 +1506,7 @@ def mod_decimate(test_text, mod, CR, color_title, color_setting, color_value,
                                 test_text.extend([(" UV ", color_value, text_size_normal)])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # EDGE SPLIT
@@ -1514,7 +1514,7 @@ def mod_decimate(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_edge_split(test_text, mod, CR, color_title, color_setting, color_value,
-                   text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+                   text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -1534,7 +1534,7 @@ def mod_edge_split(test_text, mod, CR, color_title, color_setting, color_value,
                 if mod.use_edge_sharp:
                     test_text.extend([(" Sharp Edges ", color_setting, text_size_normal)])
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # WEIGHTED NORMALS
@@ -1542,7 +1542,7 @@ def mod_edge_split(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_weighted_normals(test_text, mod, CR, color_title, color_setting,
-                         color_value, text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+                         color_value, text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -1583,9 +1583,9 @@ def mod_weighted_normals(test_text, mod, CR, color_title, color_setting,
                         test_text.extend([(" Vgroup ", color_setting, text_size_normal),
                                           (str(mod.vertex_group), color_value, text_size_normal)])
                     else:
-                        test_text.extend([(" No Vertex Group Selected ", color_hidden, text_size_normal)])
+                        test_text.extend([(" No Vertex Group Selected ", color_warning, text_size_normal)])
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # LATTICE
@@ -1593,7 +1593,7 @@ def mod_weighted_normals(test_text, mod, CR, color_title, color_setting,
 
 
 def mod_lattice(test_text, mod, CR, color_title, color_setting, color_value,
-                text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+                text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -1608,7 +1608,7 @@ def mod_lattice(test_text, mod, CR, color_title, color_setting, color_value,
                     # OBJECT
                     test_text.extend([(mod.object.name, color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" None ", color_hidden, text_size_normal)])
+                    test_text.extend([(" None ", color_warning, text_size_normal)])
 
                 # VERTEX GROUP
                 if mod.vertex_group:
@@ -1620,7 +1620,7 @@ def mod_lattice(test_text, mod, CR, color_title, color_setting, color_value,
                                   (str(round(mod.strength, 2)), color_value, text_size_normal)])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # MASK
@@ -1628,7 +1628,7 @@ def mod_lattice(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_mask(test_text, mod, CR, color_title, color_setting, color_value,
-             text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+             text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -1644,7 +1644,7 @@ def mod_mask(test_text, mod, CR, color_title, color_setting, color_value,
                         test_text.extend([(" Armature ", color_setting, text_size_normal),
                                           (str(mod.armature.name), color_value, text_size_normal)])
                     else:
-                        test_text.extend([(" No Armature Selected ", color_hidden, text_size_normal)])
+                        test_text.extend([(" No Armature Selected ", color_warning, text_size_normal)])
 
                 # VERTEX GROUP
                 elif mod.mode == 'VERTEX_GROUP':
@@ -1652,9 +1652,9 @@ def mod_mask(test_text, mod, CR, color_title, color_setting, color_value,
                         test_text.extend([(" VGroup ", color_setting, text_size_normal),
                                           (str(mod.vertex_group), color_value, text_size_normal)])
                     else:
-                        test_text.extend([(" No Vertex Group Selected ", color_hidden, text_size_normal)])
+                        test_text.extend([(" No Vertex Group Selected ", color_warning, text_size_normal)])
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # MIRROR
@@ -1662,7 +1662,7 @@ def mod_mask(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_mirror(test_text, mod, CR, color_title, color_setting, color_value,
-               text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+               text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -1731,7 +1731,7 @@ def mod_mirror(test_text, mod, CR, color_title, color_setting, color_value,
                         ])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # MULTIRES
@@ -1739,7 +1739,7 @@ def mod_mirror(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_multires(test_text, mod, CR, color_title, color_setting, color_value,
-                 text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+                 text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -1792,7 +1792,7 @@ def mod_multires(test_text, mod, CR, color_title, color_setting, color_value,
                     test_text.extend([(" Using Creases ", color_setting, text_size_normal)])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # REMESH
@@ -1800,7 +1800,7 @@ def mod_multires(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_remesh(test_text, mod, CR, color_title, color_setting, color_value,
-               text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+               text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -1840,7 +1840,7 @@ def mod_remesh(test_text, mod, CR, color_title, color_setting, color_value,
                                           (str(round(mod.threshold, 2)), color_value, text_size_normal)])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # SCREW
@@ -1849,7 +1849,7 @@ def mod_remesh(test_text, mod, CR, color_title, color_setting, color_value,
 
 # FIXME: AUpdate for 2.8x
 def mod_screw(test_text, mod, CR, color_title, color_setting, color_value,
-              text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+              text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -1939,7 +1939,7 @@ def mod_screw(test_text, mod, CR, color_title, color_setting, color_value,
                     if mod.use_stretch_v:
                         test_text.extend([(" Stretch V ", color_setting, text_size_normal)])
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # SKIN
@@ -1947,7 +1947,7 @@ def mod_screw(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_skin(test_text, mod, CR, color_title, color_setting, color_value,
-             text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+             text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -1987,7 +1987,7 @@ def mod_skin(test_text, mod, CR, color_title, color_setting, color_value,
                         test_text.extend([(" Smooth Shading ", color_setting, text_size_normal)])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # SOLIDIFY
@@ -1997,7 +1997,7 @@ def mod_skin(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_solidify(test_text, mod, CR, color_title, color_setting, color_value,
-                 text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+                 text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -2090,7 +2090,7 @@ def mod_solidify(test_text, mod, CR, color_title, color_setting, color_value,
                         ])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # SUBSURF
@@ -2098,7 +2098,7 @@ def mod_solidify(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_subsurf(test_text, mod, CR, color_title, color_setting, color_value,
-                text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+                text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -2158,7 +2158,7 @@ def mod_subsurf(test_text, mod, CR, color_title, color_setting, color_value,
                 #         test_text.extend([(" Open Subdiv ", color_setting, text_size_normal)])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # TRIANGULATE
@@ -2169,7 +2169,7 @@ def mod_subsurf(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_triangulate(test_text, mod, CR, color_title, color_setting, color_value,
-                    text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+                    text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -2188,7 +2188,7 @@ def mod_triangulate(test_text, mod, CR, color_title, color_setting, color_value,
                                   (str(mod.ngon_method.lower().capitalize()), color_value, text_size_normal)])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # WIREFRAME
@@ -2196,7 +2196,7 @@ def mod_triangulate(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_wireframe(test_text, mod, CR, color_title, color_setting, color_value,
-                  text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+                  text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -2253,7 +2253,7 @@ def mod_wireframe(test_text, mod, CR, color_title, color_setting, color_value,
                                           (str(mod.material_offset), color_value, text_size_normal)])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ----------------------------------------------------------------------------------------------------------------------
 # MODIFIERS DEFORM -----------------------------------------------------------------------------------------------------
@@ -2265,7 +2265,7 @@ def mod_wireframe(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_armature(test_text, mod, CR, color_title, color_setting, color_value,
-                 text_size_normal, color_hidden, option, space, detailed_modifiers):
+                 text_size_normal, color_warning, color_option, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
         # NAME
@@ -2273,7 +2273,7 @@ def mod_armature(test_text, mod, CR, color_title, color_setting, color_value,
         #                   (str(mod.name.upper()), color_title, text_size_normal)])
         test_text.extend([CR, (str(mod.name.upper()), color_title, text_size_normal)])
 
-        # FIXME: We should have a 'problem' color rather than reusing 'color_hidden'
+        # FIXME: We should have a 'problem' color rather than reusing 'color_warning'
         if mod.show_viewport:
             if detailed_modifiers:
                 test_text.extend([(" Object ", color_setting, text_size_normal)])
@@ -2281,7 +2281,7 @@ def mod_armature(test_text, mod, CR, color_title, color_setting, color_value,
                     # START
                     test_text.extend([(str(mod.object.name), color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" None ", color_hidden, text_size_normal)])
+                    test_text.extend([(" None ", color_warning, text_size_normal)])
 
                 # VERTEX GROUP
                 if mod.use_vertex_groups:
@@ -2289,7 +2289,7 @@ def mod_armature(test_text, mod, CR, color_title, color_setting, color_value,
                     if mod.vertex_group:
                         test_text.extend([(str(mod.vertex_group), color_value, text_size_normal)])
                     else:
-                        test_text.extend([(" None ", color_hidden, text_size_normal)])
+                        test_text.extend([(" None ", color_warning, text_size_normal)])
 
                 # OPTIONS
                 if any([mod.use_deform_preserve_volume, mod.use_bone_envelopes, mod.use_multi_modifier]):
@@ -2309,7 +2309,7 @@ def mod_armature(test_text, mod, CR, color_title, color_setting, color_value,
                         test_text.extend([(" Multi Modifier ", color_setting, text_size_normal)])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # CAST
@@ -2317,7 +2317,7 @@ def mod_armature(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_cast(test_text, mod, CR, color_title, color_setting, color_value,
-             text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+             text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -2345,7 +2345,7 @@ def mod_cast(test_text, mod, CR, color_title, color_setting, color_value,
                         test_text.extend([(" Z ", color_value, text_size_normal)])
 
                 else:
-                    test_text.extend([(" No Axis Selected ", color_hidden, text_size_normal)])
+                    test_text.extend([(" No Axis Selected ", color_warning, text_size_normal)])
 
                 # FACTOR
                 test_text.extend([(" Factor ", color_setting, text_size_normal),
@@ -2393,7 +2393,7 @@ def mod_cast(test_text, mod, CR, color_title, color_setting, color_value,
                         test_text.extend([(" Use Transform ", color_setting, text_size_normal)])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # CORRECTIVE SMOOTH
@@ -2401,7 +2401,7 @@ def mod_cast(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_corrective_smooth(test_text, mod, CR, color_title, color_setting,
-                          color_value, text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+                          color_value, text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -2460,7 +2460,7 @@ def mod_corrective_smooth(test_text, mod, CR, color_title, color_setting,
                     ])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # CURVE
@@ -2468,7 +2468,7 @@ def mod_corrective_smooth(test_text, mod, CR, color_title, color_setting,
 
 
 def mod_curve(test_text, mod, CR, color_title, color_setting, color_value,
-              text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+              text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
         # NAME
@@ -2483,7 +2483,7 @@ def mod_curve(test_text, mod, CR, color_title, color_setting, color_value,
                 if mod.object:
                     test_text.extend([(mod.object.name, color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" None ", color_hidden, text_size_normal)])
+                    test_text.extend([(" None ", color_warning, text_size_normal)])
 
                 # DEFORM AXIS
                 test_text.extend([(" Deformation Axis ", color_setting, text_size_normal)])
@@ -2514,7 +2514,7 @@ def mod_curve(test_text, mod, CR, color_title, color_setting, color_value,
                     ])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # DISPLACE
@@ -2522,7 +2522,7 @@ def mod_curve(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_displace(test_text, mod, CR, color_title, color_setting, color_value,
-                 text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+                 text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -2561,7 +2561,7 @@ def mod_displace(test_text, mod, CR, color_title, color_setting, color_value,
                     ])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # HOOK
@@ -2569,7 +2569,7 @@ def mod_displace(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_hook(test_text, mod, CR, color_title, color_setting, color_value,
-             text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+             text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
         # NAME
@@ -2584,7 +2584,7 @@ def mod_hook(test_text, mod, CR, color_title, color_setting, color_value,
                 if mod.object:
                     test_text.extend([(mod.object.name, color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" None ", color_hidden, text_size_normal)])
+                    test_text.extend([(" None ", color_warning, text_size_normal)])
 
                 # RADIUS
                 if mod.falloff_type != 'NONE':
@@ -2620,7 +2620,7 @@ def mod_hook(test_text, mod, CR, color_title, color_setting, color_value,
                     test_text.extend([(" Uniform Falloff ", color_setting, text_size_normal)])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # LAPLACIAN DEFORMER
@@ -2628,7 +2628,7 @@ def mod_hook(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_laplacian_deformer(test_text, mod, CR, color_title, color_setting,
-                           color_value, text_size_normal, color_hidden, option, units, space,
+                           color_value, text_size_normal, color_warning, color_option, units, space,
                            detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type == 'MESH':
@@ -2651,10 +2651,10 @@ def mod_laplacian_deformer(test_text, mod, CR, color_title, color_setting,
                 if mod.vertex_group:
                     test_text.extend([(str(mod.vertex_group), color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" None ", color_hidden, text_size_normal)])
+                    test_text.extend([(" None ", color_warning, text_size_normal)])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # LAPLACIAN SMOOTH
@@ -2662,7 +2662,7 @@ def mod_laplacian_deformer(test_text, mod, CR, color_title, color_setting,
 
 
 def mod_laplacian_smooth(test_text, mod, CR, color_title, color_setting,
-                         color_value, text_size_normal, color_hidden, option, units, space,
+                         color_value, text_size_normal, color_warning, color_option, units, space,
                          detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type == 'MESH':
@@ -2692,7 +2692,7 @@ def mod_laplacian_smooth(test_text, mod, CR, color_title, color_setting,
                     if mod.use_z:
                         test_text.extend([(" Z", color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" None", color_hidden, text_size_normal)])
+                    test_text.extend([(" None", color_warning, text_size_normal)])
 
                 # FACTOR
                 test_text.extend([
@@ -2725,7 +2725,7 @@ def mod_laplacian_smooth(test_text, mod, CR, color_title, color_setting,
                         ])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # MESH DEFORM
@@ -2733,7 +2733,7 @@ def mod_laplacian_smooth(test_text, mod, CR, color_title, color_setting,
 
 
 def mod_mesh_deform(test_text, mod, CR, color_title, color_setting, color_value,
-                    text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+                    text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
         # NAME
@@ -2748,7 +2748,7 @@ def mod_mesh_deform(test_text, mod, CR, color_title, color_setting, color_value,
                 if mod.object:
                     test_text.extend([(mod.object.name, color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" None ", color_hidden, text_size_normal)])
+                    test_text.extend([(" None ", color_warning, text_size_normal)])
 
                 # PRECISION
                 test_text.extend([
@@ -2770,7 +2770,7 @@ def mod_mesh_deform(test_text, mod, CR, color_title, color_setting, color_value,
                         test_text.extend([(" Dynamic ", color_setting, text_size_normal)])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # SIMPLE DEFORM
@@ -2778,7 +2778,7 @@ def mod_mesh_deform(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_simple_deform(test_text, mod, CR, color_title, color_setting,
-                      color_value, text_size_normal, color_hidden, option, units, space,
+                      color_value, text_size_normal, color_warning, color_option, units, space,
                       detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
@@ -2849,7 +2849,7 @@ def mod_simple_deform(test_text, mod, CR, color_title, color_setting,
                 ])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # SHRINKWRAP
@@ -2857,7 +2857,7 @@ def mod_simple_deform(test_text, mod, CR, color_title, color_setting,
 
 
 def mod_shrinkwrap(test_text, mod, CR, color_title, color_setting, color_value,
-                   text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+                   text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
         # NAME
@@ -2873,7 +2873,7 @@ def mod_shrinkwrap(test_text, mod, CR, color_title, color_setting, color_value,
                 if mod.target:
                     test_text.extend([(str(mod.target.name), color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" None ", color_hidden, text_size_normal)])
+                    test_text.extend([(" None ", color_warning, text_size_normal)])
 
                 # OFFSET
                 test_text.extend([
@@ -2958,7 +2958,7 @@ def mod_shrinkwrap(test_text, mod, CR, color_title, color_setting, color_value,
                         (str(mod.wrap_method.lower().capitalize()), color_value, text_size_normal)
                     ])
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # SMOOTH
@@ -2966,7 +2966,7 @@ def mod_shrinkwrap(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_smooth(test_text, mod, CR, color_title, color_setting, color_value,
-               text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+               text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -2989,7 +2989,7 @@ def mod_smooth(test_text, mod, CR, color_title, color_setting, color_value,
                     if mod.use_z:
                         test_text.extend([(" Z ", color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" No Axis Selected ", color_hidden, text_size_normal)])
+                    test_text.extend([(" No Axis Selected ", color_warning, text_size_normal)])
 
                 # FACTOR
                 test_text.extend([(" Factor ", color_setting, text_size_normal),
@@ -3006,7 +3006,7 @@ def mod_smooth(test_text, mod, CR, color_title, color_setting, color_value,
                                       (mod.vertex_group, color_value, text_size_normal)])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # SURFACE DEFORM
@@ -3014,7 +3014,7 @@ def mod_smooth(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_surface_deform(test_text, mod, CR, color_title, color_setting,
-                       color_value, text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+                       color_value, text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -3029,7 +3029,7 @@ def mod_surface_deform(test_text, mod, CR, color_title, color_setting,
                 if mod.target:
                     test_text.extend([(str(mod.target.name), color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" None ", color_hidden, text_size_normal)])
+                    test_text.extend([(" None ", color_warning, text_size_normal)])
 
                 # FALLOFF
                 test_text.extend([
@@ -3049,7 +3049,7 @@ def mod_surface_deform(test_text, mod, CR, color_title, color_setting,
                     (str(round(mod.strength, 2)), color_value, text_size_normal),
                 ])
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # WARP
@@ -3057,7 +3057,7 @@ def mod_surface_deform(test_text, mod, CR, color_title, color_setting,
 
 
 def mod_warp(test_text, mod, CR, color_title, color_setting, color_value,
-             text_size_normal, color_hidden, option, units, space, detailed_modifiers):
+             text_size_normal, color_warning, color_option, units, space, detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -3073,14 +3073,14 @@ def mod_warp(test_text, mod, CR, color_title, color_setting, color_value,
                     test_text.extend([(str(mod.object_from.name), color_value, text_size_normal)])
 
                 else:
-                    test_text.extend([(" None ", color_hidden, text_size_normal)])
+                    test_text.extend([(" None ", color_warning, text_size_normal)])
 
                 # TO
                 test_text.extend([(" To ", color_setting, text_size_normal)])
                 if mod.object_to:
                     test_text.extend([(str(mod.object_to.name), color_value, text_size_normal)])
                 else:
-                    test_text.extend([(" None ", color_hidden, text_size_normal)])
+                    test_text.extend([(" None ", color_warning, text_size_normal)])
 
                 # STRENGTH
                 test_text.extend([
@@ -3139,7 +3139,7 @@ def mod_warp(test_text, mod, CR, color_title, color_setting, color_value,
                                 (str(mod.texture_coords_object.name), color_value, text_size_normal),
                             ])
                         else:
-                            test_text.extend([(" None ", color_hidden, text_size_normal)])
+                            test_text.extend([(" None ", color_warning, text_size_normal)])
 
                     # UVs
                     if mod.texture_coords == "UV":
@@ -3150,10 +3150,10 @@ def mod_warp(test_text, mod, CR, color_title, color_setting, color_value,
                                 (str(mod.uv_layer), color_value, text_size_normal)
                             ])
                         else:
-                            test_text.extend([(" None ", color_hidden, text_size_normal)])
+                            test_text.extend([(" None ", color_warning, text_size_normal)])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ---------------------------------------------------------------
 # WAVE
@@ -3161,7 +3161,7 @@ def mod_warp(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def mod_wave(test_text, mod, CR, color_title, color_setting, color_value,
-             text_size_normal, color_hidden, option, units, space,
+             text_size_normal, color_warning, color_option, units, space,
              detailed_modifiers):
     obj = bpy.context.active_object
     if obj.type == 'MESH':
@@ -3271,7 +3271,7 @@ def mod_wave(test_text, mod, CR, color_title, color_setting, color_value,
                                 (str(mod.texture_coords_object.name), color_value, text_size_normal)
                             ])
                         else:
-                            test_text.extend([(" No Object Selected ", color_hidden, text_size_normal)])
+                            test_text.extend([(" No Object Selected ", color_warning, text_size_normal)])
 
                     # UVs
                     if mod.texture_coords == "UV":
@@ -3279,7 +3279,7 @@ def mod_wave(test_text, mod, CR, color_title, color_setting, color_value,
                         if mod.uv_layer:
                             test_text.extend([(mod.uv_layer, color_value, text_size_normal)])
                         else:
-                            test_text.extend([(" None ", color_hidden, text_size_normal)])
+                            test_text.extend([(" None ", color_warning, text_size_normal)])
 
                 test_text.extend([CR, ("----", color_title, text_size_normal)])
 
@@ -3311,7 +3311,7 @@ def mod_wave(test_text, mod, CR, color_title, color_setting, color_value,
                 ])
 
         else:
-            test_text.extend([(" Hidden ", color_hidden, text_size_normal)])
+            test_text.extend([(" Hidden ", color_warning, text_size_normal)])
 
 # ----------------------------------------------------------------------------------------------------------------------
 # OBJECTS --------------------------------------------------------------------------------------------------------------
@@ -3323,7 +3323,7 @@ def mod_wave(test_text, mod, CR, color_title, color_setting, color_value,
 
 
 def armature(test_text, CR, color_title, color_setting, color_value,
-             text_size_normal, color_hidden, option, units, space):
+             text_size_normal, color_warning, color_option, units, space):
     obj = bpy.context.active_object
     active_bone = bpy.context.active_bone
 
@@ -3338,7 +3338,7 @@ def armature(test_text, CR, color_title, color_setting, color_value,
 
 
 def camera(test_text, CR, color_title, color_setting, color_value,
-           text_size_normal, color_hidden, option, units, space):
+           text_size_normal, color_warning, color_option, units, space):
     obj = bpy.context.active_object
     units_system = bpy.context.scene.unit_settings.system
 
@@ -3378,7 +3378,7 @@ def camera(test_text, CR, color_title, color_setting, color_value,
 
 
 def curve_font(test_text, CR, color_title, color_setting, color_value,
-               text_size_normal, color_hidden, option, units, space):
+               text_size_normal, color_warning, color_option, units, space):
     obj = bpy.context.active_object
 
     # PREVIEW U
@@ -3428,7 +3428,7 @@ def curve_font(test_text, CR, color_title, color_setting, color_value,
 
 
 def empty(test_text, CR, color_title, color_setting, color_value,
-          text_size_normal, color_hidden, option, units, space):
+          text_size_normal, color_warning, color_option, units, space):
     obj = bpy.context.active_object
 
     # ICON_OUTLINER_OB_EMPTY
@@ -3446,7 +3446,7 @@ def empty(test_text, CR, color_title, color_setting, color_value,
 
 
 def text_lattice(test_text, CR, color_title, color_setting, color_value,
-                 text_size_normal, color_hidden, option, units, space):
+                 text_size_normal, color_warning, color_option, units, space):
     obj = bpy.context.active_object
 
 # U -----------------------------------------------------------------------
@@ -3480,7 +3480,7 @@ def text_lattice(test_text, CR, color_title, color_setting, color_value,
 
 
 def cycles_lights(test_text, CR, color_title, color_setting, color_value,
-                  text_size_normal, color_hidden, option, units, space):
+                  text_size_normal, color_warning, color_option, units, space):
     obj = bpy.context.active_object
 
     # TYPE
@@ -3556,7 +3556,7 @@ def cycles_lights(test_text, CR, color_title, color_setting, color_value,
 
 
 def metaball(test_text, CR, color_title, color_setting, color_value,
-             text_size_normal, color_hidden, option, units, space):
+             text_size_normal, color_warning, color_option, units, space):
     obj = bpy.context.active_object
 
     # VIEW
@@ -3580,7 +3580,7 @@ def metaball(test_text, CR, color_title, color_setting, color_value,
 # WARNING
 # ---------------------------------------------------------------
 def warning(test_text, CR, color_title, color_setting, color_value,
-            text_size_normal, color_hidden, option, units, space):
+            text_size_normal, color_warning, color_option, units, space):
     obj = bpy.context.active_object
 
     for mod in bpy.context.active_object.modifiers:
@@ -3645,11 +3645,11 @@ def infotext_key_text():
     show_blender_keymaps = get_addon_preferences().show_blender_keymaps
 
     # TEXT OPTIONS
-    color_hidden = get_addon_preferences().hidden
-    color_title = get_addon_preferences().text_color
-    color_setting = get_addon_preferences().text_color_1
-    option = get_addon_preferences().option
-    color_value = get_addon_preferences().text_color_2
+    color_warning = get_addon_preferences().text_color_warning
+    color_title = get_addon_preferences().text_color_title
+    color_setting = get_addon_preferences().text_color_setting
+    color_option = get_addon_preferences().text_color_option
+    color_value = get_addon_preferences().text_color_value
     text_size_max = get_addon_preferences().text_size_max
     text_size_mini = get_addon_preferences().text_size_mini
 
@@ -3662,7 +3662,7 @@ def infotext_key_text():
     # HELP
     # if show_keymaps:
     #     keymaps(test_text, CR, color_title, color_setting, color_value,
-    # text_size_normal, color_hidden, option, space)
+    # text_size_normal, color_warning, color_option, space)
 
     # EXPERIMENTAL
     # detect a running modal, to display custom things if there
@@ -3670,7 +3670,7 @@ def infotext_key_text():
     # at any given moment
     if False:
         modal(test_text, CR, color_title, color_setting, color_value,
-              text_size_normal, color_hidden, option, text_size_large, space)
+              text_size_normal, color_warning, color_option, text_size_large, space)
 
     if show_view_perspective:
         # Make sure we don't conflict with the existing information
@@ -3681,7 +3681,7 @@ def infotext_key_text():
         bpy.context.preferences.view.show_view_name = False
 
         view(test_text, CR, color_title, color_setting, color_value,
-             text_size_normal, color_hidden, option, text_size_large, space)
+             text_size_normal, color_warning, color_option, text_size_large, space)
 
         test_text.extend([("SPACE", color_title, space)])
 
@@ -3693,21 +3693,21 @@ def infotext_key_text():
     # MODE
     if show_object_mode:
         mode(test_text, CR, color_title, color_setting, color_value,
-             text_size_normal, color_hidden, option, text_size_large, space)
+             text_size_normal, color_warning, color_option, text_size_large, space)
         # SPACE
         test_text.extend([("SPACE", color_title, space)])
 
     # NAME
     if show_object_name:
         name(test_text, CR, color_title, color_setting, color_value,
-             text_size_normal, color_hidden, option, text_size_large, space)
+             text_size_normal, color_warning, color_option, text_size_large, space)
         # SPACE
         test_text.extend([("SPACE", color_title, space)])
 
     # LOCATION / ROTATION / SCALE
     if show_loc_rot_scale:
         loc(test_text, CR, color_title, color_setting, color_value,
-            text_size_normal, color_hidden, option, units, space)
+            text_size_normal, color_warning, color_option, units, space)
 
     # VERT/FACES/EDGES/NGONS
     if show_vert_face_tris:
@@ -3721,13 +3721,13 @@ def infotext_key_text():
         # if bpy.context.object.mode in ['EDIT', 'OBJECT', 'WEIGHT_PAINT']:
         if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
             mesh_options(test_text, CR, color_title, color_setting,
-                         color_value, text_size_normal, color_hidden, option,
+                         color_value, text_size_normal, color_warning, color_option,
                          space)
 
     # SCULPT
     if bpy.context.object.type == 'MESH' and bpy.context.object.mode == 'SCULPT':
         sculpt(test_text, CR, color_title, color_setting, color_value,
-               text_size_normal, color_hidden, option, text_size_large, units,
+               text_size_normal, color_warning, color_option, text_size_large, units,
                space)
         # SPACE
         test_text.extend([("SPACE", color_title, space)])
@@ -3739,21 +3739,21 @@ def infotext_key_text():
     # ARMATURE
     if obj.type == 'ARMATURE':
         armature(test_text, CR, color_title, color_setting, color_value,
-                 text_size_normal, color_hidden, option, units, space)
+                 text_size_normal, color_warning, color_option, units, space)
         # SPACE
         test_text.extend([("SPACE", color_title, space)])
 
     # CAMERA
     if obj.type == 'CAMERA':
         camera(test_text, CR, color_title, color_setting, color_value,
-               text_size_normal, color_hidden, option, units, space)
+               text_size_normal, color_warning, color_option, units, space)
         # SPACE
         test_text.extend([("SPACE", color_title, space)])
 
     # CURVES / FONT
     if obj.type in ['CURVE', 'FONT']:
         curve_font(test_text, CR, color_title, color_setting, color_value,
-                   text_size_normal, color_hidden, option, units, space)
+                   text_size_normal, color_warning, color_option, units, space)
         if obj.modifiers:
             # SPACE
             test_text.extend([CR, ("", color_title, space)])
@@ -3763,28 +3763,28 @@ def infotext_key_text():
         # SPACE
         test_text.extend([CR, ("", color_title, text_size_normal)])
         empty(test_text, CR, color_title, color_setting, color_value,
-              text_size_normal, color_hidden, option, units, space)
+              text_size_normal, color_warning, color_option, units, space)
         # SPACE
         test_text.extend([("SPACE", color_title, space)])
 
     # LATTICE
     if obj.type == 'LATTICE':
         text_lattice(test_text, CR, color_title, color_setting, color_value,
-                     text_size_normal, color_hidden, option, units, space)
+                     text_size_normal, color_warning, color_option, units, space)
         # SPACE
         test_text.extend([("SPACE", color_title, space)])
 
     # LIGHT
     if obj.type == 'LAMP':
         cycles_lights(test_text, CR, color_title, color_setting, color_value,
-                      text_size_normal, color_hidden, option, units, space)
+                      text_size_normal, color_warning, color_option, units, space)
         # SPACE
         test_text.extend([("SPACE", color_title, space)])
 
     # METABALL
     if obj.type == 'META':
         metaball(test_text, CR, color_title, color_setting, color_value,
-                 text_size_normal, color_hidden, option, units, space)
+                 text_size_normal, color_warning, color_option, units, space)
         # SPACE
         test_text.extend([("SPACE", color_title, space)])
 
@@ -3820,11 +3820,11 @@ def infotext_key_text():
                         (str(mod.name), color_value, text_size_normal),
                     ])
                     test_text.extend([
-                        (" Hidden ", color_hidden, text_size_normal),
+                        (" Hidden ", color_warning, text_size_normal),
                     ])
 
                 test_text.extend([
-                    (" (Unknown modifier", color_hidden, text_size_normal),
+                    (" (Unknown modifier", color_warning, text_size_normal),
                 ])
 
                 return test_text
@@ -3832,180 +3832,180 @@ def infotext_key_text():
             # modifiers_list[mod]
             if mod.type == 'ARMATURE':
                 mod_armature(test_text, mod, CR, color_title, color_setting,
-                             color_value, text_size_normal, color_hidden, option,
+                             color_value, text_size_normal, color_warning, color_option,
                              space, detailed_modifiers)
 
             if mod.type == 'ARRAY':
                 mod_array(test_text, mod, CR, color_title, color_setting,
-                          color_value, text_size_normal, color_hidden, option,
+                          color_value, text_size_normal, color_warning, color_option,
                           units, space, detailed_modifiers)
 
             if mod.type == 'BEVEL':
                 mod_bevel(test_text, mod, CR, color_title, color_setting,
-                          color_value, text_size_normal, color_hidden, option,
+                          color_value, text_size_normal, color_warning, color_option,
                           units, space, detailed_modifiers)
 
             if mod.type == 'BOOLEAN':
                 mod_boolean(test_text, mod, CR, color_title, color_setting,
-                            color_value, text_size_normal, color_hidden, option,
+                            color_value, text_size_normal, color_warning, color_option,
                             units, space, detailed_modifiers)
 
             if mod.type == 'BUILD':
                 mod_build(test_text, mod, CR, color_title, color_setting,
-                          color_value, text_size_normal, color_hidden, option,
+                          color_value, text_size_normal, color_warning, color_option,
                           units, space, detailed_modifiers)
 
             if mod.type == 'CAST':
                 mod_cast(test_text, mod, CR, color_title, color_setting,
-                         color_value, text_size_normal, color_hidden, option,
+                         color_value, text_size_normal, color_warning, color_option,
                          units, space, detailed_modifiers)
 
             if mod.type == 'CORRECTIVE_SMOOTH':
                 mod_corrective_smooth(test_text, mod, CR, color_title,
                                       color_setting, color_value, text_size_normal,
-                                      color_hidden, option, units, space,
+                                      color_warning, color_option, units, space,
                                       detailed_modifiers)
 
             if mod.type == 'CURVE':
                 mod_curve(test_text, mod, CR, color_title, color_setting,
-                          color_value, text_size_normal, color_hidden, option,
+                          color_value, text_size_normal, color_warning, color_option,
                           units, space, detailed_modifiers)
 
             if mod.type == 'DECIMATE':
                 mod_decimate(test_text, mod, CR, color_title, color_setting,
-                             color_value, text_size_normal, color_hidden, option,
+                             color_value, text_size_normal, color_warning, color_option,
                              units, space, detailed_modifiers)
 
             if mod.type == 'DISPLACE':
                 mod_displace(test_text, mod, CR, color_title, color_setting,
-                             color_value, text_size_normal, color_hidden, option,
+                             color_value, text_size_normal, color_warning, color_option,
                              units, space, detailed_modifiers)
 
             if mod.type == 'EDGE_SPLIT':
                 mod_edge_split(test_text, mod, CR, color_title, color_setting,
-                               color_value, text_size_normal, color_hidden,
-                               option, units, space, detailed_modifiers)
+                               color_value, text_size_normal, color_warning,
+                               color_option, units, space, detailed_modifiers)
 
             if mod.type == 'HOOK':
                 mod_hook(test_text, mod, CR, color_title, color_setting,
-                         color_value, text_size_normal, color_hidden, option,
+                         color_value, text_size_normal, color_warning, color_option,
                          units, space, detailed_modifiers)
 
             if mod.type == 'LAPLACIANDEFORM':
                 mod_laplacian_deformer(test_text, mod, CR, color_title,
                                        color_setting, color_value, text_size_normal,
-                                       color_hidden, option, units, space, detailed_modifiers)
+                                       color_warning, color_option, units, space, detailed_modifiers)
 
             if mod.type == 'LAPLACIANSMOOTH':
                 mod_laplacian_smooth(test_text, mod, CR, color_title,
                                      color_setting, color_value, text_size_normal,
-                                     color_hidden, option, units, space, detailed_modifiers)
+                                     color_warning, color_option, units, space, detailed_modifiers)
 
             if mod.type == 'LATTICE':
                 mod_lattice(test_text, mod, CR, color_title, color_setting,
-                            color_value, text_size_normal, color_hidden, option,
+                            color_value, text_size_normal, color_warning, color_option,
                             units, space, detailed_modifiers)
 
             if mod.type == 'MASK':
                 mod_mask(test_text, mod, CR, color_title, color_setting,
-                         color_value, text_size_normal, color_hidden, option,
+                         color_value, text_size_normal, color_warning, color_option,
                          units, space, detailed_modifiers)
 
             if mod.type == 'MESH_DEFORM':
                 mod_mesh_deform(test_text, mod, CR, color_title, color_setting,
-                                color_value, text_size_normal, color_hidden,
-                                option, units, space, detailed_modifiers)
+                                color_value, text_size_normal, color_warning,
+                                color_option, units, space, detailed_modifiers)
 
             if mod.type == 'MIRROR':
                 mod_mirror(test_text, mod, CR, color_title, color_setting,
-                           color_value, text_size_normal, color_hidden, option,
+                           color_value, text_size_normal, color_warning, color_option,
                            units, space, detailed_modifiers)
 
             if mod.type == 'MULTIRES':
                 mod_multires(test_text, mod, CR, color_title, color_setting,
-                             color_value, text_size_normal, color_hidden, option,
+                             color_value, text_size_normal, color_warning, color_option,
                              units, space, detailed_modifiers)
 
             if mod.type == 'REMESH':
                 mod_remesh(test_text, mod, CR, color_title, color_setting,
-                           color_value, text_size_normal, color_hidden, option,
+                           color_value, text_size_normal, color_warning, color_option,
                            units, space, detailed_modifiers)
 
             if mod.type == 'SCREW':
                 mod_screw(test_text, mod, CR, color_title, color_setting,
-                          color_value, text_size_normal, color_hidden, option,
+                          color_value, text_size_normal, color_warning, color_option,
                           units, space, detailed_modifiers)
 
             if mod.type == 'SHRINKWRAP':
                 mod_shrinkwrap(test_text, mod, CR, color_title, color_setting,
-                               color_value, text_size_normal, color_hidden,
-                               option, units, space, detailed_modifiers)
+                               color_value, text_size_normal, color_warning,
+                               color_option, units, space, detailed_modifiers)
 
             if mod.type == 'SIMPLE_DEFORM':
                 mod_simple_deform(test_text, mod, CR, color_title,
                                   color_setting, color_value, text_size_normal,
-                                  color_hidden, option, units, space, detailed_modifiers)
+                                  color_warning, color_option, units, space, detailed_modifiers)
 
             if mod.type == 'SKIN':
                 mod_skin(test_text, mod, CR, color_title, color_setting,
-                         color_value, text_size_normal, color_hidden, option,
+                         color_value, text_size_normal, color_warning, color_option,
                          units, space, detailed_modifiers)
 
             if mod.type == 'SMOOTH':
                 mod_smooth(test_text, mod, CR, color_title, color_setting,
-                           color_value, text_size_normal, color_hidden, option,
+                           color_value, text_size_normal, color_warning, color_option,
                            units, space, detailed_modifiers)
 
             if mod.type == 'SOLIDIFY':
                 mod_solidify(test_text, mod, CR, color_title, color_setting,
-                             color_value, text_size_normal, color_hidden, option,
+                             color_value, text_size_normal, color_warning, color_option,
                              units, space, detailed_modifiers)
 
             if mod.type == 'SUBSURF':
                 mod_subsurf(test_text, mod, CR, color_title, color_setting,
-                            color_value, text_size_normal, color_hidden, option,
+                            color_value, text_size_normal, color_warning, color_option,
                             units, space, detailed_modifiers)
 
             if mod.type == 'SURFACE_DEFORM':
                 mod_surface_deform(test_text, mod, CR, color_title,
                                    color_setting, color_value, text_size_normal,
-                                   color_hidden, option, units, space, detailed_modifiers)
+                                   color_warning, color_option, units, space, detailed_modifiers)
 
             if mod.type == 'TRIANGULATE':
                 mod_triangulate(test_text, mod, CR, color_title, color_setting,
-                                color_value, text_size_normal, color_hidden,
-                                option, units, space, detailed_modifiers)
+                                color_value, text_size_normal, color_warning,
+                                color_option, units, space, detailed_modifiers)
 
             if mod.type == 'WARP':
                 mod_warp(test_text, mod, CR, color_title, color_setting,
-                         color_value, text_size_normal, color_hidden, option,
+                         color_value, text_size_normal, color_warning, color_option,
                          units, space, detailed_modifiers)
 
             if mod.type == 'WAVE':
                 mod_wave(test_text, mod, CR, color_title, color_setting,
-                         color_value, text_size_normal, color_hidden, option,
+                         color_value, text_size_normal, color_warning, color_option,
                          units, space, detailed_modifiers)
 
             if mod.type == 'WIREFRAME':
                 mod_wireframe(test_text, mod, CR, color_title, color_setting,
-                              color_value, text_size_normal, color_hidden, option,
+                              color_value, text_size_normal, color_warning, color_option,
                               units, space, detailed_modifiers)
 
             if mod.type == 'WEIGHTED_NORMAL':
                 mod_weighted_normals(test_text, mod, CR, color_title,
                                      color_setting, color_value, text_size_normal,
-                                     color_hidden, option, units, space, detailed_modifiers)
+                                     color_warning, color_option, units, space, detailed_modifiers)
 
     # WARNING
     # SPACE
     test_text.extend([("SPACE", color_title, space)])
     warning(test_text, CR, color_title, color_setting, color_value,
-            text_size_normal, color_hidden, option, units, space)
+            text_size_normal, color_warning, color_option, units, space)
 
     # Blender Keymaps
     if show_blender_keymaps:
         blender_keymaps(test_text, CR, color_title, color_setting,
-                        color_value, text_size_normal, color_hidden, option, space)
+                        color_value, text_size_normal, color_warning, color_option, space)
 
     # bpy.context.area.tag_redraw()
     return test_text

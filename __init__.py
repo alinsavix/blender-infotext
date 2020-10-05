@@ -16,7 +16,7 @@ bl_info = {
     "description": "Better text handling for informational text",
     "author": "TDV Alinsa",
     "version": (0, 0, 1),
-    "blender": (2, 80, 0),
+    "blender": (2, 90, 0),
     "location": "View3D",
     "warning": "WIP",
     "wiki_url": "",
@@ -45,8 +45,9 @@ from .companion_text import *
 from .functions import get_addon_preferences
 # from .icon.icons import load_icons
 
-
 # RESET PREFERENCES
+
+
 class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
     bl_idname = 'object.reset_prefs'
     bl_label = "Reset Addon Preferences"
@@ -89,7 +90,7 @@ class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
         layout.prop(self, "text_shadows", text="Text Shadows")
 
     # FIXME: Why is all this set here, if it's also set inside
-    # INFOTEXT_MT_addon_prefs, and the stuff here seems to do nothing?
+    # InfotextAddonPrefs, and the stuff here seems to do nothing?
     def execute(self, context):
         addon_pref = get_addon_preferences()
 
@@ -108,10 +109,10 @@ class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
 
         # TEXT COLOR
         if self.text_color:
-            addon_pref.title = (1, 1, 1, 1)
-            addon_pref.setting = (0.5, 1, 0, 1)
-            addon_pref.value = (0, 0.7, 1, 1)
-            addon_pref.hidden = (1, 0, 0, 1)
+            addon_pref.text_color_title = (1, 1, 1, 1)
+            addon_pref.text_color_setting = (0.5, 1, 0, 1)
+            addon_pref.text_color_value = (0, 0.7, 1, 1)
+            addon_pref.text_color_warning = (1, 0, 0, 1)
 
         # TEXT SIZE & POSITION
         if self.text_size_pos:
@@ -138,12 +139,12 @@ class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
 
 # Preferences
 ##################################
-class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
+class InfotextAddonPrefs(bpy.types.AddonPreferences):
     bl_idname = __name__
 
     prefs_tabs: EnumProperty(
         items=(
-            ('info', "Info", "NFORMATIONS"),
+            ('info', "Info", "INFORMATION"),
             ('options', "Options", "ADDON OPTIONS"),
             ('links', "Links", "LINKS"),
         ),
@@ -152,7 +153,7 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
 
     # SHOW TEXTS
     show_infotext: BoolProperty(
-        name="Enable Infotext in Viewport",
+        name="Enable Infotext",
         default=True,
         description="Enable Infotext in Viewport"
     )
@@ -211,59 +212,38 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
         description="Show Detailed Modifier Properties"
     )
 
-    # TEXTS OPTIONS
-    # title : FloatVectorProperty(
-    #         name="",
-    #         default=(1, 1, 1, 1),
-    #         min=0, max=1, size=4,
-    #         subtype='COLOR_GAMMA'
-    #         )
-    #
-    # setting : FloatVectorProperty(
-    #         name="",
-    #         default=(0.5, 1, 0, 1),
-    #         min=0, max=1, size=4,
-    #         subtype='COLOR_GAMMA'
-    #         )
-    #
-    # value : FloatVectorProperty(
-    #         name="",
-    #         default=(0, 0.7, 1, 1),
-    #         min=0, max=1, size=4,
-    #         subtype='COLOR_GAMMA'
-    #         )
-
-    text_color: FloatVectorProperty(
+    # TEXT OPTIONS
+    text_color_title: FloatVectorProperty(
         name="",
-        default=(1, 1, 1, 1),
-        min=0, max=1, size=4,
+        default=(1.0, 1.0, 1.0, 1.0),
+        min=0.0, max=1.0, size=4,
         subtype='COLOR_GAMMA'
     )
 
-    text_color_1: FloatVectorProperty(
+    text_color_setting: FloatVectorProperty(
         name="",
-        default=(0.5, 1, 0, 1),
-        min=0, max=1, size=4,
+        default=(0.5, 1.0, 0.0, 1.0),
+        min=0.0, max=1.0, size=4,
         subtype='COLOR_GAMMA'
     )
 
-    text_color_2: FloatVectorProperty(
+    text_color_value: FloatVectorProperty(
         name="",
-        default=(0, 0.7, 1, 1),
-        min=0, max=1, size=4,
+        default=(0.0, 0.7, 1.0, 1.0),
+        min=0.0, max=1.0, size=4,
         subtype='COLOR_GAMMA'
     )
 
-    option: FloatVectorProperty(
+    text_color_option: FloatVectorProperty(
         name="",
-        default=(1, 0.886, 0.2, 1),
-        min=0, max=1, size=4,
+        default=(1.0, 0.886, 0.2, 1.0),
+        min=0.0, max=1.0, size=4,
         subtype='COLOR_GAMMA'
     )
 
-    hidden: FloatVectorProperty(
+    text_color_warning: FloatVectorProperty(
         name="",
-        default=(1, 0, 0, 1),
+        default=(1.0, 0.0, 0.0, 1.0),
         min=0, max=1, size=4,
         subtype='COLOR_GAMMA'
     )
@@ -276,15 +256,15 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
 
     infotext_shadow_color: FloatVectorProperty(
         name="",
-        default=(0.0, 0.0, 0, 1),
-        min=0, max=1, size=4,
+        default=(0.0, 0.0, 0.0, 1.0),
+        min=0.0, max=1.0, size=4,
         subtype='COLOR_GAMMA'
     )
 
     infotext_shadow_alpha: FloatProperty(
         name="",
-        default=1,
-        min=0, max=1
+        default=1.0,
+        min=0.0, max=1.0
     )
 
     infotext_offset_shadow_x: IntProperty(
@@ -314,9 +294,9 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
     )
 
     infotext_text_space: FloatProperty(
-        name="Space Between lines",
-        default=2,
-        min=0.5, max=100,
+        name="",
+        default=2.0,
+        min=0.5, max=100.0,
         description="Space Between lines"
     )
 
@@ -338,7 +318,7 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
         layout = self.layout
         wm = bpy.context.window_manager
         infotext = bpy.context.window_manager.infotext
-        icons = ui.load_icons()
+        # icons = ui.load_icons()
 
         row = layout.row(align=True)
         row.prop(self, "prefs_tabs", expand=True)
@@ -399,20 +379,20 @@ class INFOTEXT_MT_addon_prefs(bpy.types.AddonPreferences):
                 row.prop(self, "show_blender_keymaps", expand=True, text=" ")
 
                 row = box.row(align=True)
-                row.label(text="Title Color")
-                row.prop(self, "text_color")
+                row.label(text="Title Text Color")
+                row.prop(self, "text_color_title")
 
                 row = box.row(align=True)
-                row.label(text="Settings Color")
-                row.prop(self, "text_color_1")
+                row.label(text="Setting Name Text Color")
+                row.prop(self, "text_color_setting")
 
                 row = box.row(align=True)
-                row.label(text="Value Color")
-                row.prop(self, "text_color_2")
+                row.label(text="Setting Value Text Color")
+                row.prop(self, "text_color_value")
 
                 row = box.row(align=True)
-                row.label(text="Modifier Hidden")
-                row.prop(self, "hidden")
+                row.label(text="Warning Text Color")
+                row.prop(self, "text_color_warning")
 
                 row = box.row(align=True)
                 row.label(text="Text Size Max")
@@ -489,7 +469,7 @@ class INFOTEXT_OT_property_group(bpy.types.PropertyGroup):
 
 CLASSES = [
     INFOTEXT_OT_Reset_Prefs,
-    INFOTEXT_MT_addon_prefs,
+    InfotextAddonPrefs,
     INFOTEXT_OT_property_group,
 ]
 
