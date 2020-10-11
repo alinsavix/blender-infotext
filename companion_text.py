@@ -539,50 +539,57 @@ def view(test_text, CR, color_title, color_setting, color_value,
 # ---------------------------------------------------------------
 # MODE
 # ---------------------------------------------------------------
+mode_strings = {
+    'OBJECT': 'OBJECT MODE',
+    'EDIT_MESH': 'EDIT MODE',
+    'EDIT_CURVE': 'EDIT MODE',
+    'EDIT_SURFACE': 'EDIT MODE',
+    'EDIT_TEXT': 'EDIT MODE',
+    'EDIT_ARMATURE': 'EDIT MODE',
+    'EDIT_METABALL': 'EDIT MODE',
+    'EDIT_METABALL': 'EDIT LATTICE',
+    'POSE': 'POSE MODE',
+    'SCULPT': 'SCULPT MODE',
+    'PAINT_WEIGHT': 'WEIGHT PAINT MODE',
+    'PAINT_VERTEX': 'VERTEX PAINT MODE',
+    'PAINT_TEXTURE': 'TEXTURE PAINT MODE',
+    'PARTICLE': 'PARTICLE EDIT MODE',
+    'EDIT_GPENCIL': 'EDIT MODE',  # FIXME: should this mention gpencil?
+    'PAINT GPENCIL': 'GR.PENCIL PAINT MODE',
+    'SCULPT_GPENCIL': 'GR.PENCIL SCULPT MODE',
+    'WEIGHT_GPENCIL': 'GR.PENCIL WEIGHT MODE',  # should this have 'paint' in the string?
+    'VERTEX_GPENCIL': 'GR.PENCIL VERTEX MODE',  # should this have 'paint' in the string?
+    'default': 'UNKNOWN MODE',
+}
+
+
 def mode(test_text, CR, color_title, color_setting, color_value,
          text_size_normal, color_warning, color_option, text_size_large, space):
-    obj = bpy.context.active_object
-    mode = obj.mode
+    mode = bpy.context.mode
 
-    if bpy.context.object.mode == "OBJECT":
-        # test_text.extend([CR, ('ICON', 'ICON_OBJECT_DATAMODE.png'), ("   OBJECT MODE", color_title, text_size_deux)])
-        test_text.extend([CR, ("OBJECT MODE", color_title, text_size_large)])
+    if mode in mode_strings:
+        test_text.extend([
+            CR,
+            (mode_strings[mode], color_title, text_size_large),
+        ])
+    else:
+        test_text.extend([
+            CR,
+            (mode_strings['default'], color_title, text_size_large),
+        ])
 
-    elif bpy.context.object.mode == "EDIT":
-        # test_text.extend([CR, ('ICON', 'ICON_EDITMODE_HLT.png'), ("   EDIT MODE", color_title, text_size_deux)])
-        test_text.extend([CR, ("EDIT MODE", color_title, text_size_large)])
-
-    elif bpy.context.object.mode == "SCULPT":
-        # test_text.extend([CR, ('ICON', 'ICON_SCULPTMODE_HLT.png'), ("   SCULPT MODE", color_title, text_size_deux)])
-        test_text.extend([CR, ("SCULPT MODE", color_title, text_size_large)])
-
-    elif bpy.context.object.mode == "VERTEX_PAINT":
-        # test_text.extend([CR, ('ICON', 'ICON_VPAINT_HLT.png'), ("    VERTEX PAINT MODE", color_title, text_size_deux)])
-        test_text.extend([CR, ("VERTEX PAINT MODE", color_title, text_size_large)])
-
-    elif bpy.context.object.mode == "WEIGHT_PAINT":
-        # test_text.extend([CR, ('ICON', 'ICON_WPAINT_HLT.png'), ("    WEIGHT PAINT MODE", color_title, text_size_deux)])
-        test_text.extend([CR, ("WEIGHT PAINT MODE", color_title, text_size_large)])
-
-    elif bpy.context.object.mode == "TEXTURE_PAINT":
-        # test_text.extend([CR, ('ICON', 'ICON_TPAINT_HLT.png'), ("    TEXTURE PAINT MODE", color_title, text_size_deux)])
-        test_text.extend([CR, ("TEXTURE PAINT MODE", color_title, text_size_large)])
-
-    # elif bpy.context.object.mode == "PARTICLE":
-    #     test_text.extend([CR, ('ICON', 'ICON_PARTICLEMODE.png'), ("    PARTICLES EDIT MODE", color_title, text_size_deux)])
-
-    elif bpy.context.object.mode == "POSE":
-        # test_text.extend([CR, ('ICON', 'ICON_POSE_HLT.png'), ("    POSE MODE", color_title, text_size_deux)])
-        test_text.extend([CR, ("POSE MODE", color_title, text_size_large)])
-
+    # Icons, just in case we figure out how to use them again
+    # test_text.extend([CR, ('ICON', 'ICON_OBJECT_DATAMODE.png'), ("   OBJECT MODE", color_title, text_size_deux)])
+    # test_text.extend([CR, ('ICON', 'ICON_EDITMODE_HLT.png'), ("   EDIT MODE", color_title, text_size_deux)])
+    # test_text.extend([CR, ('ICON', 'ICON_SCULPTMODE_HLT.png'), ("   SCULPT MODE", color_title, text_size_deux)])
+    # test_text.extend([CR, ('ICON', 'ICON_VPAINT_HLT.png'), ("    VERTEX PAINT MODE", color_title, text_size_deux)])
+    # test_text.extend([CR, ('ICON', 'ICON_WPAINT_HLT.png'), ("    WEIGHT PAINT MODE", color_title, text_size_deux)])
+    # test_text.extend([CR, ('ICON', 'ICON_TPAINT_HLT.png'), ("    TEXTURE PAINT MODE", color_title, text_size_deux)])
+    # test_text.extend([CR, ('ICON', 'ICON_PARTICLEMODE.png'), ("    PARTICLES EDIT MODE", color_title, text_size_deux)])
+   # test_text.extend([CR, ('ICON', 'ICON_POSE_HLT.png'), ("    POSE MODE", color_title, text_size_deux)])
     # test_text.extend(
-    #     [CR, ('ICON', 'ICON_OBJECT_DATAMODE.png'), ("    ", color_setting, text_size_normal)])
+    # [CR, ('ICON', 'ICON_OBJECT_DATAMODE.png'), ("    ", color_setting, text_size_normal)])
 
-    # if "_" in mode:
-    #     text_mode = mode.replace("_", " ")
-    #     test_text.extend([CR,('ICON', 'ICON_OBJECT_DATAMODE.png'), ("    ", color_setting, text_size_normal), (text_mode, color_title, text_size_deux)])
-    # else:
-    #     test_text.extend([CR, ("{} MODE".format(mode), color_title, text_size_deux)])
 
 # ---------------------------------------------------------------
 # NAME
@@ -593,12 +600,18 @@ def name(test_text, CR, color_title, color_setting, color_value,
          text_size_normal, color_warning, color_option, text_size_large, space):
     obj = bpy.context.active_object
 
-    test_text.extend([CR, ("", color_setting, int(text_size_normal * 5)),
-                      CR,  # CR, CR,
-                      # (obj.type + ": ", color_title, text_size_normal),
-                      (obj.type, color_title, text_size_normal), CR, CR,
-                      (obj.name, color_value, int(text_size_large * 1.5)), CR,
-                      ])
+    test_text.extend([
+        CR,
+        ("", color_setting, int(text_size_normal * 5)),
+        CR,
+        # (obj.type + ": ", color_title, text_size_normal),
+        (obj.type, color_title, text_size_normal),
+        CR,
+        CR,
+        (obj.name, color_value, int(text_size_large * 1.5)),
+        CR,
+    ])
+
     # test_text.extend([CR, (obj.type, color_title, text_size_normal)])
     # test_text.extend([CR, ("Name: ", color_title, text_size_normal), (obj.name, color_value, text_size_normal)])
 
