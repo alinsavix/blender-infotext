@@ -25,7 +25,6 @@ bl_info = {
 
 from . import (
     functions,
-    ui,
 )
 
 import bpy
@@ -45,100 +44,11 @@ from .companion_text import *
 from .functions import get_addon_preferences
 # from .icon.icons import load_icons
 
-# RESET PREFERENCES
-
-
-class INFOTEXT_OT_Reset_Prefs(bpy.types.Operator):
-    bl_idname = 'object.reset_prefs'
-    bl_label = "Reset Addon Preferences"
-    bl_options = {'REGISTER', "UNDO"}
-
-    @classmethod
-    def poll(cls, context):
-        return True
-
-    show_text: BoolProperty(
-        name="Show text",
-        description="Show/Hide the text in the viewport",
-        default=True
-    )
-
-    text_color: BoolProperty(
-        name="Text color",
-        description="Colorize the Text",
-        default=True
-    )
-
-    text_size_pos: BoolProperty(
-        name="Text Size & Position",
-        description="Change the size ad the position of the text",
-        default=True
-    )
-
-    text_shadows: BoolProperty(
-        name="Text Shadows",
-        description="Text Shadows",
-        default=True
-    )
-
-    def draw(self, context):
-        layout = self.layout
-
-        layout.prop(self, "show_text", text="Show/Hide the text in the viewport")
-        layout.prop(self, "text_color", text="Colorize the Text")
-        layout.prop(self, "text_size_pos", text="Text Size & Position")
-        layout.prop(self, "text_shadows", text="Text Shadows")
-
-    # FIXME: Why is all this set here, if it's also set inside
-    # InfotextAddonPrefs, and the stuff here seems to do nothing?
-    def execute(self, context):
-        addon_pref = get_addon_preferences()
-
-        # TEXT OPTIONS
-        if self.show_text:
-            addon_pref.show_infotext = True
-            addon_pref.show_view_perspective = True
-            addon_pref.show_object_mode = True
-            addon_pref.show_vert_face_tris = True
-            addon_pref.show_object_name = True
-            addon_pref.show_loc_rot_scale = True
-            addon_pref.show_modifiers = True
-            addon_pref.show_object_info = True
-            addon_pref.detailed_modifiers = False
-            addon_pref.show_blender_keymaps = False
-
-        # TEXT COLOR
-        if self.text_color:
-            addon_pref.text_color_title = (1, 1, 1, 1)
-            addon_pref.text_color_setting = (0.5, 1, 0, 1)
-            addon_pref.text_color_value = (0, 0.7, 1, 1)
-            addon_pref.text_color_warning = (1, 0, 0, 1)
-
-        # TEXT SIZE & POSITION
-        if self.text_size_pos:
-            addon_pref.text_size_max = 22
-            addon_pref.text_size_mini = 10
-            addon_pref.infotext_text_space = 2
-            addon_pref.infotext_text_pos_x = 20
-            addon_pref.infotext_text_pos_y = 105
-
-        # SHADOWS
-        if self.text_shadows:
-            addon_pref.infotext_text_shadow = False
-            addon_pref.infotext_shadow_color = (0, 0, 0, 0)
-            addon_pref.infotext_shadow_alpha = 1
-            addon_pref.infotext_offset_shadow_x = 2
-            addon_pref.infotext_offset_shadow_y = -2
-
-        bpy.context.area.tag_redraw()
-        return {'FINISHED'}
-
-    def invoke(self, context, event):
-        return self.execute(context)
-
-
+#
 # Preferences
-##################################
+#
+
+
 class InfotextAddonPrefs(bpy.types.AddonPreferences):
     bl_idname = __name__
 
@@ -437,8 +347,8 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
                     # End of original IF block above
 
             # RESET PREFS
-            row = box.row(align=True)
-            row.operator("object.reset_prefs", text="Reset Preferences")
+            # row = box.row(align=True)
+            # row.operator("object.reset_prefs", text="Reset Preferences")
 
         # # ------URls
         if self.prefs_tabs == 'links':
@@ -468,7 +378,7 @@ class INFOTEXT_OT_property_group(bpy.types.PropertyGroup):
 ##################################
 
 CLASSES = [
-    INFOTEXT_OT_Reset_Prefs,
+    # INFOTEXT_OT_Reset_Prefs,
     InfotextAddonPrefs,
     INFOTEXT_OT_property_group,
 ]
@@ -476,7 +386,6 @@ CLASSES = [
 
 def register():
     functions.register()
-    ui.register()
 
     for cls in CLASSES:
         try:
@@ -500,7 +409,6 @@ def register():
 # Unregister
 def unregister():
     functions.unregister()
-    ui.unregister()
 
     for cls in CLASSES:
         bpy.utils.unregister_class(cls)
