@@ -3341,7 +3341,7 @@ def armature(test_text, CR, color_title, color_setting, color_value,
     active_bone = bpy.context.active_bone
 
     # BONE SELECTED
-    if bpy.context.object.mode in {'POSE', 'EDIT'}:
+    if active_bone and bpy.context.object.mode in {'POSE', 'EDIT'}:
         test_text.extend([CR, ("BONE SELECTED ", color_title, text_size_normal),
                           (active_bone.name, color_value, text_size_normal)])
 
