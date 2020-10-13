@@ -123,35 +123,35 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
     )
 
     # TEXT OPTIONS
-    text_color_title: FloatVectorProperty(
+    color_title: FloatVectorProperty(
         name="",
         default=(1.0, 1.0, 1.0, 1.0),
         min=0.0, max=1.0, size=4,
         subtype='COLOR_GAMMA'
     )
 
-    text_color_setting: FloatVectorProperty(
+    color_setting: FloatVectorProperty(
         name="",
         default=(0.5, 1.0, 0.0, 1.0),
         min=0.0, max=1.0, size=4,
         subtype='COLOR_GAMMA'
     )
 
-    text_color_value: FloatVectorProperty(
+    color_value: FloatVectorProperty(
         name="",
         default=(0.0, 0.7, 1.0, 1.0),
         min=0.0, max=1.0, size=4,
         subtype='COLOR_GAMMA'
     )
 
-    text_color_option: FloatVectorProperty(
+    color_option: FloatVectorProperty(
         name="",
         default=(1.0, 0.886, 0.2, 1.0),
         min=0.0, max=1.0, size=4,
         subtype='COLOR_GAMMA'
     )
 
-    text_color_warning: FloatVectorProperty(
+    color_warning: FloatVectorProperty(
         name="",
         default=(1.0, 0.0, 0.0, 1.0),
         min=0, max=1, size=4,
@@ -290,19 +290,19 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
 
                 row = box.row(align=True)
                 row.label(text="Title Text Color")
-                row.prop(self, "text_color_title")
+                row.prop(self, "olor_title")
 
                 row = box.row(align=True)
                 row.label(text="Setting Name Text Color")
-                row.prop(self, "text_color_setting")
+                row.prop(self, "color_setting")
 
                 row = box.row(align=True)
                 row.label(text="Setting Value Text Color")
-                row.prop(self, "text_color_value")
+                row.prop(self, "color_value")
 
                 row = box.row(align=True)
                 row.label(text="Warning Text Color")
-                row.prop(self, "text_color_warning")
+                row.prop(self, "color_warning")
 
                 row = box.row(align=True)
                 row.label(text="Text Size Max")
@@ -369,8 +369,8 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
 # Property Group
 class INFOTEXT_OT_property_group(bpy.types.PropertyGroup):
     face_type_count = {}
-    previous_mesh = []   # FIXME: What is this used for?
-    previous_mode: StringProperty()
+    # previous_mesh = []   # FIXME: What is this used for?
+    # previous_mode: StringProperty()
 
 
 ##################################
@@ -395,8 +395,10 @@ def register():
 
     bpy.types.WindowManager.infotext = PointerProperty(type=INFOTEXT_OT_property_group)
 
-    context = bpy.context
-    prefs = context.preferences.addons[__name__].preferences
+    # Check the addon version on Github
+    # context = bpy.context
+    # prefs = context.preferences.addons[__name__].preferences
+    # check_for_update(prefs, context)
 
     # Add Text
     if infotext_text_Handle:
