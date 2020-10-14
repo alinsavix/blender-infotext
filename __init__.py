@@ -65,61 +65,61 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
     show_infotext: BoolProperty(
         name="Enable Infotext",
         default=True,
-        description="Enable Infotext in Viewport"
+        description="Enable Infotext in Viewport",
     )
 
     show_blender_keymaps: BoolProperty(
         name="Show Blender Keymaps",
         default=False,
-        description="Show Blender Keymaps"
+        description="Show Blender Keymaps",
     )
 
     show_view_perspective: BoolProperty(
         name="Show View Perspective",
         default=True,
-        description="Show View Perspective"
+        description="Show View Perspective",
     )
 
     show_object_mode: BoolProperty(
         name="Show Object Mode",
         default=True,
-        description="Show Object Mode"
+        description="Show Object Mode",
     )
 
     show_vert_face_tris: BoolProperty(
         name="Show Vertex, Faces, Triangles & Ngons",
         default=True,
-        description="Show Vertex, Faces, Triangles & Ngons"
+        description="Show Vertex, Faces, Triangles & Ngons",
     )
 
     show_object_info: BoolProperty(
         name="Show Modifiers",
         default=True,
-        description="Show Modifiers"
+        description="Show Modifiers",
     )
 
     show_object_name: BoolProperty(
         name="Show Object Type & Name",
         default=True,
-        description="Show Object & Name"
+        description="Show Object & Name",
     )
 
     show_loc_rot_scale: BoolProperty(
         name="Show Location, Rotation & Scale",
         default=True,
-        description="Show Location, Rotation & Scale"
+        description="Show Location, Rotation & Scale",
     )
 
     show_modifiers: BoolProperty(
         name="Show Modifiers",
         default=True,
-        description="Show Modifiers"
+        description="Show Modifiers",
     )
 
     detailed_modifiers: BoolProperty(
         name="Detailed Modifiers",
         default=True,
-        description="Show Detailed Modifier Properties"
+        description="Show Detailed Modifier Properties",
     )
 
     # TEXT OPTIONS
@@ -127,101 +127,114 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
         name="",
         default=(1.0, 1.0, 1.0, 1.0),
         min=0.0, max=1.0, size=4,
-        subtype='COLOR_GAMMA'
+        subtype='COLOR_GAMMA',
     )
 
     color_setting: FloatVectorProperty(
         name="",
         default=(0.5, 1.0, 0.0, 1.0),
         min=0.0, max=1.0, size=4,
-        subtype='COLOR_GAMMA'
+        subtype='COLOR_GAMMA',
     )
 
     color_value: FloatVectorProperty(
         name="",
         default=(0.0, 0.7, 1.0, 1.0),
         min=0.0, max=1.0, size=4,
-        subtype='COLOR_GAMMA'
+        subtype='COLOR_GAMMA',
     )
 
     color_option: FloatVectorProperty(
         name="",
         default=(1.0, 0.886, 0.2, 1.0),
         min=0.0, max=1.0, size=4,
-        subtype='COLOR_GAMMA'
+        subtype='COLOR_GAMMA',
     )
 
     color_warning: FloatVectorProperty(
         name="",
         default=(1.0, 0.0, 0.0, 1.0),
         min=0, max=1, size=4,
-        subtype='COLOR_GAMMA'
+        subtype='COLOR_GAMMA',
     )
 
     infotext_text_shadow: BoolProperty(
         name="Text Shadows",
         default=False,
-        description="Text Shadows"
+        description="Text Shadows",
     )
 
     infotext_shadow_color: FloatVectorProperty(
         name="",
         default=(0.0, 0.0, 0.0, 1.0),
         min=0.0, max=1.0, size=4,
-        subtype='COLOR_GAMMA'
+        subtype='COLOR_GAMMA',
     )
 
     infotext_shadow_alpha: FloatProperty(
         name="",
         default=1.0,
-        min=0.0, max=1.0
+        min=0.0, max=1.0,
     )
 
     infotext_offset_shadow_x: IntProperty(
         name="",
         default=2,
-        min=-5, max=5
+        min=-5, max=5,
     )
 
     infotext_offset_shadow_y: IntProperty(
         name="",
         default=-2,
-        min=-5, max=5
+        min=-5, max=5,
     )
 
     text_size_max: IntProperty(
         name="",
         default=22,
         min=10, max=30,
-        description="Maximal size of the text"
+        description="Maximal size of the text",
     )
 
     text_size_mini: IntProperty(
         name="",
         default=10,
         min=10, max=30,
-        description="Minimal size when the window is smaller"
+        description="Minimal size when the window is smaller",
     )
 
     infotext_text_space: FloatProperty(
         name="",
         default=2.0,
         min=0.5, max=100.0,
-        description="Space Between lines"
+        description="Space Between lines",
     )
 
     infotext_text_pos_y: IntProperty(
         name="",
         default=105,
-        min=0, max=2000,
-        description="Position of the text in Y"
+        min=0, max=4000,
+        description="Position of the text in Y",
     )
 
     infotext_text_pos_x: IntProperty(
         name="",
         default=20,
-        min=0, max=2000,
-        description="Position of the text in X"
+        min=0, max=4000,
+        description="Position of the text in X",
+    )
+
+    # Hidden ones (hack-ish, for now)
+    text_size_normal: IntProperty(
+        name="",
+        default=-1,
+        description="Normal size for normal text (FIXME)",
+    )
+
+    text_size_large: IntProperty(
+        name="",
+        default=-1,
+        description="Large size for large text (FIXME)",
     )
 
     def draw(self, context):
@@ -290,7 +303,7 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
 
                 row = box.row(align=True)
                 row.label(text="Title Text Color")
-                row.prop(self, "olor_title")
+                row.prop(self, "color_title")
 
                 row = box.row(align=True)
                 row.label(text="Setting Name Text Color")
@@ -365,8 +378,9 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
             box.label(text="Social:", icon='USER')
             box.operator("wm.url_open", text="Twitter").url = "https://twitter.com/example"
 
-
 # Property Group
+
+
 class INFOTEXT_OT_property_group(bpy.types.PropertyGroup):
     face_type_count = {}
     # previous_mesh = []   # FIXME: What is this used for?

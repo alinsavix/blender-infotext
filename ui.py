@@ -14,7 +14,7 @@
 import bpy
 from bpy.types import Menu, Panel
 # from .icon.icons import load_icons
-from .functions import *
+from .functions import get_addon_preferences
 
 from bpy.props import (
     StringProperty,
@@ -25,10 +25,9 @@ from bpy.props import (
     IntProperty
 )
 
-from bpy.props import *
-
-
 # Show Text Options Popup
+
+
 class INFOTEXT_show_text_options_popup(bpy.types.Operator):
     bl_idname = "object.infotext_text_options_popup"
     bl_label = "Text Options"
