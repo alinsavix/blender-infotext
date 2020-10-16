@@ -187,17 +187,20 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
         description="Position of the text in X",
     )
 
-    # Hidden ones (hack-ish, for now)
+    # Hidden/calculated values
+    # FIXME: Make sure the math here is sensical
     text_size_normal: IntProperty(
         name="",
         default=-1,
-        description="Normal size for normal text (FIXME)",
+        description="Normal size for normal text",
+        get=lambda s: min(s.text_size_max, max(s.text_size_mini, int(bpy.context.area.width / 100))),
     )
 
     text_size_large: IntProperty(
         name="",
         default=-1,
-        description="Large size for large text (FIXME)",
+        description="Large size for large text",
+        get=lambda s: int(s.text_size_max * 1.5),
     )
 
     def draw(self, context):

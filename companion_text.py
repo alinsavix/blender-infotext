@@ -3632,10 +3632,6 @@ def infotext_key_text(p):
 
     output_text = []
 
-    # FIXME: Make sure the math here is sensical
-    p.text_size_normal = min(p.text_size_max, max(p.text_size_mini, int(bpy.context.area.width / 100)))
-    p.text_size_large = int(p.text_size_max * 1.5)
-
     # HELP
     # if show_keymaps:
     #     keymaps(output_text, p.color_title, p.color_setting, p.color_value,
