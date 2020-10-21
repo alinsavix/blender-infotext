@@ -16,6 +16,7 @@ import blf
 # from ctypes import *
 import math
 # from math import degrees
+from typing import *
 from .functions import get_face_type_count, get_addon_preferences
 from . import prefs
 
@@ -111,7 +112,7 @@ def infotext_draw_text_callback():
         infotext_draw_text_array(infotext_key_text(addon_prefs), addon_prefs)
 
 
-def infotext_draw_text_array(output_text, p: prefs.InfotextAddonPrefs):
+def infotext_draw_text_array(output_text, p: prefs.InfotextAddonPrefs) -> None:
     font_id = 0
     x_offset = 0
     y_offset = 0
@@ -303,7 +304,7 @@ def modal(output_text, p: prefs.InfotextAddonPrefs):
 # ---------------------------------------------------------------
 
 
-def r(x):
+def r(x: Union[float, int]) -> float:
     return round(x, 3)
 
 
@@ -432,8 +433,8 @@ def mode(output_text, p: prefs.InfotextAddonPrefs):
 # ---------------------------------------------------------------
 
 
-def name(output_text, p: prefs.InfotextAddonPrefs):
-    obj = bpy.context.active_object
+def name(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> None:
+    # obj = bpy.context.active_object
 
     output_text.extend([
         "CR",
@@ -503,8 +504,8 @@ def name(output_text, p: prefs.InfotextAddonPrefs):
 # ---------------------------------------------------------------
 
 
-def loc(output_text, p: prefs.InfotextAddonPrefs, units):
-    obj = bpy.context.active_object
+def loc(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, units) -> None:
+    # obj = bpy.context.active_object
 
     axis_list = (" X ", " Y ", " Z ")
     # LOCATION
@@ -567,8 +568,8 @@ def loc(output_text, p: prefs.InfotextAddonPrefs, units):
 # ---------------------------------------------------------------
 
 
-def ngons(output_text, p: prefs.InfotextAddonPrefs):
-    obj = bpy.context.active_object
+def ngons(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> None:
+    # obj = bpy.context.active_object
     # WM = bpy.context.window_manager.infotext_properties
     infotext = bpy.context.window_manager.infotext
 
@@ -608,7 +609,9 @@ def ngons(output_text, p: prefs.InfotextAddonPrefs):
         (str(fcount), p.color_value, p.text_size_normal),
     ])
 
-    if not bpy.context.object.mode == 'SCULPT':
+    # FIXME: Make sure this is ok in all cases
+    # if not bpy.context.object.mode == 'SCULPT':
+    if not obj.mode == 'SCULPT':
         tcount = infotext.face_type_count['TRIS']
         ncount = infotext.face_type_count['NGONS']
         # TRIS
@@ -638,8 +641,8 @@ def ngons(output_text, p: prefs.InfotextAddonPrefs):
 # ---------------------------------------------------------------
 
 
-def mesh_options(output_text, p: prefs.InfotextAddonPrefs):
-    obj = bpy.context.active_object
+def mesh_options(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> None:
+    # obj = bpy.context.active_object
 
     # from ppretty import ppretty
     # import pprint
@@ -778,8 +781,8 @@ def mesh_options(output_text, p: prefs.InfotextAddonPrefs):
 # ---------------------------------------------------------------
 
 
-def sculpt(output_text, p: prefs.InfotextAddonPrefs, units):
-    obj = bpy.context.active_object
+def sculpt(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, units) -> None:
+    # obj = bpy.context.active_object
     toolsettings = bpy.context.tool_settings
     sculpt = toolsettings.sculpt
     context_tool = bpy.context.scene.tool_settings.sculpt
@@ -844,6 +847,7 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, units):
     # SPACE
     output_text.extend(["SPACE"])
 
+    # FIXME: Should we be accessing this from the context, or just the active object?
     if bpy.context.sculpt_object.use_dynamic_topology_sculpting:
         # SPACE
         output_text.extend(["SPACE"])
@@ -854,7 +858,6 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, units):
         output_text.extend(["SPACE"])
 
         if context_tool.detail_type_method == 'CONSTANT':
-
             output_text.extend([
                 "CR",
                 ("CONSTANT DETAIL ", p.color_setting, p.text_size_normal),
@@ -868,6 +871,7 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, units):
                 (str(round(context_tool.detail_size, 2)), p.color_value, p.text_size_normal),
                 (" px", p.color_value, p.text_size_normal),
             ])
+
         else:
             output_text.extend([
                 "CR",
@@ -940,17 +944,18 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, units):
         if context_tool.tile_z:
             output_text.extend([(str(" Z "), p.color_value, p.text_size_normal)])
 
-# ----------------------------------------------------------------------------------------------------------------------
-# MODIFIERS ------------------------------------------------------------------------------------------------------------
-# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------
+# MODIFIERS
+# ----------------------------------------------------------------------
 
 # ---------------------------------------------------------------
 # ARRAY
 # ---------------------------------------------------------------
 
 
-def mod_array(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_array(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+                mod: bpy.types.ArrayModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
         # output_text.extend(["CR",('ICON', 'ICON_MOD_ARRAY.png'),("    ", p.color_setting, p.text_size_normal), (str(mod.name.upper()), p.color_title, p.text_size_normal)])
@@ -1080,9 +1085,11 @@ def mod_array(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 # BEVEL
 # ---------------------------------------------------------------
-def mod_bevel(output_text, p: prefs.InfotextAddonPrefs, mod, units):
+def mod_bevel(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.BevelModifier, units) -> None:
+    # FIXME: Should we take WM as an argument, too?
     wm = bpy.context.window_manager
-    obj = bpy.context.active_object
+    # obj = bpy.context.active_object
 
     if obj.type in {'MESH', 'CURVE', 'FONT'}:
         # NAME
@@ -1198,8 +1205,9 @@ def mod_bevel(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_boolean(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_boolean(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.BooleanModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_BOOLEAN.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -1238,9 +1246,9 @@ def mod_boolean(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_build(output_text, p: prefs.InfotextAddonPrefs, mod,
-              units):
-    obj = bpy.context.active_object
+def mod_build(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.BuildModifier,              units) -> None:
+    # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_BUILD.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -1279,8 +1287,9 @@ def mod_build(output_text, p: prefs.InfotextAddonPrefs, mod,
 # ---------------------------------------------------------------
 
 
-def mod_decimate(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_decimate(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.DecimateModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_DECIM.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -1368,8 +1377,9 @@ def mod_decimate(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_edge_split(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_edge_split(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.EdgeSplitModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_EDGESPLIT.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -1397,9 +1407,9 @@ def mod_edge_split(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_weighted_normals(output_text, p: prefs.InfotextAddonPrefs, mod,
-                         units):
-    obj = bpy.context.active_object
+def mod_weighted_normals(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.WeightedNormalModifier,                         units) -> None:
+    # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_EDGESPLIT.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -1459,7 +1469,8 @@ def mod_weighted_normals(output_text, p: prefs.InfotextAddonPrefs, mod,
 # ---------------------------------------------------------------
 
 
-def mod_lattice(output_text, p: prefs.InfotextAddonPrefs, mod, units):
+def mod_lattice(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.LatticeModifier, units) -> None:
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -1497,8 +1508,9 @@ def mod_lattice(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_mask(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_mask(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.MaskModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_MASK.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -1534,8 +1546,9 @@ def mod_mask(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_mirror(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_mirror(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.MirrorModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_MIRROR.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -1612,8 +1625,8 @@ def mod_mirror(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_multires(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_multires(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, mod: bpy.types.MultiresModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_MULTIRES.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -1672,9 +1685,9 @@ def mod_multires(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_remesh(output_text, p: prefs.InfotextAddonPrefs, mod,
-               units):
-    obj = bpy.context.active_object
+def mod_remesh(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.RemeshModifier,               units) -> None:
+    # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_REMESH.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -1722,8 +1735,8 @@ def mod_remesh(output_text, p: prefs.InfotextAddonPrefs, mod,
 
 
 # FIXME: Update for 2.8x/2.9x
-def mod_screw(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_screw(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, mod: bpy.types.ScrewModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_SCREW.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -1819,7 +1832,8 @@ def mod_screw(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_skin(output_text, p: prefs.InfotextAddonPrefs, mod, units):
+def mod_skin(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.SkinModifier, units) -> None:
     obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -1870,8 +1884,9 @@ def mod_skin(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # FIXME: Needs to support 'complex' mode
 
 
-def mod_solidify(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_solidify(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.SolidifyModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_SOLIDIFY.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -1970,8 +1985,9 @@ def mod_solidify(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_subsurf(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_subsurf(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.SubsurfModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_SUBSURF.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -2038,10 +2054,8 @@ def mod_subsurf(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 
 # FIXME: Needs to support 'keep normals'  minimum verts, and not have
 # underscores in the 'method' field
-
-
-def mod_triangulate(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_triangulate(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, mod: bpy.types.TriangulateModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_TRIANGULATE.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -2070,8 +2084,9 @@ def mod_triangulate(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_wireframe(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_wireframe(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.WireframeModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_WIREFRAME.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -2150,8 +2165,8 @@ def mod_wireframe(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_armature(output_text, p: prefs.InfotextAddonPrefs, mod):
-    obj = bpy.context.active_object
+def mod_armature(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, mod: bpy.types.ArmatureModifier) -> None:
+    # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_ARMATURE.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -2201,8 +2216,9 @@ def mod_armature(output_text, p: prefs.InfotextAddonPrefs, mod):
 # ---------------------------------------------------------------
 
 
-def mod_cast(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_cast(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.CastModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_CAST.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -2284,8 +2300,9 @@ def mod_cast(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_corrective_smooth(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_corrective_smooth(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.CorrectiveSmoothModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_SMOOTH.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -2352,8 +2369,9 @@ def mod_corrective_smooth(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_curve(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_curve(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.CurveModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_CURVE.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -2405,8 +2423,9 @@ def mod_curve(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_displace(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_displace(output_text, p: prefs.InfotextAddonPrefs,obj: bpy.types.Object,
+mod: bpy.types.DisplaceModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_DISPLACE.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -2459,8 +2478,9 @@ def mod_displace(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_hook(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_hook(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types. HookModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_HOOK.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -2519,8 +2539,9 @@ def mod_hook(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_laplacian_deformer(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_laplacian_deformer(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.LaplacianDeformModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_MESHDEFORM.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -2551,8 +2572,9 @@ def mod_laplacian_deformer(output_text, p: prefs.InfotextAddonPrefs, mod, units)
 # ---------------------------------------------------------------
 
 
-def mod_laplacian_smooth(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_laplacian_smooth(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.LaplacianSmoothModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_SMOOTH.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -2620,8 +2642,9 @@ def mod_laplacian_smooth(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_mesh_deform(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_mesh_deform(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.MeshDeformModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_MESHDEFORM.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -2664,9 +2687,9 @@ def mod_mesh_deform(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_simple_deform(output_text, p: prefs.InfotextAddonPrefs, mod,
-                      units):
-    obj = bpy.context.active_object
+def mod_simple_deform(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+mod: bpy.types.SimpleDeformModifier,                      units) -> None:
+    # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_SIMPLEDEFORM.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -2745,8 +2768,9 @@ def mod_simple_deform(output_text, p: prefs.InfotextAddonPrefs, mod,
 # ---------------------------------------------------------------
 
 
-def mod_shrinkwrap(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_shrinkwrap(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+    mod: bpy.types.ShrinkwrapModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_SHRINKWRAP.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -2857,9 +2881,9 @@ def mod_shrinkwrap(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_smooth(output_text, p: prefs.InfotextAddonPrefs, mod,
-               units):
-    obj = bpy.context.active_object
+def mod_smooth(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+    mod: bpy.types.SmoothModifier,               units) -> None:
+    # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_SMOOTH.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -2911,9 +2935,9 @@ def mod_smooth(output_text, p: prefs.InfotextAddonPrefs, mod,
 # ---------------------------------------------------------------
 
 
-def mod_surface_deform(output_text, p: prefs.InfotextAddonPrefs, mod,
-                       units):
-    obj = bpy.context.active_object
+def mod_surface_deform(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+    mod: bpy.types.SurfaceDeformModifier,                       units) -> None:
+    # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_MESHDEFORM.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -2954,8 +2978,9 @@ def mod_surface_deform(output_text, p: prefs.InfotextAddonPrefs, mod,
 # ---------------------------------------------------------------
 
 
-def mod_warp(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_warp(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+    mod: bpy.types.WarpModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_WARP.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -3057,8 +3082,9 @@ def mod_warp(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def mod_wave(output_text, p: prefs.InfotextAddonPrefs, mod, units):
-    obj = bpy.context.active_object
+def mod_wave(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+    mod: bpy.types.WaveModifier, units) -> None:
+    # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
         # output_text.extend(["CR", ('ICON', 'ICON_MOD_WAVE.png'), ("    ", p.color_setting, p.text_size_normal),
@@ -3220,12 +3246,14 @@ def mod_wave(output_text, p: prefs.InfotextAddonPrefs, mod, units):
 # ---------------------------------------------------------------
 
 
-def armature(output_text, p: prefs.InfotextAddonPrefs, units):
-    obj = bpy.context.active_object
+def armature(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Armature, units) -> None:
+    # obj = bpy.context.active_object
+
+    # FIXME: Can we get this from the object rather than the context?
     active_bone = bpy.context.active_bone
 
     # BONE SELECTED
-    if active_bone and bpy.context.object.mode in {'POSE', 'EDIT'}:
+    if active_bone and obj.mode in {'POSE', 'EDIT'}:
         output_text.extend([
             "CR",
             ("BONE SELECTED ", p.color_title, p.text_size_normal),
@@ -3237,8 +3265,10 @@ def armature(output_text, p: prefs.InfotextAddonPrefs, units):
 # ---------------------------------------------------------------
 
 
-def camera(output_text, p: prefs.InfotextAddonPrefs, units):
-    obj = bpy.context.active_object
+def camera(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Camera, units) -> None:
+    # obj = bpy.context.active_object
+
+    # FIXME: Should this use the 'units' parameter?
     units_system = bpy.context.scene.unit_settings.system
 
     # LENS
@@ -3256,6 +3286,7 @@ def camera(output_text, p: prefs.InfotextAddonPrefs, units):
             ("FOCUS ", p.color_title, p.text_size_normal),
             (str(obj.data.dof.focus_object.name), p.color_value, p.text_size_normal),
         ])
+
     else:
         foc_dist = bpy.utils.units.to_string(units_system, 'LENGTH', obj.data.dof.focus_distance, precision=2)
         output_text.extend([
@@ -3275,9 +3306,9 @@ def camera(output_text, p: prefs.InfotextAddonPrefs, units):
 # CURVE / FONT
 # ---------------------------------------------------------------
 
-
-def curve_font(output_text, p: prefs.InfotextAddonPrefs, units):
-    obj = bpy.context.active_object
+# FIXME: What data type should obj be?
+def curve_font(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, units) -> None:
+    # obj = bpy.context.active_object
 
     # PREVIEW U
     output_text.extend([
@@ -3351,8 +3382,8 @@ def curve_font(output_text, p: prefs.InfotextAddonPrefs, units):
 # ---------------------------------------------------------------
 
 
-def empty(output_text, p: prefs.InfotextAddonPrefs, units):
-    obj = bpy.context.active_object
+def empty(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, units) -> None:
+    # obj = bpy.context.active_object
 
     # ICON_OUTLINER_OB_EMPTY
     # TYPE
@@ -3372,9 +3403,9 @@ def empty(output_text, p: prefs.InfotextAddonPrefs, units):
 # LATTICE
 # ---------------------------------------------------------------
 
-
-def text_lattice(output_text, p: prefs.InfotextAddonPrefs, units):
-    obj = bpy.context.active_object
+# FIXME: What type should obj be?
+def text_lattice(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, units) -> None:
+    # obj = bpy.context.active_object
 
 # U -----------------------------------------------------------------------
     output_text.extend([
@@ -3419,9 +3450,9 @@ def text_lattice(output_text, p: prefs.InfotextAddonPrefs, units):
 # LIGHTS
 # ---------------------------------------------------------------
 
-
-def cycles_lights(output_text, p: prefs.InfotextAddonPrefs, units):
-    obj = bpy.context.active_object
+# FIXME: What data type should obj be?
+def cycles_lights(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, units) -> None:
+    # obj = bpy.context.active_object
 
     # TYPE
     if obj.data.type == 'AREA':
@@ -3540,8 +3571,8 @@ def cycles_lights(output_text, p: prefs.InfotextAddonPrefs, units):
 # ---------------------------------------------------------------
 
 
-def metaball(output_text, p: prefs.InfotextAddonPrefs, units):
-    obj = bpy.context.active_object
+def metaball(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.MetaBall, units) -> None:
+    # obj = bpy.context.active_object
 
     # VIEW
     output_text.extend([
@@ -3575,10 +3606,10 @@ def metaball(output_text, p: prefs.InfotextAddonPrefs, units):
 # ---------------------------------------------------------------
 # WARNING
 # ---------------------------------------------------------------
-def warning(output_text, p: prefs.InfotextAddonPrefs, units):
-    obj = bpy.context.active_object
+def warning(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, units) -> None:
+    # obj = bpy.context.active_object
 
-    for mod in bpy.context.active_object.modifiers:
+    for mod in obj.modifiers:
         if mod.type in ['BEVEL', 'SOLIDIFY']:
             if obj.scale[0] != obj.scale[2] or obj.scale[1] != obj.scale[0] or obj.scale[1] != obj.scale[2]:
                 # output_text.extend([
@@ -3626,9 +3657,9 @@ def infotext_key_text(p):
         unit_scale = round(bpy.context.scene.unit_settings.scale_length, 6)
         units = units_values[unit_scale]
 
-    prefs = get_addon_preferences()
-    obj = bpy.context.active_object
-    wm = bpy.context.window_manager
+    # prefs = get_addon_preferences()
+    # obj = bpy.context.active_object
+    # wm = bpy.context.window_manager
 
     output_text = []
 
@@ -3656,7 +3687,7 @@ def infotext_key_text(p):
 
         output_text.extend(["SPACE"])
 
-    obj = bpy.context.object
+    obj = bpy.context.active_object
     if obj is None:
         output_text.extend([("SELECTION", p.color_title, "Active object not found")])
         return output_text
@@ -3669,18 +3700,18 @@ def infotext_key_text(p):
 
     # NAME
     if p.show_object_name:
-        name(output_text, p)
+        name(output_text, p, obj)
         # SPACE
         output_text.extend(["SPACE"])
 
     # LOCATION / ROTATION / SCALE
     if p.show_loc_rot_scale:
-        loc(output_text, p, units)
+        loc(output_text, p, obj, units)
 
     # VERT/FACES/EDGES/NGONS
     if p.show_vert_face_tris:
         if obj.type == 'MESH':
-            ngons(output_text, p)
+            ngons(output_text, p, obj)
             # SPACE
             output_text.extend(["SPACE"])
 
@@ -3688,11 +3719,11 @@ def infotext_key_text(p):
     if p.show_object_info:
         # if bpy.context.object.mode in ['EDIT', 'OBJECT', 'WEIGHT_PAINT']:
         if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
-            mesh_options(output_text, p)
+            mesh_options(output_text, p, obj)
 
     # SCULPT
     if bpy.context.object.type == 'MESH' and bpy.context.object.mode == 'SCULPT':
-        sculpt(output_text, p, units)
+        sculpt(output_text, p, obj, units)
         # SPACE
         output_text.extend(["SPACE"])
 
@@ -3702,19 +3733,19 @@ def infotext_key_text(p):
 # ----------------------------------------------------------------------------------------------------------------------
     # ARMATURE
     if obj.type == 'ARMATURE':
-        armature(output_text, p, units)
+        armature(output_text, p, obj, units)
         # SPACE
         output_text.extend(["SPACE"])
 
     # CAMERA
     if obj.type == 'CAMERA':
-        camera(output_text, p, units)
+        camera(output_text, p, obj, units)
         # SPACE
         output_text.extend(["SPACE"])
 
     # CURVES / FONT
     if obj.type in ['CURVE', 'FONT']:
-        curve_font(output_text, p, units)
+        curve_font(output_text, p, obj, units)
         if obj.modifiers:
             # SPACE
             output_text.extend(["CR", ("", p.color_title)])
@@ -3726,25 +3757,25 @@ def infotext_key_text(p):
             "CR",
             ("", p.color_title, p.text_size_normal),
         ])
-        empty(output_text, p, units)
+        empty(output_text, p, obj, units)
         # SPACE
         output_text.extend(["SPACE"])
 
     # LATTICE
     if obj.type == 'LATTICE':
-        text_lattice(output_text, p, units)
+        text_lattice(output_text, p, obj, units)
         # SPACE
         output_text.extend(["SPACE"])
 
     # LIGHT
     if obj.type == 'LAMP':
-        cycles_lights(output_text, p, units)
+        cycles_lights(output_text, p, obj, units)
         # SPACE
         output_text.extend(["SPACE"])
 
     # METABALL
     if obj.type == 'META':
-        metaball(output_text, p, units)
+        metaball(output_text, p, obj, units)
         # SPACE
         output_text.extend(["SPACE"])
 
@@ -3759,7 +3790,7 @@ def infotext_key_text(p):
 
     if p.show_modifiers:
         # for mod in bpy.context.active_object.modifiers:
-        for i, mod in enumerate(bpy.context.object.modifiers):
+        for i, mod in enumerate(obj.modifiers):
             # FIXME: explicitly support WELD
             if mod.type not in known_modifiers:
                 # Unknown modifier (which we should fix)
@@ -3782,115 +3813,115 @@ def infotext_key_text(p):
                     ])
 
                 output_text.extend([
-                    (" (Unknown modifier", p.color_warning, p.text_size_normal),
+                    (" (Unknown modifier)", p.color_warning, p.text_size_normal),
                 ])
 
-                return output_text
+                continue
 
             # modifiers_list[mod]
             if mod.type == 'ARMATURE':
-                mod_armature(output_text, p, mod)
+                mod_armature(output_text, p, obj, mod)
 
             if mod.type == 'ARRAY':
-                mod_array(output_text, p, mod, units)
+                mod_array(output_text, p, obj, mod, units)
 
             if mod.type == 'BEVEL':
-                mod_bevel(output_text, p, mod, units)
+                mod_bevel(output_text, p, obj, mod, units)
 
             if mod.type == 'BOOLEAN':
-                mod_boolean(output_text, p, mod, units)
+                mod_boolean(output_text, p, obj, mod, units)
 
             if mod.type == 'BUILD':
-                mod_build(output_text, p, mod, units)
+                mod_build(output_text, p, obj, mod, units)
 
             if mod.type == 'CAST':
-                mod_cast(output_text, p, mod, units)
+                mod_cast(output_text, p, obj, mod, units)
 
             if mod.type == 'CORRECTIVE_SMOOTH':
-                mod_corrective_smooth(output_text, p, mod, units)
+                mod_corrective_smooth(output_text, p, obj, mod, units)
 
             if mod.type == 'CURVE':
-                mod_curve(output_text, p, mod, units)
+                mod_curve(output_text, p, obj, mod, units)
 
             if mod.type == 'DECIMATE':
-                mod_decimate(output_text, p, mod, units)
+                mod_decimate(output_text, p, obj, mod, units)
 
             if mod.type == 'DISPLACE':
-                mod_displace(output_text, p, mod, units)
+                mod_displace(output_text, p, obj, mod, units)
 
             if mod.type == 'EDGE_SPLIT':
-                mod_edge_split(output_text, p, mod, units)
+                mod_edge_split(output_text, p, obj, mod, units)
 
             if mod.type == 'HOOK':
-                mod_hook(output_text, p, mod, units)
+                mod_hook(output_text, p, obj, mod, units)
 
             if mod.type == 'LAPLACIANDEFORM':
-                mod_laplacian_deformer(output_text, p, mod, units)
+                mod_laplacian_deformer(output_text, p, obj, mod, units)
 
             if mod.type == 'LAPLACIANSMOOTH':
-                mod_laplacian_smooth(output_text, p, mod, units)
+                mod_laplacian_smooth(output_text, p, obj, mod, units)
 
             if mod.type == 'LATTICE':
-                mod_lattice(output_text, p, mod, units)
+                mod_lattice(output_text, p, obj, mod, units)
 
             if mod.type == 'MASK':
-                mod_mask(output_text, p, mod, units)
+                mod_mask(output_text, p, obj, mod, units)
 
             if mod.type == 'MESH_DEFORM':
-                mod_mesh_deform(output_text, p, mod, units)
+                mod_mesh_deform(output_text, p, obj, mod, units)
 
             if mod.type == 'MIRROR':
-                mod_mirror(output_text, p, mod, units)
+                mod_mirror(output_text, p, obj, mod, units)
 
             if mod.type == 'MULTIRES':
-                mod_multires(output_text, p, units)
+                mod_multires(output_text, p, obj, units)
 
             if mod.type == 'REMESH':
-                mod_remesh(output_text, p, mod, units)
+                mod_remesh(output_text, p, obj, mod, units)
 
             if mod.type == 'SCREW':
-                mod_screw(output_text, p, mod, units)
+                mod_screw(output_text, p, obj, mod, units)
 
             if mod.type == 'SHRINKWRAP':
-                mod_shrinkwrap(output_text, p, mod, units)
+                mod_shrinkwrap(output_text, p, obj, mod, units)
 
             if mod.type == 'SIMPLE_DEFORM':
-                mod_simple_deform(output_text, p, mod, units)
+                mod_simple_deform(output_text, p, obj, mod, units)
 
             if mod.type == 'SKIN':
-                mod_skin(output_text, p, mod, units)
+                mod_skin(output_text, p, obj, mod, units)
 
             if mod.type == 'SMOOTH':
-                mod_smooth(output_text, p, mod, units)
+                mod_smooth(output_text, p, obj, mod, units)
 
             if mod.type == 'SOLIDIFY':
-                mod_solidify(output_text, p, mod, units)
+                mod_solidify(output_text, p, obj, mod, units)
 
             if mod.type == 'SUBSURF':
-                mod_subsurf(output_text, p, mod, units)
+                mod_subsurf(output_text, p, obj, mod, units)
 
             if mod.type == 'SURFACE_DEFORM':
-                mod_surface_deform(output_text, p, mod, units)
+                mod_surface_deform(output_text, p, obj, mod, units)
 
             if mod.type == 'TRIANGULATE':
-                mod_triangulate(output_text, p, mod, units)
+                mod_triangulate(output_text, p, obj, mod, units)
 
             if mod.type == 'WARP':
-                mod_warp(output_text, p, mod, units)
+                mod_warp(output_text, p, obj, mod, units)
 
             if mod.type == 'WAVE':
-                mod_wave(output_text, p, mod, units)
+                mod_wave(output_text, p, obj, mod, units)
 
             if mod.type == 'WIREFRAME':
-                mod_wireframe(output_text, p, mod, units)
+                mod_wireframe(output_text, p, obj, mod, units)
 
             if mod.type == 'WEIGHTED_NORMAL':
-                mod_weighted_normals(output_text, p, mod, units)
+                mod_weighted_normals(output_text, p, obj, mod, units)
 
     # WARNING
     # SPACE
     output_text.extend(["SPACE"])
-    warning(output_text, p, units)
+    warning(output_text, p, obj, units)
 
     # bpy.context.area.tag_redraw()
     return output_text
