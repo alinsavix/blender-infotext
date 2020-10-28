@@ -13,12 +13,14 @@
 
 import bpy
 import blf
+import ctypes
 from ctypes import *
 import math
 # from math import degrees
 from typing import *
 from .functions import get_face_type_count, get_addon_preferences
 from . import prefs
+# from .ct import *
 
 # from . import InfotextAddonPrefs
 # import bmesh
@@ -197,65 +199,114 @@ def listbase(type_=None):
     fields = ("first", ptr), ("last", ptr)
     return type("ListBase", (Structure,), {'_fields_': fields})
 
+
 class wmWindow(Structure):
     pass
+
 
 class wmEventHandler(Structure):  # Generic
     pass
 
+
 class wmOperator(Structure):
     pass
 
+
+class wmEventHandler_Op(Structure):  # Operator
+    pass
+
+
+class ScrAreaMap(Structure):
+    _pack_ = True     # FIXME: what should this be?
+    _fields_ = [
+        ("vertbase", listbase(type_=None)),
+        ("edgebase", listbase(type_=None)),
+        ("areabase", listbase(type_=None)),
+    ]
+
+
+# taken from DNA_windowmanager_types.h by hand
+# accurate for 2.90.1
+wmWindow._pack_ = True     # FIXME: what should this be?
 wmWindow._fields_ = [  # from DNA_windowmanager_types.h
-    ("next", POINTER(wmWindow)),
-    ("prev", POINTER(wmWindow)),
+    ("next", POINTER(wmWindow)), ("prev", POINTER(wmWindow)),
+
     ("ghostwin", c_void_p),
     ("gpuctx", c_void_p),
+
     ("parent", POINTER(wmWindow)),
-    ("scene", c_void_p),
-    ("new_scene", c_void_p),
+
+    ("scene", c_void_p),   # POINTER(scene)
+    ("new_scene", c_void_p),  # POINTER(scene)
     ("view_layer_name", c_char * 64),
-    ("workspace_hook", c_void_p),
-    ("global_areas", listbase(type_=None) * 3),
-    ("screen", c_void_p),
-    ("posx", c_short),
-    ("posy", c_short),
-    ("sizex", c_short),
-    ("sizey", c_short),
-    ("windowstate", c_short),
-    ("monitor", c_short),
-    ("active", c_short),
+
+    ("workspace_hook", c_void_p),  # POINTER(WorkSpaceInstanceHook)
+
+    ("global_areas", ScrAreaMap),
+
+    ("screen", c_void_p),  # POINTER(bScreen)    # DNA_DEPRECATED
+
+    ("posx", c_short), ("posy", c_short), ("sizex", c_short), ("sizey", c_short),
+    ("windowstate", c_byte),
+    ("active", c_byte),
+    ("_pad0", c_byte * 4),
     ("cursor", c_short),
     ("lastcursor", c_short),
     ("modalcursor", c_short),
     ("grabcursor", c_short),
-    ("addmousemove", c_short),
+    ("addmousemove", c_byte),
+    ("tag_cursor_refresh", c_byte),
+
     ("winid", c_int),
+
     ("lock_pie_event", c_short),
     ("last_pie_event", c_short),
-    ("eventstate", c_void_p),
-    ("tweak", c_void_p),
-    ("ime_data", c_void_p),
+
+    ("eventstate", c_void_p),           # POINTER(wmEvent)
+
+    ("tweak", c_void_p),           # POINTER(wmGesture)
+
+    ("ime_data", c_void_p),           # POINTER(wmIMEData)
+
     ("queue", listbase(type_=None)),
     ("handlers", listbase(type_=None)),
-    ("modalhandlers", listbase(type_=wmEventHandler)),
+    # ("modalhandlers", listbase(type_=wmEventHandler)),
+    ("modalhandlers", listbase(type_=wmEventHandler_Op)),
+
     ("gesture", listbase(type_=None)),
-    ("stereo3d_format", c_void_p),
+
+    ("stereo3d_format", c_void_p),           # POINTER(Stereo3dFormat)
+
     ("drawcalls", listbase(type_=None)),
+
     ("cursor_keymap_status", c_void_p),
 ]
 
+wmEventHandler._pack_ = True
 wmEventHandler._fields_ = [
-    ("next", POINTER(wmEventHandler)),
-    ("prev", POINTER(wmEventHandler)),
-    ("type", c_int),  # Enum
-    ("flag", c_char),
+    ("next", POINTER(wmEventHandler)), ("prev", POINTER(wmEventHandler)),
+    ("type", c_byte),  # Enum
+    ("flag", c_byte),
+
     ("wmKeyMap", c_void_p),
-    ("bblocal", c_void_p),
-    ("bbwin", c_void_p),
-    ("op", POINTER(wmOperator)),
+    ("bblocal", c_void_p), ("bbwin", c_void_p),
+
+    ("op", c_void_p),  # POINTER(wmOperator)
+    ("op_area", c_void_p),  # POINTER(ScrArea)
+    ("op_region", c_void_p),  # POINTER(ARegion)
+    ("op_region_type", c_short),
+
+    ("ui_handle", c_void_p),  # wmUIHandlerFunc   FIXME: Might be wrong
+    ("ui_remove", c_void_p),  # wmUIHandlerRemoveFunc   FIXME: see above
+    ("ui_userdata", c_void_p),
+    ("ui_area", c_void_p),  # POINTER(ScrArea)
+    ("ui_region", c_void_p),  # POINTER(ARegion)
+    ("ui_menu", c_void_p),  # POINTER(ARegion),
+
+    ("dropboxes", listbase(type_=None)),
 ]
 
+wmOperator._pack_ = True
 wmOperator._fields_ = [
     ("next", POINTER(wmOperator)),
     ("prev", POINTER(wmOperator)),
@@ -263,7 +314,10 @@ wmOperator._fields_ = [
 ]
 
 # Mini struct for Op handlers. *not* bContext!
+
+
 class OpContext(Structure):
+    _pack_ = True
     _fields_ = [
         ("win", POINTER(wmWindow)),
         ("area", c_void_p),  # <-- ScrArea ptr
@@ -271,39 +325,58 @@ class OpContext(Structure):
         ("region_type", c_short),
     ]
 
-class wmEventHandler_Op(Structure):  # Operator
-    _fields_ = [
-        ("head", wmEventHandler),
-        ("op", c_void_p),  # <-- wmOperator
-        ("is_file_select", c_bool),
-        ("context", OpContext),
-    ]
 
-class zZZ(Structure):
-    # pass
-    _fields_ = [
-        ("z", c_void_p),
-    ]
+wmEventHandler_Op._pack_ = True
+wmEventHandler_Op._fields_ = [
+    ("head", wmEventHandler),
+    ("op", POINTER(wmOperator)),
+    ("is_fileselect", c_bool),
+    ("context", OpContext),
+]
+
+
+def dumpdata(output_text, p: prefs.InfotextAddonPrefs, d):
+    for k in dir(d):
+        if k.startswith("_"):
+            continue
+        v = getattr(d, k)
+        t = type(v).__name__
+        if t in ["int"]:
+            v = "0x%x" % (v)
+        output_text.extend([
+            (k + "  ", p.color_setting, p.text_size_normal),
+            (t + " ", p.color_setting, p.text_size_normal),
+            (str(v), p.color_value, p.text_size_normal),
+            "CR"
+        ])
+
 
 def modal(output_text, p: prefs.InfotextAddonPrefs):
     window = bpy.context.window
-    # w = cast(bpy.context.window.as_pointer(), POINTER(wmWindow)).contents
-    w = cast(window.as_pointer(), POINTER(zZZ)).contents
-    print(w.z)
-
-    return
-
+    w = ctypes.cast(window.as_pointer(), POINTER(wmWindow)).contents
 
     handle = w.modalhandlers.first
     while handle:
-        if handle.contents.type == WM_HANDLER_TYPE_OP:
+        if handle.contents.head.type == WM_HANDLER_TYPE_OP:
             output_text.extend([
                 "CR",
-                ("Modal Running", p.color_title, p.text_size_normal),
-                (handle.contents.op.idname, p.color_warning, p.text_size_normal),
+                ("Modal Running ", p.color_title, p.text_size_normal),
+                "CR",
+                # ("type ", p.color_warning, p.text_size_normal),
+                # (str(handle.contents.type), p.color_warning, p.text_size_normal),
+                # ("op ", p.color_warning, p.text_size_normal),
+                # (str(handle.contents.op), p.color_warning, p.text_size_normal),
+                # (str(handle.contents.get("op")), p.color_warning, p.text_size_normal),
             ])
+            dumpdata(output_text, p, handle.contents)
+            output_text.extend([
+                "CR",
+                "CR",
+            ])
+
             break
-        handle = handle.contents.next
+        handle = handle.next
+        # handle = None
     else:
         output_text.extend([
             "CR",
@@ -966,7 +1039,7 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, unit
 
 
 def mod_array(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-                mod: bpy.types.ArrayModifier, units) -> None:
+              mod: bpy.types.ArrayModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -1098,7 +1171,7 @@ def mod_array(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
 # BEVEL
 # ---------------------------------------------------------------
 def mod_bevel(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.BevelModifier, units) -> None:
+              mod: bpy.types.BevelModifier, units) -> None:
     # FIXME: Should we take WM as an argument, too?
     wm = bpy.context.window_manager
     # obj = bpy.context.active_object
@@ -1218,7 +1291,7 @@ mod: bpy.types.BevelModifier, units) -> None:
 
 
 def mod_boolean(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.BooleanModifier, units) -> None:
+                mod: bpy.types.BooleanModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -1259,7 +1332,7 @@ mod: bpy.types.BooleanModifier, units) -> None:
 
 
 def mod_build(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.BuildModifier,              units) -> None:
+              mod: bpy.types.BuildModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -1300,7 +1373,7 @@ mod: bpy.types.BuildModifier,              units) -> None:
 
 
 def mod_decimate(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.DecimateModifier, units) -> None:
+                 mod: bpy.types.DecimateModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -1390,7 +1463,7 @@ mod: bpy.types.DecimateModifier, units) -> None:
 
 
 def mod_edge_split(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.EdgeSplitModifier, units) -> None:
+                   mod: bpy.types.EdgeSplitModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -1420,7 +1493,7 @@ mod: bpy.types.EdgeSplitModifier, units) -> None:
 
 
 def mod_weighted_normals(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.WeightedNormalModifier,                         units) -> None:
+                         mod: bpy.types.WeightedNormalModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -1482,7 +1555,7 @@ mod: bpy.types.WeightedNormalModifier,                         units) -> None:
 
 
 def mod_lattice(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.LatticeModifier, units) -> None:
+                mod: bpy.types.LatticeModifier, units) -> None:
     obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -1521,7 +1594,7 @@ mod: bpy.types.LatticeModifier, units) -> None:
 
 
 def mod_mask(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.MaskModifier, units) -> None:
+             mod: bpy.types.MaskModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -1559,7 +1632,7 @@ mod: bpy.types.MaskModifier, units) -> None:
 
 
 def mod_mirror(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.MirrorModifier, units) -> None:
+               mod: bpy.types.MirrorModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -1698,7 +1771,7 @@ def mod_multires(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object
 
 
 def mod_remesh(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.RemeshModifier,               units) -> None:
+               mod: bpy.types.RemeshModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -1845,7 +1918,7 @@ def mod_screw(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, m
 
 
 def mod_skin(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.SkinModifier, units) -> None:
+             mod: bpy.types.SkinModifier, units) -> None:
     obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -1897,7 +1970,7 @@ mod: bpy.types.SkinModifier, units) -> None:
 
 
 def mod_solidify(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.SolidifyModifier, units) -> None:
+                 mod: bpy.types.SolidifyModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -1998,7 +2071,7 @@ mod: bpy.types.SolidifyModifier, units) -> None:
 
 
 def mod_subsurf(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.SubsurfModifier, units) -> None:
+                mod: bpy.types.SubsurfModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -2066,6 +2139,8 @@ mod: bpy.types.SubsurfModifier, units) -> None:
 
 # FIXME: Needs to support 'keep normals'  minimum verts, and not have
 # underscores in the 'method' field
+
+
 def mod_triangulate(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, mod: bpy.types.TriangulateModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
@@ -2097,7 +2172,7 @@ def mod_triangulate(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Obj
 
 
 def mod_wireframe(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.WireframeModifier, units) -> None:
+                  mod: bpy.types.WireframeModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -2229,7 +2304,7 @@ def mod_armature(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object
 
 
 def mod_cast(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.CastModifier, units) -> None:
+             mod: bpy.types.CastModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
@@ -2313,7 +2388,7 @@ mod: bpy.types.CastModifier, units) -> None:
 
 
 def mod_corrective_smooth(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.CorrectiveSmoothModifier, units) -> None:
+                          mod: bpy.types.CorrectiveSmoothModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -2382,7 +2457,7 @@ mod: bpy.types.CorrectiveSmoothModifier, units) -> None:
 
 
 def mod_curve(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.CurveModifier, units) -> None:
+              mod: bpy.types.CurveModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
         # NAME
@@ -2435,8 +2510,8 @@ mod: bpy.types.CurveModifier, units) -> None:
 # ---------------------------------------------------------------
 
 
-def mod_displace(output_text, p: prefs.InfotextAddonPrefs,obj: bpy.types.Object,
-mod: bpy.types.DisplaceModifier, units) -> None:
+def mod_displace(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+                 mod: bpy.types.DisplaceModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -2491,7 +2566,7 @@ mod: bpy.types.DisplaceModifier, units) -> None:
 
 
 def mod_hook(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types. HookModifier, units) -> None:
+             mod: bpy.types. HookModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
         # NAME
@@ -2552,7 +2627,7 @@ mod: bpy.types. HookModifier, units) -> None:
 
 
 def mod_laplacian_deformer(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.LaplacianDeformModifier, units) -> None:
+                           mod: bpy.types.LaplacianDeformModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -2585,7 +2660,7 @@ mod: bpy.types.LaplacianDeformModifier, units) -> None:
 
 
 def mod_laplacian_smooth(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.LaplacianSmoothModifier, units) -> None:
+                         mod: bpy.types.LaplacianSmoothModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -2655,7 +2730,7 @@ mod: bpy.types.LaplacianSmoothModifier, units) -> None:
 
 
 def mod_mesh_deform(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.MeshDeformModifier, units) -> None:
+                    mod: bpy.types.MeshDeformModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
         # NAME
@@ -2700,7 +2775,7 @@ mod: bpy.types.MeshDeformModifier, units) -> None:
 
 
 def mod_simple_deform(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-mod: bpy.types.SimpleDeformModifier,                      units) -> None:
+                      mod: bpy.types.SimpleDeformModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
         # NAME
@@ -2781,7 +2856,7 @@ mod: bpy.types.SimpleDeformModifier,                      units) -> None:
 
 
 def mod_shrinkwrap(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-    mod: bpy.types.ShrinkwrapModifier, units) -> None:
+                   mod: bpy.types.ShrinkwrapModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
         # NAME
@@ -2894,7 +2969,7 @@ def mod_shrinkwrap(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Obje
 
 
 def mod_smooth(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-    mod: bpy.types.SmoothModifier,               units) -> None:
+               mod: bpy.types.SmoothModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -2948,7 +3023,7 @@ def mod_smooth(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
 
 
 def mod_surface_deform(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-    mod: bpy.types.SurfaceDeformModifier,                       units) -> None:
+                       mod: bpy.types.SurfaceDeformModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -2991,7 +3066,7 @@ def mod_surface_deform(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.
 
 
 def mod_warp(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-    mod: bpy.types.WarpModifier, units) -> None:
+             mod: bpy.types.WarpModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -3095,7 +3170,7 @@ def mod_warp(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
 
 
 def mod_wave(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
-    mod: bpy.types.WaveModifier, units) -> None:
+             mod: bpy.types.WaveModifier, units) -> None:
     # obj = bpy.context.active_object
     if obj.type == 'MESH':
         # NAME
@@ -3319,6 +3394,8 @@ def camera(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Camera, unit
 # ---------------------------------------------------------------
 
 # FIXME: What data type should obj be?
+
+
 def curve_font(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, units) -> None:
     # obj = bpy.context.active_object
 
@@ -3416,10 +3493,12 @@ def empty(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, units
 # ---------------------------------------------------------------
 
 # FIXME: What type should obj be?
+
+
 def text_lattice(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, units) -> None:
     # obj = bpy.context.active_object
 
-# U -----------------------------------------------------------------------
+    # U -----------------------------------------------------------------------
     output_text.extend([
         "CR",
         ("U  ", p.color_title, p.text_size_normal),
@@ -3463,6 +3542,8 @@ def text_lattice(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object
 # ---------------------------------------------------------------
 
 # FIXME: What data type should obj be?
+
+
 def cycles_lights(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, units) -> None:
     # obj = bpy.context.active_object
 
