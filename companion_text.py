@@ -13,7 +13,7 @@
 
 import bpy
 import blf
-# from ctypes import *
+from ctypes import *
 import math
 # from math import degrees
 from typing import *
@@ -179,7 +179,6 @@ def is_close(a, b, precision):
     return f'{a:.{precision}f}' == f'{b:.{precision}f}'
 
 
-'''
 # ---------------------------------------------------------------
 # EXPERIMENTAL - ctypes to try to find out if a modal is running
 # ---------------------------------------------------------------
@@ -198,33 +197,16 @@ def listbase(type_=None):
     fields = ("first", ptr), ("last", ptr)
     return type("ListBase", (Structure,), {'_fields_': fields})
 
-
-# Mini struct for Op handlers. *not* bContext!
-class OpContext(Structure):
+class wmWindow(Structure):
     pass
-
 
 class wmEventHandler(Structure):  # Generic
     pass
 
-
-class wmEventHandler_Op(Structure):  # Operator
+class wmOperator(Structure):
     pass
 
-
-class wmWindow(Structure):
-    pass
-
-
-wmEventHandler._fields_ = (
-    ("next", POINTER(wmEventHandler)),
-    ("prev", POINTER(wmEventHandler)),
-    ("type", c_int),  # Enum
-    ("flag", c_char),
-    ("poll", c_void_p),
-)
-
-wmWindow._fields_ = (  # from DNA_windowmanager_types.h
+wmWindow._fields_ = [  # from DNA_windowmanager_types.h
     ("next", POINTER(wmWindow)),
     ("prev", POINTER(wmWindow)),
     ("ghostwin", c_void_p),
@@ -260,34 +242,65 @@ wmWindow._fields_ = (  # from DNA_windowmanager_types.h
     ("gesture", listbase(type_=None)),
     ("stereo3d_format", c_void_p),
     ("drawcalls", listbase(type_=None)),
-    ("cursor_keymap_status", c_void_p)
-)
+    ("cursor_keymap_status", c_void_p),
+]
 
-OpContext._fields_ = (
-    ("win", POINTER(wmWindow)),
-    ("area", c_void_p),  # <-- ScrArea ptr
-    ("region", c_void_p),  # <-- ARegion ptr
-    ("region_type", c_short)
-)
+wmEventHandler._fields_ = [
+    ("next", POINTER(wmEventHandler)),
+    ("prev", POINTER(wmEventHandler)),
+    ("type", c_int),  # Enum
+    ("flag", c_char),
+    ("wmKeyMap", c_void_p),
+    ("bblocal", c_void_p),
+    ("bbwin", c_void_p),
+    ("op", POINTER(wmOperator)),
+]
 
-wmEventHandler_Op._fields_ = (
-    ("head", wmEventHandler),
-    ("op", c_void_p),  # <-- wmOperator
-    ("is_file_select", c_bool),
-    ("context", OpContext)
-)
+wmOperator._fields_ = [
+    ("next", POINTER(wmOperator)),
+    ("prev", POINTER(wmOperator)),
+    ("idname", c_char_p),
+]
 
+# Mini struct for Op handlers. *not* bContext!
+class OpContext(Structure):
+    _fields_ = [
+        ("win", POINTER(wmWindow)),
+        ("area", c_void_p),  # <-- ScrArea ptr
+        ("region", c_void_p),  # <-- ARegion ptr
+        ("region_type", c_short),
+    ]
+
+class wmEventHandler_Op(Structure):  # Operator
+    _fields_ = [
+        ("head", wmEventHandler),
+        ("op", c_void_p),  # <-- wmOperator
+        ("is_file_select", c_bool),
+        ("context", OpContext),
+    ]
+
+class zZZ(Structure):
+    # pass
+    _fields_ = [
+        ("z", c_void_p),
+    ]
 
 def modal(output_text, p: prefs.InfotextAddonPrefs):
     window = bpy.context.window
-    win = cast(window.as_pointer(), POINTER(wmWindow)).contents
+    # w = cast(bpy.context.window.as_pointer(), POINTER(wmWindow)).contents
+    w = cast(window.as_pointer(), POINTER(zZZ)).contents
+    print(w.z)
 
-    handle = win.modalhandlers.first
+    return
+
+
+    handle = w.modalhandlers.first
     while handle:
         if handle.contents.type == WM_HANDLER_TYPE_OP:
             output_text.extend([
                 "CR",
                 ("Modal Running", p.color_title, p.text_size_normal),
+                (handle.contents.op.idname, p.color_warning, p.text_size_normal),
             ])
             break
         handle = handle.contents.next
@@ -296,8 +309,7 @@ def modal(output_text, p: prefs.InfotextAddonPrefs):
             "CR",
             ("No modal Running", p.color_title, p.text_size_normal)
         ])
-        # print("No running modals")
-'''
+
 
 # ---------------------------------------------------------------
 # VIEW
@@ -3672,8 +3684,7 @@ def infotext_key_text(p):
     # detect a running modal, to display custom things if there
     # is one, IF we can figure out which modal is actually active
     # at any given moment
-    # modal(output_text, p.color_title, p.color_setting, p.color_value,
-    #   text_size_normal, p.color_warning, p.color_option, p.text_size_large)
+    modal(output_text, p)
 
     if p.show_view_perspective:
         # Make sure we don't conflict with the existing information
