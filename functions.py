@@ -21,6 +21,7 @@ from bpy.props import (StringProperty,
                        PointerProperty)
 
 from bpy.types import PropertyGroup
+from typing import Tuple
 
 # from bpy.app.handlers import persistent
 
@@ -51,24 +52,64 @@ def get_face_type_count(infotext, obj):
         infotext.face_type_count['NGONS'] = ngons
 
 
-# Property Group
-class infotext(PropertyGroup):
-    # active_modifier: IntProperty(default=-1)
-    pass
+def fmt_unit(category: str, value: float, precision: int) -> Tuple[str, float, str]:
+    # FIXME: Should the unit system be passed in instead?
+    units_system = str(bpy.context.scene.unit_settings.system)
+
+    s = bpy.utils.units.to_string(units_system, category, value, precision)
+
+    # Split the output so we can render it separately. janky... is there
+    # a better way to accomplish this while not writing our own code for it?
+    (v, u) = s.split()
+    return (s, float(v), u)
 
 
-def register():
-    try:
-        bpy.utils.register_class(infotext)
-    except:
-        print("infotext already registred")
-
-    bpy.types.WindowManager.infotext = PointerProperty(type=infotext)
+def fmt_length(value: float, precision: int = 6) -> str:
+    return fmt_unit('LENGTH', value, precision)[0]
 
 
-def unregister():
-    bpy.utils.unregister_class(infotext)
-    del bpy.types.WindowManager.infotext
+def fmt_area(value: float, precision: int = 6) -> str:
+    return fmt_unit('AREA', value, precision)[0]
+
+
+def fmt_vol(value: float, precision: int = 6) -> str:
+    return fmt_unit('VOLUME', value, precision)[0]
+
+
+def fmt_mass(value: float, precision: int = 6) -> str:
+    return fmt_unit('MASS', value, precision)[0]
+
+
+def fmt_rot(value: float, precision: int = 6) -> str:
+    return fmt_unit('ROTATION', value, precision)[0]
+
+# same as rotation
+
+
+def fmt_angle(value: float, precision: int = 6) -> str:
+    return fmt_unit('ROTATION', value, precision)[0]
+
+
+def fmt_time(value: float, precision: int = 6) -> str:
+    return fmt_unit('TIME', value, precision)[0]
+
+
+def fmt_vel(value: float, precision: int = 6) -> str:
+    return fmt_unit('VELOCITY', value, precision)[0]
+
+
+def fmt_accel(value: float, precision: int = 6) -> str:
+    return fmt_unit('ACCELERATION', value, precision)[0]
+
+
+def fmt_camera(value: float, precision: int = 6) -> str:
+    return fmt_unit('CAMERA', value, precision)[0]
+
+
+def fmt_pct(value: float, precision: int = 2) -> str:
+    s = f'{value:.{precision}f}'
+
+    return(s + '%')
 
 
 # @persistent

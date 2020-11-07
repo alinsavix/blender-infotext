@@ -25,6 +25,8 @@ from bpy.props import (
     IntProperty
 )
 
+from typing import *
+
 # Show Text Options Popup
 
 
@@ -173,11 +175,11 @@ class INFOTEXT_show_text_options_popup(bpy.types.Operator):
         return context.window_manager.invoke_props_dialog(self, width=dpi_value * coef, height=100)
 
 
-UI_CLASSES = [
+UI_CLASSES: List[bpy.types.Operator] = [
     INFOTEXT_show_text_options_popup,
 ]
 
-EXTRA_CLASSES = [
+EXTRA_CLASSES: List[bpy.types.Operator] = [
     # INFOTEXT_pie_menu
 ]
 

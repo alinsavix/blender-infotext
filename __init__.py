@@ -46,12 +46,12 @@ from .functions import get_addon_preferences
 # from .icon.icons import load_icons
 # import .prefs
 
+from typing import *
+
 
 # Property Group
-
-
 class INFOTEXT_OT_property_group(bpy.types.PropertyGroup):
-    face_type_count = {}
+    face_type_count: Dict[str, int] = {}
     # previous_mesh = []   # FIXME: What is this used for?
     # previous_mode: StringProperty()
 
@@ -68,7 +68,6 @@ CLASSES = [
 
 
 def register():
-    functions.register()
     prefs.register()
     companion_text.register()
 
@@ -95,12 +94,13 @@ def register():
 
 # Unregister
 def unregister():
-    functions.unregister()
     prefs.unregister()
     companion_text.unregister()
 
     for cls in CLASSES:
         bpy.utils.unregister_class(cls)
+
+    del bpy.types.WindowManager.infotext
 
     # # Remove Text
     # if infotext_text_Handle:
