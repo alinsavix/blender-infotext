@@ -64,51 +64,40 @@ def fmt_unit(category: str, value: float, precision: int) -> Tuple[str, float, s
     return (s, float(v), u)
 
 
+# Shortcuts for various formatting
 def fmt_length(value: float, precision: int = 6) -> str:
     return fmt_unit('LENGTH', value, precision)[0]
-
 
 def fmt_area(value: float, precision: int = 6) -> str:
     return fmt_unit('AREA', value, precision)[0]
 
-
 def fmt_vol(value: float, precision: int = 6) -> str:
     return fmt_unit('VOLUME', value, precision)[0]
 
-
 def fmt_mass(value: float, precision: int = 6) -> str:
     return fmt_unit('MASS', value, precision)[0]
-
 
 def fmt_rot(value: float, precision: int = 6) -> str:
     return fmt_unit('ROTATION', value, precision)[0]
 
 # same as rotation
-
-
 def fmt_angle(value: float, precision: int = 6) -> str:
     return fmt_unit('ROTATION', value, precision)[0]
-
 
 def fmt_time(value: float, precision: int = 6) -> str:
     return fmt_unit('TIME', value, precision)[0]
 
-
 def fmt_vel(value: float, precision: int = 6) -> str:
     return fmt_unit('VELOCITY', value, precision)[0]
-
 
 def fmt_accel(value: float, precision: int = 6) -> str:
     return fmt_unit('ACCELERATION', value, precision)[0]
 
-
 def fmt_camera(value: float, precision: int = 6) -> str:
     return fmt_unit('CAMERA', value, precision)[0]
 
-
 def fmt_pct(value: float, precision: int = 2) -> str:
     s = f'{value:.{precision}f}'
-
     return(s + '%')
 
 
