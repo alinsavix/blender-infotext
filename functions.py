@@ -58,10 +58,19 @@ def fmt_unit(category: str, value: float, precision: int) -> Tuple[str, float, s
 
     s = bpy.utils.units.to_string(units_system, category, value, precision)
 
+    # does this *always* output degrees? Assuming so
+    if category == "ROTATION":
+        return (s, s[:-1], "°")
+
     # Split the output so we can render it separately. janky... is there
     # a better way to accomplish this while not writing our own code for it?
-    (v, u) = s.split()
-    return (s, float(v), u)
+    sp = s.split()
+
+    if len(sp) == 2:
+        return (s, sp[0], sp[1])
+
+    # else, no units present
+    return (s[0], float(s[0]), "")
 
 
 # Shortcuts for various formatting
