@@ -7,6 +7,7 @@ ignore =
   E302,   # Don't fuck with spaces around functions because comments break it
   E402,   # Allow imports not at top of file
   F403,   # Don't complain about wildcard imports
+  E501,   # Allow long lines
   F722,   # Murder bogus forward annotation messages
 
 max-line-length = 120
