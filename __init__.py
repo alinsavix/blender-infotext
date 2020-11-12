@@ -23,12 +23,16 @@ bl_info = {
     "category": "Tools"
 }
 
+import os
+import sys
+
+import bpy
+
 from . import (
     functions,
     prefs,
 )
 
-import bpy
 from mathutils import *
 from bpy.props import (
     StringProperty,
@@ -40,6 +44,10 @@ from bpy.props import (
     IntProperty,
     BoolVectorProperty
 )
+
+# FIXME: There's probably a better way to do this.
+main_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(main_dir)
 
 from .companion_text import infotext_text_Handle
 from .functions import get_addon_preferences
