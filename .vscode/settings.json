@@ -1,20 +1,17 @@
 {
     "python.autoComplete.extraPaths": [
-        "/Applications/Blender.app//Contents/Resources/2.83/scripts/modules",
-        "/usr/local/lib/python3.8/site-packages/"
+        "./vendor/"
     ],
-    "python.pythonPath": "/usr/local/opt/python@3.8/bin/python3.8",
     "python.analysis.extraPaths": [
-        "/Applications/Blender.app//Contents/Resources/2.83/scripts/modules",
-        "/usr/local/lib/python3.8/site-packages/",
-        "./vendor/",
-        "."
+        "./vendor/"
     ],
-    "jupyter.ignoreVscodeTheme": true,
     "python.analysis.typeCheckingMode": "basic",
     "python.linting.flake8Args": [
         "--ignore",
         "E266,E302,E402,E501,F403"
     ],
-    "python.linting.flake8Enabled": true
+    "python.linting.flake8Enabled": true,
+    "python.analysis.memory.keepLibraryAst": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "jupyter.ignoreVscodeTheme": true
 }
