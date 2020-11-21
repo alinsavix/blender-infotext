@@ -1615,7 +1615,10 @@ def infotext_key_text(p):
 
     obj = bpy.context.active_object
     if obj is None:
-        output_text.extend([("Active object not found", p.color_warning, p.text_size_normal)])
+        output_text.extend([
+            "CR",
+            ("No active object", p.color_warning, p.text_size_normal),
+        ])
         return output_text
 
     # MODE
