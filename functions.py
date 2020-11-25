@@ -51,7 +51,7 @@ def get_face_type_count(infotext, obj):
         infotext.face_type_count['NGONS'] = ngons
 
 
-def fmt_unit(category: str, value: float, precision: int) -> Tuple[str, float, str]:
+def fmt_unit(category: str, value: float, precision: int) -> Tuple[str, str, str]:
     # FIXME: Should the unit system be passed in instead?
     units_system = str(bpy.context.scene.unit_settings.system)
 
@@ -66,10 +66,10 @@ def fmt_unit(category: str, value: float, precision: int) -> Tuple[str, float, s
     sp = s.split()
 
     if len(sp) == 2:
-        return (s, sp[0], sp[1])
+        return (s.rstrip(), sp[0], sp[1])
 
     # else, no units present
-    return (s[0], float(s[0]), "")
+    return (s[0], s[0], "")
 
 
 # Shortcuts for various formatting
