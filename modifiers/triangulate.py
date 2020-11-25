@@ -1,5 +1,9 @@
+import math
+
 import bpy.types
-import prefs
+
+from ..functions import *
+from .. import prefs
 
 # FIXME: Needs to support 'keep normals'  minimum verts, and not have
 # underscores in the 'method' field

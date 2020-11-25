@@ -1,5 +1,8 @@
-import bpy
+import os
+import sys
+from typing import *
 
+import bpy
 from bpy.props import (
     StringProperty,
     BoolProperty,
@@ -10,7 +13,6 @@ from bpy.props import (
     IntProperty,
     BoolVectorProperty
 )
-
 
 class InfotextAddonPrefs(bpy.types.AddonPreferences):
     bl_idname = __package__
@@ -345,9 +347,20 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
             box.operator("wm.url_open", text="Twitter").url = "https://twitter.com/example"
 
 
-def register():
-    bpy.utils.register_class(InfotextAddonPrefs)
+CLASSES = [
+    InfotextAddonPrefs
+]
 
+def register():
+    for cls in CLASSES:
+        try:
+            bpy.utils.register_class(cls)
+        except ValueError:
+            print(f"{cls.__name__} already registred")
 
 def unregister():
-    bpy.utils.unregister_class(InfotextAddonPrefs)
+    for cls in CLASSES:
+        try:
+            bpy.utils.unregister_class(cls)
+        except ValueError:
+            print(f"{cls.__name__} already unregistred")

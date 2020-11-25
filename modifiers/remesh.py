@@ -1,5 +1,9 @@
+import math
+
 import bpy.types
-import prefs
+
+from ..functions import *
+from .. import prefs
 
 def mod_remesh(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
                mod: bpy.types.RemeshModifier) -> None:

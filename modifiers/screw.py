@@ -1,12 +1,16 @@
+import math
+
 import bpy.types
-import prefs
+
+from ..functions import *
+from .. import prefs
 
 # FIXME: Update for 2.8x/2.9x
 def mod_screw(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, mod: bpy.types.ScrewModifier) -> None:
     # obj = bpy.context.active_object
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         # NAME
-        # output_text.extend(["CR", ('ICON', 'ICON_MOD_SCREW.png'), ("    ", p.color_setting, p.text_size_normal),
+        # output_text.extend([" CR", ('ICON', 'ICON_MOD_SCREW.png'), ("    ", p.color_setting, p.text_size_normal),
         #                   (str(mod.name.upper()), p.color_title, p.text_size_normal)])
         output_text.extend(["CR", (str(mod.name.upper()), p.color_title, p.text_size_normal)])
 

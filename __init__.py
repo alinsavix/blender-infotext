@@ -25,15 +25,9 @@ bl_info = {
 
 import os
 import sys
+from typing import *
 
 import bpy
-
-from . import (
-    functions,
-    prefs,
-)
-
-from mathutils import *
 from bpy.props import (
     StringProperty,
     BoolProperty,
@@ -45,16 +39,30 @@ from bpy.props import (
     BoolVectorProperty
 )
 
-# FIXME: There's probably a better way to do this.
-main_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(main_dir)
+from . import companion_text
+from . import functions
+from . import prefs
+# from . import ui
 
-from .companion_text import infotext_text_Handle
-from .functions import get_addon_preferences
+modules = [
+    companion_text,
+    functions,
+    prefs,
+    # ui,
+]
+
+
+# FIXME: There's probably a better way to do this.
+# main_dir = os.path.dirname(os.path.abspath(__file__))
+# sys.path.append(main_dir)
+
+# from .companion_text import infotext_text_Handle
+# from .functions import get_addon_preferences
 # from .icon.icons import load_icons
 # import .prefs
 
-from typing import *
+# from . import companion_text
+
 
 
 # Property Group
@@ -74,15 +82,14 @@ CLASSES = [
     INFOTEXT_OT_property_group,
 ]
 
-
 def register():
-    prefs.register()
-    companion_text.register()
+    for module in modules:
+        module.register()
 
     for cls in CLASSES:
         try:
             bpy.utils.register_class(cls)
-        except:
+        except ValueError:
             print(f"{cls.__name__} already registred")
 
     bpy.types.WindowManager.infotext = PointerProperty(type=INFOTEXT_OT_property_group)
@@ -102,13 +109,18 @@ def register():
 
 # Unregister
 def unregister():
-    prefs.unregister()
-    companion_text.unregister()
+    del bpy.types.WindowManager.infotext
 
     for cls in CLASSES:
-        bpy.utils.unregister_class(cls)
+        try:
+            bpy.utils.unregister_class(cls)
+        except ValueError:
+            print(f"{cls.__name__} already unregistred")
 
-    del bpy.types.WindowManager.infotext
+    for module in reversed(modules):
+        module.unregister()
+
+
 
     # # Remove Text
     # if infotext_text_Handle:

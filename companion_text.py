@@ -1,27 +1,69 @@
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-import bpy
-import blf
-# from ctypes import *
 import math
-# from math import degrees
+import os
+import sys
 from typing import Callable, Dict
 from typing import *
+
+import bpy
+from bpy.props import (
+    StringProperty,
+    BoolProperty,
+    PointerProperty,
+    FloatVectorProperty,
+    FloatProperty,
+    EnumProperty,
+    IntProperty,
+    BoolVectorProperty
+)
+import blf
+
+from . import companion_text
 from .functions import *
 from . import prefs
+# from . import ui
 
-from modifiers import *
+# modules = [
+#     companion_text,
+#     functions,
+#     prefs,
+#     # ui,
+# ]
+
+from .modifiers.armature import *
+from .modifiers.array import *
+from .modifiers.bevel import *
+from .modifiers.boolean import *
+from .modifiers.build import *
+from .modifiers.cast import *
+from .modifiers.corrective_smooth import *
+from .modifiers.curve import *
+from .modifiers.decimate import *
+from .modifiers.displace import *
+from .modifiers.edge_split import *
+from .modifiers.hook import *
+from .modifiers.laplacian_deform import *
+from .modifiers.laplacian_smooth import *
+from .modifiers.lattice import *
+from .modifiers.mask import *
+from .modifiers.mesh_deform import *
+from .modifiers.mirror import *
+from .modifiers.multires import *
+from .modifiers.remesh import *
+from .modifiers.screw import *
+from .modifiers.shrinkwrap import *
+from .modifiers.simple_deform import *
+from .modifiers.skin import *
+from .modifiers.smooth import *
+from .modifiers.solidify import *
+from .modifiers.subsurf import *
+from .modifiers.surface_deform import *
+from .modifiers.triangulate import *
+from .modifiers.warp import *
+from .modifiers.wave import *
+from .modifiers.weighted_normals import *
+from .modifiers.wireframe import *
+
+# from .modifiers import *
 # from . import InfotextAddonPrefs
 # import bmesh
 # from .icon.icons import load_icons
@@ -1543,6 +1585,25 @@ def warning(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> 
 # ----------------------------------------------------------------------
 # TEXTS
 # ----------------------------------------------------------------------
+
+def mod_unknown(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
+                mod: bpy.types.Modifier) -> None:
+
+    output_text.extend([
+        "CR",
+        (str(mod.type), p.color_title, p.text_size_normal),
+        ("  ", p.color_title, p.text_size_normal),
+        (str(mod.name), p.color_value, p.text_size_normal),
+    ])
+
+    if not mod.show_viewport:
+        output_text.extend([
+            (" Hidden ", p.color_warning, p.text_size_normal),
+        ])
+
+    output_text.extend([
+        (" (Unknown modifier)", p.color_warning, p.text_size_normal),
+    ])
 
 
 ModifierFunc = Callable[[Any, prefs.InfotextAddonPrefs, bpy.types.Object, bpy.types.Modifier], None]

@@ -1,27 +1,26 @@
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+import os
+import sys
+from typing import Tuple
 
 import bpy
-from bpy.props import (StringProperty,
-                       BoolProperty,
-                       FloatVectorProperty,
-                       FloatProperty,
-                       EnumProperty,
-                       IntProperty,
-                       PointerProperty)
+from bpy.props import (
+    StringProperty,
+    BoolProperty,
+    PointerProperty,
+    FloatVectorProperty,
+    FloatProperty,
+    EnumProperty,
+    IntProperty,
+    BoolVectorProperty
+)
+from bpy.types import (
+    PropertyGroup,
+)
 
-from bpy.types import PropertyGroup
-from typing import Tuple
+# from . import companion_text
+# from . import functions
+# from . import prefs
+# from . import ui
 
 # from bpy.app.handlers import persistent
 
@@ -144,3 +143,9 @@ def fmt_pct(value: float, precision: int = 2) -> str:
 #
 #
 # bpy.app.handlers.scene_update_post.append(infotext_update_mesh_info_values)
+
+def register():
+    return
+
+def unregister():
+    return
