@@ -94,6 +94,13 @@ def register():
 
     bpy.types.WindowManager.infotext = PointerProperty(type=INFOTEXT_OT_property_group)
 
+    print(f"path: {__path__}")
+    print(f"name: {__name__}")
+    # import importlib
+    # x = importlib.import_module('.modifiers', __name__)
+    # y = getattr(x, "armature")
+    # print(y.infotext_modifiers)
+
     # Check the addon version on Github
     # context = bpy.context
     # prefs = context.preferences.addons[__name__].preferences

@@ -1,5 +1,8 @@
+import importlib
 import math
 import os
+from pathlib import Path
+import pkgutil
 import sys
 from typing import Callable, Dict
 from typing import *
@@ -30,49 +33,40 @@ from . import prefs
 # ]
 
 from .modifiers.armature import *
-from .modifiers.array import *
-from .modifiers.bevel import *
-from .modifiers.boolean import *
-from .modifiers.build import *
-from .modifiers.cast import *
-from .modifiers.corrective_smooth import *
-from .modifiers.curve import *
-from .modifiers.decimate import *
-from .modifiers.displace import *
-from .modifiers.edge_split import *
-from .modifiers.hook import *
-from .modifiers.laplacian_deform import *
-from .modifiers.laplacian_smooth import *
-from .modifiers.lattice import *
-from .modifiers.mask import *
-from .modifiers.mesh_deform import *
-from .modifiers.mirror import *
-from .modifiers.multires import *
-from .modifiers.remesh import *
-from .modifiers.screw import *
-from .modifiers.shrinkwrap import *
-from .modifiers.simple_deform import *
-from .modifiers.skin import *
-from .modifiers.smooth import *
-from .modifiers.solidify import *
-from .modifiers.subsurf import *
-from .modifiers.surface_deform import *
-from .modifiers.triangulate import *
-from .modifiers.warp import *
-from .modifiers.wave import *
-from .modifiers.weighted_normals import *
-from .modifiers.wireframe import *
-
-# from .modifiers import *
-# from . import InfotextAddonPrefs
-# import bmesh
-# from .icon.icons import load_icons
-
-# from os.path import dirname, join
-# from . import png
+# from .modifiers.array import *
+# from .modifiers.bevel import *
+# from .modifiers.boolean import *
+# from .modifiers.build import *
+# from .modifiers.cast import *
+# from .modifiers.corrective_smooth import *
+# from .modifiers.curve import *
+# from .modifiers.decimate import *
+# from .modifiers.displace import *
+# from .modifiers.edge_split import *
+# from .modifiers.hook import *
+# from .modifiers.laplacian_deform import *
+# from .modifiers.laplacian_smooth import *
+# from .modifiers.lattice import *
+# from .modifiers.mask import *
+# from .modifiers.mesh_deform import *
+# from .modifiers.mirror import *
+# from .modifiers.multires import *
+# from .modifiers.remesh import *
+# from .modifiers.screw import *
+# from .modifiers.shrinkwrap import *
+# from .modifiers.simple_deform import *
+# from .modifiers.skin import *
+# from .modifiers.smooth import *
+# from .modifiers.solidify import *
+# from .modifiers.subsurf import *
+# from .modifiers.surface_deform import *
+# from .modifiers.triangulate import *
+# from .modifiers.warp import *
+# from .modifiers.wave import *
+# from .modifiers.weighted_normals import *
+# from .modifiers.wireframe import *
 
 infotext_text_Handle: bpy.types.Object = []
-# TEXTURES = {}
 
 
 # ----------------------------------------------------------------------
@@ -996,19 +990,14 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> N
 # ---------------------------------------------------------------
 
 
-
-
-
 # ---------------------------------------------------------------
 # BOOLEAN
 # ---------------------------------------------------------------
 
 
-
 # ---------------------------------------------------------------
 # BUILD
 # ---------------------------------------------------------------
-
 
 
 # ---------------------------------------------------------------
@@ -1021,11 +1010,9 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> N
 # ---------------------------------------------------------------
 
 
-
 # ---------------------------------------------------------------
 # WEIGHTED NORMALS
 # ---------------------------------------------------------------
-
 
 
 # ---------------------------------------------------------------
@@ -1033,11 +1020,9 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> N
 # ---------------------------------------------------------------
 
 
-
 # ---------------------------------------------------------------
 # MASK
 # ---------------------------------------------------------------
-
 
 
 # ---------------------------------------------------------------
@@ -1045,11 +1030,9 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> N
 # ---------------------------------------------------------------
 
 
-
 # ---------------------------------------------------------------
 # MULTIRES
 # ---------------------------------------------------------------
-
 
 
 # ---------------------------------------------------------------
@@ -1057,11 +1040,9 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> N
 # ---------------------------------------------------------------
 
 
-
 # ---------------------------------------------------------------
 # SCREW
 # ---------------------------------------------------------------
-
 
 
 # ---------------------------------------------------------------
@@ -1076,11 +1057,9 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> N
 # FIXME: Needs to support 'complex' mode
 
 
-
 # ---------------------------------------------------------------
 # SUBSURF
 # ---------------------------------------------------------------
-
 
 
 # ---------------------------------------------------------------
@@ -1093,7 +1072,6 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> N
 # ---------------------------------------------------------------
 
 
-
 # ----------------------------------------------------------------------
 # MODIFIERS DEFORM -----------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------
@@ -1103,11 +1081,9 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> N
 # ---------------------------------------------------------------
 
 
-
 # ---------------------------------------------------------------
 # CAST
 # ---------------------------------------------------------------
-
 
 
 # ---------------------------------------------------------------
@@ -1115,11 +1091,9 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> N
 # ---------------------------------------------------------------
 
 
-
 # ---------------------------------------------------------------
 # CURVE
 # ---------------------------------------------------------------
-
 
 
 # ---------------------------------------------------------------
@@ -1132,11 +1106,9 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> N
 # ---------------------------------------------------------------
 
 
-
 # ---------------------------------------------------------------
 # LAPLACIAN DEFORMER
 # ---------------------------------------------------------------
-
 
 
 # ---------------------------------------------------------------
@@ -1144,17 +1116,14 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> N
 # ---------------------------------------------------------------
 
 
-
 # ---------------------------------------------------------------
 # MESH DEFORM
 # ---------------------------------------------------------------
 
 
-
 # ---------------------------------------------------------------
 # SIMPLE DEFORM
 # ---------------------------------------------------------------
-
 
 
 # ---------------------------------------------------------------
@@ -1167,12 +1136,9 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> N
 # ---------------------------------------------------------------
 
 
-
 # ---------------------------------------------------------------
 # SURFACE DEFORM
 # ---------------------------------------------------------------
-
-
 
 
 # ---------------------------------------------------------------
@@ -1182,8 +1148,6 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> N
 # ---------------------------------------------------------------
 # WAVE
 # ---------------------------------------------------------------
-
-
 
 
 # ---------------------------------------------------------------
@@ -1588,9 +1552,11 @@ def warning(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> 
 
 def mod_unknown(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
                 mod: bpy.types.Modifier) -> None:
+    return
 
     output_text.extend([
         "CR",
+        ("mod_unknown_handler", p.color_title, p.size_normal),
         (str(mod.type), p.color_title, p.text_size_normal),
         ("  ", p.color_title, p.text_size_normal),
         (str(mod.name), p.color_value, p.text_size_normal),
@@ -1602,51 +1568,152 @@ def mod_unknown(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
         ])
 
     output_text.extend([
-        (" (Unknown modifier)", p.color_warning, p.text_size_normal),
+        "CR",
+        (" (Unknown xx modifier)", p.color_warning, p.text_size_normal),
     ])
 
 
 ModifierFunc = Callable[[Any, prefs.InfotextAddonPrefs, bpy.types.Object, bpy.types.Modifier], None]
+
 modifiers: Dict[str, ModifierFunc] = {
-    'ARMATURE': mod_armature,
-    'ARRAY': mod_array,
-    'BEVEL': mod_bevel,
-    'BOOLEAN': mod_boolean,
-    'BUILD': mod_build,
-    'CAST': mod_cast,
-    'CORRECTIVE_SMOOTH': mod_corrective_smooth,
-    'CURVE': mod_curve,
-    'DECIMATE': mod_decimate,
-    'DISPLACE': mod_displace,
-    'EDGE_SPLIT': mod_edge_split,
-    'HOOK': mod_hook,
-    'LAPLACIANDEFORM': mod_laplacian_deform,
-    'LAPLACIANSMOOTH': mod_laplacian_smooth,
-    'LATTICE': mod_lattice,
-    'MASK': mod_mask,
-    'MESH_DEFORM': mod_mesh_deform,
-    'MIRROR': mod_mirror,
-    'MULTIRES': mod_multires,
-    'REMESH': mod_remesh,
-    'SCREW': mod_screw,
-    'SHRINKWRAP': mod_shrinkwrap,
-    'SIMPLE_DEFORM': mod_simple_deform,
-    'SKIN': mod_skin,
-    'SMOOTH': mod_smooth,
-    'SOLIDIFY': mod_solidify,
-    'SUBSURF': mod_subsurf,
-    'SURFACE_DEFORM': mod_surface_deform,
-    'TRIANGULATE': mod_triangulate,
-    'WARP': mod_warp,
-    'WAVE': mod_wave,
-    'WIREFRAME': mod_wireframe,
-    'WEIGHTED_NORMAL': mod_weighted_normals,
+    # 'ARMATURE': mod_armature,
+    # 'ARRAY': mod_array,
+    # 'BEVEL': mod_bevel,
+    # 'BOOLEAN': mod_boolean,
+    # 'BUILD': mod_build,
+    # 'CAST': mod_cast,
+    # 'CORRECTIVE_SMOOTH': mod_corrective_smooth,
+    # 'CURVE': mod_curve,
+    # 'DECIMATE': mod_decimate,
+    # 'DISPLACE': mod_displace,
+    # 'EDGE_SPLIT': mod_edge_split,
+    # 'HOOK': mod_hook,
+    # 'LAPLACIANDEFORM': mod_laplacian_deform,
+    # 'LAPLACIANSMOOTH': mod_laplacian_smooth,
+    # 'LATTICE': mod_lattice,
+    # 'MASK': mod_mask,
+    # 'MESH_DEFORM': mod_mesh_deform,
+    # 'MIRROR': mod_mirror,
+    # 'MULTIRES': mod_multires,
+    # 'REMESH': mod_remesh,
+    # 'SCREW': mod_screw,
+    # 'SHRINKWRAP': mod_shrinkwrap,
+    # 'SIMPLE_DEFORM': mod_simple_deform,
+    # 'SKIN': mod_skin,
+    # 'SMOOTH': mod_smooth,
+    # 'SOLIDIFY': mod_solidify,
+    # 'SUBSURF': mod_subsurf,
+    # 'SURFACE_DEFORM': mod_surface_deform,
+    # 'TRIANGULATE': mod_triangulate,
+    # 'WARP': mod_warp,
+    # 'WAVE': mod_wave,
+    # 'WIREFRAME': mod_wireframe,
+    # 'WEIGHTED_NORMAL': mod_weighted_normals,
     'default': mod_unknown,
 }
 
+# def import_from(module, name):
+#     print(f"__import__({module}, fromlist=[{name}]")
+#     module = __import__("infotext." + module, fromlist=[name])
+#     return getattr(module, name)
+
+# def get_all_submodules(directory):
+# print(f"setup modules: {directory}, modifiers")
+# setup_modifier_modules(directory, "modifiers", "bpy" in locals())
+# print(f"iter_submodules({directory}, {directory.name})")
+# return list(iter_submodules(directory, directory.name))
+# importlib.import_module('.modifiers', __name__)
+# pass
+
+# def iter_submodules(path, package_name):
+#     for name in sorted(iter_submodule_names(path)):
+#         print(f"import_module({name}, .{package_name})")
+#         # yield importlib.import_module("." + name, package_name)
+#         # yield importlib.import_module(name, "." + package_name)
+#         # from .modifiers import armature
+#         # yield import_from("." + package_name, name)
+#         yield import_from(".modifiers", "armature")
+
+# return []
+
+def iter_submodule_names(path, root=""):
+    for _, module_name, is_package in pkgutil.iter_modules([str(path)]):
+        if is_package:
+            # print(f"{module_name} is_package")
+            sub_path = path / module_name
+            sub_root = root + module_name + "."
+            yield from iter_submodule_names(sub_path, sub_root)
+        else:
+            # print(f"{root} + {module_name} is not package")
+            yield root + module_name
+
+
+import pkgutil
+import importlib
+
+# def setup_modifier_modules(path, package_name, reload):
+#     """
+#     Imports and reloads all modules in this addon.
+
+#     path -- __path__ from __init__.py
+#     package_name -- __name__ from __init__.py
+
+#     Individual modules can define a __reload_order_index__ property which
+#     will be used to reload the modules in a specific order. The default is 0.
+#     """
+#     def get_submodule_names(path, root = ""):
+#         module_names = []
+#         for importer, module_name, is_package in pkgutil.iter_modules([path]):
+#             if is_package:
+#                 sub_path = os.path.join(path, module_name)
+#                 sub_root = root + module_name + "."
+#                 module_names.extend(get_submodule_names(sub_path, sub_root))
+#             else:
+#                 module_names.append(root + module_name)
+#                 print(f"module.names.append({root}{module_name})")
+#         return module_names
+
+#     def import_submodules(names):
+#         modules = []
+#         for name in names:
+#             print(f"import_module('.{name}', {package_name})")
+#             modules.append(importlib.import_module("." + name, package_name))
+#         return modules
+
+#     def reload_modules(modules):
+#         modules.sort(key = lambda module: getattr(module, "__reload_order_index__", 0))
+#         for module in modules:
+#             importlib.reload(module)
+
+#     names = get_submodule_names(path)
+#     modules = import_submodules(names)
+#     if reload:
+#         reload_modules(modules)
+#     return modules
+
+
+# FIXME: Might be better in the functions module
+# def get_all_submodules(directory):
+#     print("=====")
+#     return list(iter_submodules(directory, directory.name))
+
+# def iter_submodules(path, package_name):
+#     for name in sorted(iter_submodule_names(path)):
+#         print(f"importing: .{name}, {package_name}")
+#         yield importlib.import_module("." + name, package_name)
+
+# def iter_submodule_names(path, root=""):
+#     for _, module_name, is_package in pkgutil.iter_modules([str(path)]):
+#         print(f"module: {module_name}, is_package: {is_package}")
+#         if is_package:
+#             sub_path = path / module_name
+#             sub_root = root + module_name + "."
+#             yield from iter_submodule_names(sub_path, sub_root)
+#         else:
+#             yield root + module_name
+
+
 # FIXME: Should we pass context, as well?
-
-
 def infotext_key_text(p):
     output_text = []
 
@@ -1925,14 +1992,42 @@ def infotext_key_text(p):
 
 
 def register():
+    print("register")
     # Add Text
     if infotext_text_Handle:
         bpy.types.SpaceView3D.draw_handler_remove(infotext_text_Handle[0], 'WINDOW')
     infotext_text_Handle[:] = [
         bpy.types.SpaceView3D.draw_handler_add(infotext_draw_text_callback, (), 'WINDOW', 'POST_PIXEL')]
 
+    # x = get_all_submodules(Path(__file__).parent.joinpath("modifiers"))
+    # print(f"all submodules: {x}")
+    # print(f"name: {__name__}")
+    # x = setup_modifier_modules(os.path.dirname(__file__) , "modifiers", "bpy" in locals())
+    # print(x)
+
+    modifier_modules = list(iter_submodule_names("modifiers"))
+    modifier_pkg = importlib.import_module('.modifiers', "infotext")
+
+    for m in modifier_modules:
+        try:
+            mdict = getattr(modifier_pkg, m)
+            modifiers.update(mdict.infotext_modifiers)
+        except AttributeError:
+            print(f"modifiers.{m} exists, but no infotext_modifiers attr")
+            continue
+
+    print(modifiers)
+    # import importlib
+    # x = importlib.import_module('.modifiers', "infotext")
+    # y = getattr(x, "armature")
+    # print(y.infotext_modifiers)
+
+    # print("zot:")
+    # print(list(iter_submodule_names("modifiers")))
+    # print("===")
 
 def unregister():
+    print("unregister")
     # Remove Text
     if infotext_text_Handle:
         bpy.types.SpaceView3D.draw_handler_remove(
