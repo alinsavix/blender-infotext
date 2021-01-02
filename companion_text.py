@@ -5,19 +5,18 @@ from typing import Callable, Dict
 from typing import *
 
 import bpy
-from bpy.props import (
-    StringProperty,
-    BoolProperty,
-    PointerProperty,
-    FloatVectorProperty,
-    FloatProperty,
-    EnumProperty,
-    IntProperty,
-    BoolVectorProperty
-)
+# from bpy.props import (
+#     StringProperty,
+#     BoolProperty,
+#     PointerProperty,
+#     FloatVectorProperty,
+#     FloatProperty,
+#     EnumProperty,
+#     IntProperty,
+#     BoolVectorProperty
+# )
 import blf
 
-from . import companion_text
 from .functions import *
 from . import prefs
 
@@ -205,11 +204,6 @@ def infotext_draw_text_array(output_text, p: prefs.InfotextAddonPrefs) -> None:
         blf.disable(0, blf.SHADOW)
 
     bpy.context.area.tag_redraw()
-
-
-# utility function for floating point comparisons (needs python 3.6+)
-def is_close(a, b, precision):
-    return f'{a:.{precision}f}' == f'{b:.{precision}f}'
 
 
 '''
@@ -578,13 +572,12 @@ def loc(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> None
                 (str(round(obj.scale[idx], 2)), p.color_value, p.text_size_normal),
             ])
 
-        if not is_close(obj.scale[0], obj.scale[1], 3) or not is_close(obj.scale[1], obj.scale[2], 3):
+        if not float_is_close(obj.scale[0], obj.scale[1], 3) or not float_is_close(obj.scale[1], obj.scale[2], 3):
             output_text.extend([
                 (" Non-uniform ", p.color_warning, p.text_size_normal),
             ])
 
     if any([tuple(obj.location) != (0.0, 0.0, 0.0), tuple(obj.rotation_euler) != (0.0, 0.0, 0.0), tuple(obj.scale) != (1, 1, 1)]):
-        # SPACE
         output_text.extend(["SPACE"])
 
 
@@ -592,7 +585,6 @@ def loc(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> None
 # NGONS
 # ---------------------------------------------------------------
 def ngons(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> None:
-    # obj = bpy.context.active_object
     # WM = bpy.context.window_manager.infotext_properties
     infotext = bpy.context.window_manager.infotext
 
@@ -1458,7 +1450,6 @@ def infotext_key_text(p):
 
     # MESH OPTIONS
     if p.show_object_info:
-        # if bpy.context.object.mode in ['EDIT', 'OBJECT', 'WEIGHT_PAINT']:
         if obj.type in ['MESH', 'CURVE', 'FONT', 'LATTICE']:
             mesh_options(output_text, p, obj)
 
@@ -1523,11 +1514,11 @@ def infotext_key_text(p):
     # ----------------------------------------------------------------------
     # MODIFIER HANDLING
     # ----------------------------------------------------------------------
-    wm = bpy.context.window_manager
+    # wm = bpy.context.window_manager
 
-    GREEN = (0.5, 1, 0, 1)
-    NOIR = (0, 0, 0, 1)
-    BLANC = (1, 1, 1, 1)
+    # GREEN = (0.5, 1, 0, 1)
+    # NOIR = (0, 0, 0, 1)
+    # BLANC = (1, 1, 1, 1)
 
     if p.show_modifiers:
         for i, mod in enumerate(obj.modifiers):

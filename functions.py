@@ -51,6 +51,11 @@ def get_face_type_count(infotext, obj):
         infotext.face_type_count['NGONS'] = ngons
 
 
+# utility function for floating point comparisons
+def float_is_close(a, b, precision):
+    return f'{a:.{precision}f}' == f'{b:.{precision}f}'
+
+
 def fmt_unit(category: str, value: float, precision: int) -> Tuple[str, str, str]:
     # FIXME: Should the unit system be passed in instead?
     units_system = str(bpy.context.scene.unit_settings.system)
