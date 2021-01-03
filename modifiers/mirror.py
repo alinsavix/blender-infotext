@@ -1,4 +1,6 @@
 import bpy.types
+
+from ..functions import *
 from .. import prefs
 
 def mod_mirror(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
