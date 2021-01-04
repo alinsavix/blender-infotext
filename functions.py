@@ -17,7 +17,7 @@ from bpy.types import (
     PropertyGroup,
 )
 
-# from . import companion_text
+# from . import infotext
 # from . import functions
 # from . import prefs
 # from . import ui

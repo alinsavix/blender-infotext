@@ -39,13 +39,13 @@ from bpy.props import (
     BoolVectorProperty
 )
 
-from . import companion_text
+from . import infotext
 from . import functions
 from . import prefs
 # from . import ui
 
 modules = [
-    companion_text,
+    infotext,
     functions,
     prefs,
     # ui,
@@ -56,12 +56,12 @@ modules = [
 # main_dir = os.path.dirname(os.path.abspath(__file__))
 # sys.path.append(main_dir)
 
-# from .companion_text import infotext_text_Handle
+# from .infotext import infotext_text_Handle
 # from .functions import get_addon_preferences
 # from .icon.icons import load_icons
 # import .prefs
 
-# from . import companion_text
+# from . import infotext
 
 
 
