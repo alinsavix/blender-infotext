@@ -1,0 +1,28 @@
+{
+    // You'll want to uncomment this and set it to a version of
+    // python that matches the current blender version. Sadly, visual
+    // studio won't let you just use "python3.8" (it'll replace it with
+    // a full path), which makes it difficult to move development
+    // between macOS and Windows. :(
+    // "python.pythonPath": "/usr/local/bin/python3.8",
+
+    // pylance really wants type stubs and such to be in the project
+    // directory, so put them here. Not sure why I chose this name.
+    "python.autoComplete.extraPaths": [
+        "./vendor/"
+    ],
+    "python.analysis.extraPaths": [
+        "./vendor/"
+    ],
+    // best I can tell, the .flake8 config file doesn't actually work
+    // when vscode is doing realtime linting, so need that config here
+    // as well.
+    "python.linting.flake8Args": [
+        "--ignore",
+        "E266,E302,E402,E501,F403"
+    ],
+    "python.linting.flake8Enabled": true,
+    "python.analysis.memory.keepLibraryAst": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "jupyter.ignoreVscodeTheme": true
+}
