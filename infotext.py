@@ -475,7 +475,6 @@ def name(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> Non
         "CR",
     ])
 
-
     # FIXME: enable icons once icon code is enabled
     # if obj.type == 'MESH':
     #     # output_text.extend(["CR", ('ICON', 'ICON_OUTLINER_OB_MESH.png'), ("    ", p.color_setting, p.text_size_normal)])
@@ -656,6 +655,14 @@ def ngons(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> No
 # MESH OPTIONS
 # ---------------------------------------------------------------
 def mesh_options(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> None:
+    # CUSTOM NORMALS
+    if obj.type == 'MESH':
+        if obj.data.has_custom_normals:
+            output_text.extend([
+                "CR",
+                ("CUSTOM NORMALS", p.color_warning, p.text_size_normal),
+            ])
+
     # MATERIALS
     if obj.type in ['MESH', 'CURVE', 'FONT']:
         if obj.material_slots:
@@ -1510,7 +1517,6 @@ def infotext_key_text(p):
         # SPACE
         output_text.extend(["SPACE"])
 
-
     # ----------------------------------------------------------------------
     # MODIFIER HANDLING
     # ----------------------------------------------------------------------
@@ -1549,3 +1555,39 @@ def unregister():
         bpy.types.SpaceView3D.draw_handler_remove(
             infotext_text_Handle[0], 'WINDOW')
         infotext_text_Handle[:] = []
+
+
+# class DATA_PT_customdata(MeshButtonsPanel, Panel):
+#     bl_label = "Geometry Data"
+#     bl_options = {'DEFAULT_CLOSED'}
+#     COMPAT_ENGINES = {'BLENDER_RENDER', 'BLENDER_EEVEE', 'BLENDER_WORKBENCH'}
+
+#     def draw(self, context):
+#         layout = self.layout
+#         layout.use_property_split = True
+#         layout.use_property_decorate = False
+
+#         obj = context.object
+#         me = context.mesh
+#         col = layout.column()
+
+#         col.operator("mesh.customdata_mask_clear", icon='X')
+#         col.operator("mesh.customdata_skin_clear", icon='X')
+
+#         if me.has_custom_normals:
+#             col.operator("mesh.customdata_custom_splitnormals_clear", icon='X')
+#         else:
+#             col.operator("mesh.customdata_custom_splitnormals_add", icon='ADD')
+
+#         col = layout.column(heading="Store")
+
+#         col.enabled = obj is not None and obj.mode != 'EDIT'
+#         col.prop(me, "use_customdata_vertex_bevel", text="Vertex Bevel Weight")
+#         col.prop(me, "use_customdata_edge_bevel", text="Edge Bevel Weight")
+#         col.prop(me, "use_customdata_edge_crease", text="Edge Crease")
+
+
+# class DATA_PT_custom_props_mesh(MeshButtonsPanel, PropertyPanel, Panel):
+#     COMPAT_ENGINES = {'BLENDER_RENDER', 'BLENDER_EEVEE', 'BLENDER_WORKBENCH'}
+#     _context_path = "object.data"
+#     _property_type = bpy.types.Mesh
