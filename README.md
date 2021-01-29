@@ -1,5 +1,7 @@
 # Blender Infotext
 
+![Example Screenshot](https://i.imgur.com/WuVjrzK.png)
+
 This is a simple module that displays a bunch of information inside
 the 3D View window, in a slightly configurable manner.
 
