@@ -19,11 +19,11 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
 
     prefs_tabs: EnumProperty(
         items=(
-            ('info', "Info", "INFORMATION"),
+            # ('info', "Info", "INFORMATION"),
             ('options', "Options", "ADDON OPTIONS"),
             ('links', "Links", "LINKS"),
         ),
-        default='info',
+        default='options',
     )
 
     # SHOW TEXTS
@@ -33,34 +33,22 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
         description="Enable Infotext in Viewport",
     )
 
-    show_blender_keymaps: BoolProperty(
-        name="Show Blender Keymaps",
-        default=False,
-        description="Show Blender Keymaps",
-    )
+    # show_blender_keymaps: BoolProperty(
+    #     name="Show Blender Keymaps",
+    #     default=False,
+    #     description="Show Blender Keymaps",
+    # )
 
     show_view_perspective: BoolProperty(
         name="Show View Perspective",
         default=True,
-        description="Show View Perspective",
+        description="Show View Perspective (perspective, orthographic, etc)",
     )
 
     show_object_mode: BoolProperty(
         name="Show Object Mode",
         default=True,
-        description="Show Object Mode",
-    )
-
-    show_vert_face_tris: BoolProperty(
-        name="Show Vertex, Faces, Triangles & Ngons",
-        default=True,
-        description="Show Vertex, Faces, Triangles & Ngons",
-    )
-
-    show_object_info: BoolProperty(
-        name="Show Modifiers",
-        default=True,
-        description="Show Modifiers",
+        description="Show Object Mode (object, edit, pose, etc)",
     )
 
     show_object_name: BoolProperty(
@@ -69,10 +57,28 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
         description="Show Object & Name",
     )
 
+    show_vert_face_tris: BoolProperty(
+        name="Show Vertex, Face, Triangle & Ngon counts",
+        default=True,
+        description="Show Vertex, Face, Triangle & Ngon counts",
+    )
+
+    show_object_info: BoolProperty(
+        name="Show Modifiers",
+        default=True,
+        description="Show Modifiers",
+    )
+
     show_loc_rot_scale: BoolProperty(
         name="Show Location, Rotation & Scale",
         default=True,
         description="Show Location, Rotation & Scale",
+    )
+
+    flag_bad_transforms: BoolProperty(
+        name="Flag Unapplied & Non-uniform Scaling",
+        default=True,
+        description="Flag Unapplied & Non-uniform Scaling (when modifiers are present)",
     )
 
     show_modifiers: BoolProperty(
@@ -215,14 +221,14 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
         row.prop(self, "prefs_tabs", expand=True)
 
         # Info
-        if self.prefs_tabs == 'info':
-            box = layout.box()
-            split = box.split()
-            col = split.column()
-            col.label(text="This is a test addon text string")
-            col.separator()
-            col.label(text="more test text")
-            col.label(text="and more test text")
+        # if self.prefs_tabs == 'info':
+        #     box = layout.box()
+        #     split = box.split()
+        #     col = split.column()
+        #     col.label(text="This is a test addon text string")
+        #     col.separator()
+        #     col.label(text="more test text")
+        #     col.label(text="and more test text")
 
         # Options
         if self.prefs_tabs == 'options':
@@ -249,12 +255,17 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
                 row.label(text="Show Transforms")
                 row.prop(self, "show_loc_rot_scale", expand=True, text=" ")
 
+                if self.show_loc_rot_scale:
+                    row = box.row(align=True)
+                    row.label(text="    Flag Problematic Transforms")
+                    row.prop(self, "flag_bad_transforms", expand=True, text=" ")
+
                 row = box.row(align=True)
                 row.label(text="Show Vert/Faces/Tris/Ngons")
                 row.prop(self, "show_vert_face_tris", expand=True, text=" ")
 
                 row = box.row(align=True)
-                row.label(text="Show Object informations")
+                row.label(text="Show Object Information")
                 row.prop(self, "show_object_info", expand=True, text=" ")
 
                 row = box.row(align=True)
@@ -265,9 +276,9 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
                 row.label(text="Detailed Modifiers")
                 row.prop(self, "detailed_modifiers", expand=True, text=" ")
 
-                row = box.row(align=True)
-                row.label(text="Show Blender Keymaps")
-                row.prop(self, "show_blender_keymaps", expand=True, text=" ")
+                # row = box.row(align=True)
+                # row.label(text="Show Blender Keymaps")
+                # row.prop(self, "show_blender_keymaps", expand=True, text=" ")
 
                 row = box.row(align=True)
                 row.label(text="Title Text Color")
@@ -334,17 +345,17 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
         # # ------URls
         if self.prefs_tabs == 'links':
             box = layout.box()
-            box.label(text="Support me:", icon='HAND')
+            box.label(text="Issues, bugs, etc:", icon='LINK_BLEND')
             box.operator("wm.url_open",
-                         text="Patreon").url = "https://www.patreon.com/someone"
+                         text="Github").url = "https://www.github.com/alinsavix/blender-infotext"
 
-            box.separator()
-            box.label(text="Web:", icon='WORLD')
-            box.operator("wm.url_open", text="example.com").url = "http://www.example.com/"
+            # box.separator()
+            # box.label(text="Web:", icon='WORLD')
+            # box.operator("wm.url_open", text="example.com").url = "http://www.example.com/"
 
-            box.separator()
-            box.label(text="Social:", icon='USER')
-            box.operator("wm.url_open", text="Twitter").url = "https://twitter.com/example"
+            # box.separator()
+            # box.label(text="Social:", icon='USER')
+            # box.operator("wm.url_open", text="Twitter").url = "https://twitter.com/example"
 
 
 CLASSES = [

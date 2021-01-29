@@ -13,13 +13,13 @@
 
 bl_info = {
     "name": "Blender InfoText",
-    "description": "Better text handling for informational text",
+    "description": "Better text handling for Blender informational text",
     "author": "TDV Alinsa",
-    "version": (0, 0, 1),
+    "version": (0, 1, 0),
     "blender": (2, 90, 0),
     "location": "View3D",
-    "warning": "WIP",
-    "wiki_url": "",
+    "warning": "Work In Progress - Might be unstable or slow",
+    # "wiki_url": "",
     "category": "Tools"
 }
 
@@ -62,7 +62,6 @@ modules = [
 # import .prefs
 
 # from . import infotext
-
 
 
 # Property Group
@@ -119,8 +118,6 @@ def unregister():
 
     for module in reversed(modules):
         module.unregister()
-
-
 
     # # Remove Text
     # if infotext_text_Handle:

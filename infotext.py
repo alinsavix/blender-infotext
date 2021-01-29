@@ -34,6 +34,7 @@ from .modifiers.build import *
 from .modifiers.cast import *
 from .modifiers.corrective_smooth import *
 from .modifiers.curve import *
+# from .modifiers.data_transfer import *
 from .modifiers.decimate import *
 from .modifiers.displace import *
 from .modifiers.edge_split import *
@@ -571,12 +572,19 @@ def loc(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> None
                 (str(round(obj.scale[idx], 2)), p.color_value, p.text_size_normal),
             ])
 
-        if not float_is_close(obj.scale[0], obj.scale[1], 3) or not float_is_close(obj.scale[1], obj.scale[2], 3):
-            output_text.extend([
-                (" Non-uniform ", p.color_warning, p.text_size_normal),
-            ])
+        if obj.modifiers and p.flag_bad_transforms:
+            if not float_is_close(obj.scale[0], obj.scale[1], 3) or not float_is_close(obj.scale[1], obj.scale[2], 3):
+                output_text.extend([
+                    ("  NON-UNIFORM", p.color_warning, p.text_size_normal),
+                ])
 
-    if any([tuple(obj.location) != (0.0, 0.0, 0.0), tuple(obj.rotation_euler) != (0.0, 0.0, 0.0), tuple(obj.scale) != (1, 1, 1)]):
+            if not float_is_close(obj.scale[0], 0.0, 3) or not float_is_close(obj.scale[1], 0.0, 3) or not float_is_close(obj.scale[2], 0.0, 3):
+                output_text.extend([
+                    ("  UNAPPLIED", p.color_warning, p.text_size_normal),
+                ])
+
+    if any([
+            tuple(obj.location) != (0.0, 0.0, 0.0), tuple(obj.rotation_euler) != (0.0, 0.0, 0.0), tuple(obj.scale) != (1, 1, 1)]):
         output_text.extend(["SPACE"])
 
 
@@ -1362,6 +1370,7 @@ modifiers: Dict[str, ModifierFunc] = {
     'CAST': mod_cast,
     'CORRECTIVE_SMOOTH': mod_corrective_smooth,
     'CURVE': mod_curve,
+    # 'DATA_TRANSFER': mod_data_transfer,
     'DECIMATE': mod_decimate,
     'DISPLACE': mod_displace,
     'EDGE_SPLIT': mod_edge_split,
@@ -1388,6 +1397,8 @@ modifiers: Dict[str, ModifierFunc] = {
     'WIREFRAME': mod_wireframe,
     'WEIGHTED_NORMAL': mod_weighted_normals,
     'default': mod_unknown,
+
+
 }
 
 
