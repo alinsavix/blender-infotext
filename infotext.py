@@ -578,7 +578,7 @@ def loc(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> None
                     ("  NON-UNIFORM", p.color_warning, p.text_size_normal),
                 ])
 
-            if not float_is_close(obj.scale[0], 0.0, 3) or not float_is_close(obj.scale[1], 0.0, 3) or not float_is_close(obj.scale[2], 0.0, 3):
+            if not float_is_close(obj.scale[0], 1.0, 3) or not float_is_close(obj.scale[1], 1.0, 3) or not float_is_close(obj.scale[2], 1.0, 3):
                 output_text.extend([
                     ("  UNAPPLIED", p.color_warning, p.text_size_normal),
                 ])
