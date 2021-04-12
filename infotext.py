@@ -67,6 +67,8 @@ infotext_text_Handle: bpy.types.Object = []
 # ----------------------------------------------------------------------
 # DRAW ICONS
 # ----------------------------------------------------------------------
+# Not implemented currently because blender changed when eevee hit. Need
+# to fix at some point this lifetime.
 # def load_texture(name, scale=1):
 #     full_path = join(dirname(__file__), 'icon', 'modifiers', name)
 #     img = png.Reader(full_path)
@@ -464,12 +466,20 @@ def mode(output_text, p: prefs.InfotextAddonPrefs):
 def name(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> None:
     # obj = bpy.context.active_object
 
+    type = obj.type
+
+    # if obj.animation_data:
+    if obj.animation_data \
+            and hasattr(obj.animation_data.action, "fcurves") \
+            and len(obj.animation_data.action.fcurves):
+        type += " (ANIMATED)"
+
     output_text.extend([
         "CR",
         ("", p.color_setting, int(p.text_size_normal * 5)),
         "CR",
         # (obj.type + ": ", p.color_title, p.text_size_normal),
-        (obj.type, p.color_title, p.text_size_normal),
+        (type, p.color_title, p.text_size_normal),
         "CR",
         "CR",
         (obj.name, p.color_value, int(p.text_size_large * 1.5)),
