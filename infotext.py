@@ -693,7 +693,8 @@ def mesh_options(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object
                         (" users", p.color_setting, p.text_size_normal),
                     ])
                 if obj.active_material.use_fake_user:
-                    output_text.extend([(" ,FAKE USER ", p.color_setting, p.text_size_normal)])
+                    real = obj.active_material.users - 1
+                    output_text.extend([(f" ({real} real, 1 fake)", p.color_setting, p.text_size_normal)])
             else:
                 output_text.extend(["CR", ("SLOT ONLY", p.color_title, p.text_size_normal)])
 

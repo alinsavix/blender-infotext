@@ -168,3 +168,8 @@ dmypy.json
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
+
+
+# And bits of my own stupid.
+*.orig
+*.bak
