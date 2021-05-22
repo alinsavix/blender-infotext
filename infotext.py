@@ -1327,24 +1327,6 @@ def metaball(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.MetaBall) 
     ])
 
 
-# ---------------------------------------------------------------
-# WARNING  -   FIXME: Probably not the way to do this
-# ---------------------------------------------------------------
-def warning(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> None:
-    for mod in obj.modifiers:
-        if mod.type in ['BEVEL', 'SOLIDIFY']:
-            if obj.scale[0] != obj.scale[2] or obj.scale[1] != obj.scale[0] or obj.scale[1] != obj.scale[2]:
-                # output_text.extend([
-                #     "CR",
-                #     ('ICON', 'ICON_ERROR.png'),
-                #     (" Non-Uniform Scale ", p.color_setting, p.text_size_normal),
-                # ])
-                output_text.extend([
-                    "CR",
-                    (" Non-Uniform Scale ", p.color_warning, p.text_size_normal),
-                ])
-
-
 # ----------------------------------------------------------------------
 # UNKNOWN MODIFIERS
 # ----------------------------------------------------------------------
@@ -1557,9 +1539,6 @@ def infotext_key_text(p):
             func(output_text, p, obj, mod)
 
     output_text.extend(["SPACE"])
-
-    # FIXME: should this actually be here?
-    warning(output_text, p, obj)
 
     return output_text
 
