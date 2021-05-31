@@ -69,6 +69,12 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
         description="Show Modifiers",
     )
 
+    show_parent: BoolProperty(
+        name="Show Parent",
+        default=True,
+        description="Show Parent",
+    )
+
     show_loc_rot_scale: BoolProperty(
         name="Show Location, Rotation & Scale",
         default=True,
@@ -252,7 +258,11 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
                 row.prop(self, "show_object_name", expand=True, text=" ")
 
                 row = box.row(align=True)
-                row.label(text="Show Transforms")
+                row.label(text="Show Object Parent")
+                row.prop(self, "show_parent", expand=True, text=" ")
+
+                row = box.row(align=True)
+                row.label(text="Show Object Transforms")
                 row.prop(self, "show_loc_rot_scale", expand=True, text=" ")
 
                 if self.show_loc_rot_scale:

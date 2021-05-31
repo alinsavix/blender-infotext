@@ -535,6 +535,21 @@ def name(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> Non
 
 
 # ---------------------------------------------------------------
+# PARENT
+# ---------------------------------------------------------------
+
+
+def parent(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> None:
+    if obj.parent:
+        output_text.extend([
+            "CR",
+            ("PARENT: ", p.color_title, p.text_size_normal),
+            (obj.parent.name, p.color_value, p.text_size_normal),
+        ])
+        output_text.extend(["SPACE"])
+
+
+# ---------------------------------------------------------------
 # LOCATION / ROTATION / SCALE
 # ---------------------------------------------------------------
 
@@ -1447,6 +1462,10 @@ def infotext_key_text(p):
         name(output_text, p, obj)
         # SPACE
         output_text.extend(["SPACE"])
+
+    # PARENT
+    if p.show_parent:
+        parent(output_text, p, obj)
 
     # LOCATION / ROTATION / SCALE
     if p.show_loc_rot_scale:
