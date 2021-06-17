@@ -620,8 +620,9 @@ def ngons(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> No
     # WM = bpy.context.window_manager.infotext_properties
     infotext = bpy.context.window_manager.infotext
 
-    if not infotext.face_type_count:
-        get_face_type_count(infotext, obj)
+    if False:
+        if not infotext.face_type_count:
+            get_face_type_count(infotext, obj)
 
     # tcount = infotext_properties.face_type_count['TRIS']
     # ncount = infotext_properties.face_type_count['NGONS']
@@ -658,7 +659,7 @@ def ngons(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> No
 
     # FIXME: Make sure this is ok in all cases
     # if not bpy.context.object.mode == 'SCULPT':
-    if not obj.mode == 'SCULPT':
+    if False and not obj.mode == 'SCULPT':
         tcount = infotext.face_type_count['TRIS']
         ncount = infotext.face_type_count['NGONS']
         # TRIS
