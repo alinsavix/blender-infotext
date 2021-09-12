@@ -1510,8 +1510,8 @@ def infotext_key_text(p):
         curve_font(output_text, p, obj)
         if obj.modifiers:
             # SPACE
-            output_text.extend(["CR", ("", p.color_title)])
-
+            # output_text.extend(["CR", ("", p.color_title)])
+            output_text.extend(["SPACE"])
     # EMPTY
     if obj.type == 'EMPTY':
         # SPACE
