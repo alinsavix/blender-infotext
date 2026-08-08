@@ -1,8 +1,7 @@
 import math
 import os
 import sys
-from typing import Callable, Dict
-from typing import *
+from typing import Callable, Dict, List, Optional, Any, Union, Tuple, TYPE_CHECKING
 
 import bpy
 # from bpy.props import (
@@ -178,11 +177,16 @@ def infotext_draw_text_array(output_text, p: prefs.InfotextAddonPrefs) -> None:
             y_offset -= text_size + p.infotext_text_space
             # space = int(text_size_max *5)
 
+        elif command == "CR2":
+            x_offset = 0
+            y_offset -= (text_size * 1.5) + p.infotext_text_space
+            # space = int(text_size_max *5)
+
         elif len(command) == 3:
             Text, Color, Size = command
             # bgl.glColor3f(*Color)
             blf.color(0, *Color)
-            blf.size(font_id, Size, 72)
+            blf.size(font_id, Size)
 
             text_width, text_height = blf.dimensions(font_id, Text)
             if p.infotext_text_shadow:
@@ -404,6 +408,15 @@ def view(output_text, p: prefs.InfotextAddonPrefs):
         ])
 
 
+def am_debugging(output_text, p: prefs.InfotextAddonPrefs):
+    if "PYDEVD_USE_FRAME_EVAL" in os.environ:
+        output_text.extend([
+            "CR",
+            ("DEBUGGING", p.color_warning, p.text_size_normal),
+            "CR",
+        ])
+
+
 # ---------------------------------------------------------------
 # MODE
 # ---------------------------------------------------------------
@@ -483,7 +496,7 @@ def name(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> Non
         "CR",
         "CR",
         (obj.name, p.color_value, int(p.text_size_large * 1.5)),
-        "CR",
+        # "CR",
     ])
 
     # FIXME: enable icons once icon code is enabled
@@ -579,7 +592,8 @@ def loc(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> None
         for idx, axis in enumerate(axis_list):
             output_text.extend([
                 (axis, p.color_setting, p.text_size_normal),
-                (str(round(math.degrees(obj.rotation_euler[idx]), 2)), p.color_value, p.text_size_normal),
+                (str(
+                    round(math.degrees(obj.rotation_euler[idx]), 2)), p.color_value, p.text_size_normal),
                 ("°", p.color_value, p.text_size_normal)
             ])
 
@@ -720,26 +734,28 @@ def mesh_options(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object
                     ])
                 if obj.active_material.use_fake_user:
                     real = obj.active_material.users - 1
-                    output_text.extend([(f" ({real} real, 1 fake)", p.color_setting, p.text_size_normal)])
+                    output_text.extend(
+                        [(f" ({real} real, 1 fake)", p.color_setting, p.text_size_normal)])
             else:
                 output_text.extend(["CR", ("SLOT ONLY", p.color_title, p.text_size_normal)])
 
             # SPACE
             output_text.extend(["SPACE"])
 
-    if obj.type == 'MESH':
-        # AUTOSMOOTH
-        if obj.data.use_auto_smooth:
-            output_text.extend([
-                "CR",
-                ("AUTOSMOOTH ", p.color_title, p.text_size_normal),
-            ])
-            # ANGLE
-            output_text.extend([
-                (" ANGLE ", p.color_setting, p.text_size_normal),
-                (str(round(math.degrees(obj.data.auto_smooth_angle), 1)), p.color_value, p.text_size_normal),
-                ("°", p.color_value, p.text_size_normal),
-            ])
+    # if obj.type == 'MESH':
+    #     # AUTOSMOOTH
+    #     if obj.data.use_auto_smooth:
+    #         output_text.extend([
+    #             "CR",
+    #             ("AUTOSMOOTH ", p.color_title, p.text_size_normal),
+    #         ])
+    #         # ANGLE
+    #         output_text.extend([
+    #             (" ANGLE ", p.color_setting, p.text_size_normal),
+    #             (str(round(math.degrees(obj.data.auto_smooth_angle), 1)),
+    #              p.color_value, p.text_size_normal),
+    #             ("°", p.color_value, p.text_size_normal),
+    #         ])
 
     if obj.type in ['MESH', 'LATTICE']:
         # VERTEX GROUPS
@@ -754,7 +770,8 @@ def mesh_options(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object
             ])
             output_text.extend([
                 (" ", p.color_title, p.text_size_normal),
-                (str(obj.vertex_groups[int(obj.vertex_groups.active_index)].name), p.color_value, p.text_size_normal),
+                (str(obj.vertex_groups[int(obj.vertex_groups.active_index)
+                                       ].name), p.color_value, p.text_size_normal),
             ])
 
     if obj.type in ['CURVE', 'MESH', 'LATTICE']:
@@ -793,7 +810,7 @@ def mesh_options(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object
             ])
 
         # VERTEX COLORS
-        if obj.data.vertex_colors:
+        if obj.data.vertex_colors and obj.data.vertex_colors.active_index < len(obj.data.vertex_colors):
             output_text.extend(["CR", ("VERTEX COLORS", p.color_title, p.text_size_normal)])
             output_text.extend([
                 (" ", p.color_title, p.text_size_normal),
@@ -801,7 +818,7 @@ def mesh_options(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object
             ])
             output_text.extend([
                 (" ", p.color_title, p.text_size_normal),
-                (str(obj.data.vertex_colors[int(obj.data.vertex_colors.active_index)].name),
+                (str(obj.data.vertex_colors[obj.data.vertex_colors.active_index].name),
                  p.color_value, p.text_size_normal),
             ])
 
@@ -816,7 +833,8 @@ def mesh_options(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object
             output_text.extend(["SPACE"])
 
     if obj.type == 'MESH':
-        if any([obj.data.use_auto_smooth, obj.vertex_groups, obj.data.shape_keys, obj.data.uv_layers, obj.data.vertex_colors]):
+        # if any([obj.data.use_auto_smooth, obj.vertex_groups, obj.data.shape_keys, obj.data.uv_layers, obj.data.vertex_colors]):
+        if any([obj.vertex_groups, obj.data.shape_keys, obj.data.uv_layers, obj.data.vertex_colors]):
             # SPACE
             output_text.extend(["SPACE"])
 
@@ -898,7 +916,8 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> N
             output_text.extend([
                 "CR",
                 ("CONSTANT DETAIL ", p.color_setting, p.text_size_normal),
-                (str(round(context_tool.constant_detail_resolution, 2)), p.color_value, p.text_size_normal),
+                (str(round(context_tool.constant_detail_resolution, 2)),
+                 p.color_value, p.text_size_normal),
             ])
 
         elif context_tool.detail_type_method == 'RELATIVE':
@@ -936,13 +955,15 @@ def sculpt(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object) -> N
 
         # SMOOTH SHADING
         if context_tool.use_smooth_shading:
-            output_text.extend(["CR", (str("SMOOTH SHADING"), p.color_value, p.text_size_normal)])
+            output_text.extend(
+                ["CR", (str("SMOOTH SHADING"), p.color_value, p.text_size_normal)])
 
         # SYMMETRIZE DIRECTION
         output_text.extend([
             "CR",
             (str("SYMMETRIZE "), p.color_setting, p.text_size_normal),
-            (str(context_tool.symmetrize_direction.lower().capitalize()), p.color_value, p.text_size_normal),
+            (str(context_tool.symmetrize_direction.lower().capitalize()),
+             p.color_value, p.text_size_normal),
         ])
 
         output_text.extend(["SPACE"])
@@ -998,10 +1019,18 @@ def armature(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Armature) 
     # BONE SELECTED
     if active_bone and obj.mode in {'POSE', 'EDIT'}:
         output_text.extend([
-            "CR",
-            ("BONE SELECTED ", p.color_title, p.text_size_normal),
-            (active_bone.name, p.color_value, p.text_size_normal),
+            (": ", p.color_title, int(p.text_size_large * 1.5)),
+            # ("BONE", p.color_title, p.text_size_normal),
+            # "CR",
+            (active_bone.name, p.color_value, p.text_size_large),
         ])
+
+        if active_bone.parent:
+            output_text.extend([
+                "CR2",
+                ("BONE PARENT: ", p.color_title, p.text_size_normal),
+                (active_bone.parent.name, p.color_value, p.text_size_normal),
+            ])
 
 
 # ---------------------------------------------------------------
@@ -1158,7 +1187,8 @@ def text_lattice(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object
     # INTERPOLATION U
     output_text.extend([
         ("  ", p.color_title, p.text_size_normal),
-        (str(obj.data.interpolation_type_u.split("_")[-1]), p.color_setting, p.text_size_normal),
+        (str(obj.data.interpolation_type_u.split("_")
+         [-1]), p.color_setting, p.text_size_normal),
     ])
 
 # V -----------------------------------------------------------------------
@@ -1171,7 +1201,8 @@ def text_lattice(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object
     # INTERPOLATION V
     output_text.extend([
         ("  ", p.color_title, p.text_size_normal),
-        (str(obj.data.interpolation_type_v.split("_")[-1]), p.color_setting, p.text_size_normal),
+        (str(obj.data.interpolation_type_v.split("_")
+         [-1]), p.color_setting, p.text_size_normal),
     ])
 
 # W -----------------------------------------------------------------------
@@ -1184,7 +1215,8 @@ def text_lattice(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object
     # INTERPOLATION W
     output_text.extend([
         ("  ", p.color_title, p.text_size_normal),
-        (str(obj.data.interpolation_type_w.split("_")[-1]), p.color_setting, p.text_size_normal),
+        (str(obj.data.interpolation_type_w.split("_")
+         [-1]), p.color_setting, p.text_size_normal),
     ])
 
 
@@ -1307,7 +1339,8 @@ def cycles_lights(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Objec
             output_text.extend(["CR", ("CAST SHADOW ", p.color_setting, p.text_size_normal)])
         # MULTIPLE IMPORTANCE
         if obj.data.cycles.use_multiple_importance_sampling:
-            output_text.extend(["CR", ("MULTIPLE IMPORTANCE", p.color_setting, p.text_size_normal)])
+            output_text.extend(
+                ["CR", ("MULTIPLE IMPORTANCE", p.color_setting, p.text_size_normal)])
 
 
 # ---------------------------------------------------------------
@@ -1369,7 +1402,8 @@ def mod_unknown(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
 # ----------------------------------------------------------------------
 # MODIFIER HANDLING
 # ----------------------------------------------------------------------
-ModifierFunc = Callable[[Any, prefs.InfotextAddonPrefs, bpy.types.Object, bpy.types.Modifier], None]
+ModifierFunc = Callable[[Any, prefs.InfotextAddonPrefs,
+                         bpy.types.Object, bpy.types.Modifier], None]
 modifiers: Dict[str, ModifierFunc] = {
     'ARMATURE': mod_armature,
     'ARRAY': mod_array,
@@ -1432,6 +1466,8 @@ def infotext_key_text(p):
     # modal(output_text, p.color_title, p.color_setting, p.color_value,
     #   text_size_normal, p.color_warning, p.color_option, p.text_size_large)
 
+    am_debugging(output_text, p)
+
     if p.show_view_perspective:
         # Make sure we don't conflict with the existing information
         # text, by telling it to fuck off if we have the view
@@ -1462,7 +1498,15 @@ def infotext_key_text(p):
     if p.show_object_name:
         name(output_text, p, obj)
         # SPACE
-        output_text.extend(["SPACE"])
+        # output_text.extend(["SPACE"])
+
+    # ARMATURE
+    if obj.type == 'ARMATURE':
+        armature(output_text, p, obj)
+        # SPACE
+        output_text.extend(["CR", "SPACE"])
+    else:
+        output_text.extend(["CR", "SPACE"])
 
     # PARENT
     if p.show_parent:
@@ -1493,11 +1537,7 @@ def infotext_key_text(p):
     # ----------------------------------------------------------------------
     # OBJECT TYPE HANDLING
     # ----------------------------------------------------------------------
-    # ARMATURE
-    if obj.type == 'ARMATURE':
-        armature(output_text, p, obj)
-        # SPACE
-        output_text.extend(["SPACE"])
+
 
     # CAMERA
     if obj.type == 'CAMERA':

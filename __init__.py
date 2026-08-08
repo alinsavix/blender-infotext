@@ -25,24 +25,25 @@ bl_info = {
 
 import os
 import sys
-from typing import *
 
 import bpy
-from bpy.props import (
-    StringProperty,
-    BoolProperty,
-    PointerProperty,
-    FloatVectorProperty,
-    FloatProperty,
-    EnumProperty,
-    IntProperty,
-    BoolVectorProperty
-)
+# from bpy.props import (
+#     StringProperty,
+#     BoolProperty,
+#     PointerProperty,
+#     FloatVectorProperty,
+#     FloatProperty,
+#     EnumProperty,
+#     IntProperty,
+#     BoolVectorProperty
+# )
 
 from . import infotext
 from . import functions
 from . import prefs
 # from . import ui
+
+from typing import Callable, Dict, List, Optional, Any, Union, Tuple, TYPE_CHECKING
 
 modules = [
     infotext,
@@ -67,7 +68,7 @@ modules = [
 # Property Group
 class INFOTEXT_OT_property_group(bpy.types.PropertyGroup):
     face_type_count: Dict[str, int] = {}
-    # previous_mesh = []   # FIXME: What is this used for?
+    # previous_mesh = []   # FIXME: What was this used for?
     # previous_mode: StringProperty()
 
 
@@ -91,7 +92,8 @@ def register():
         except ValueError:
             print(f"{cls.__name__} already registred")
 
-    bpy.types.WindowManager.infotext = PointerProperty(type=INFOTEXT_OT_property_group)
+    bpy.types.WindowManager.infotext = bpy.props.PointerProperty(
+        type=INFOTEXT_OT_property_group)
 
     # Check the addon version on Github
     # context = bpy.context

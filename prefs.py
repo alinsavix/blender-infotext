@@ -1,6 +1,6 @@
 import os
 import sys
-from typing import *
+from typing import TYPE_CHECKING, Tuple, Union, Optional
 
 import bpy
 from bpy.props import (
@@ -17,210 +17,304 @@ from bpy.props import (
 class InfotextAddonPrefs(bpy.types.AddonPreferences):
     bl_idname = __package__
 
-    prefs_tabs: EnumProperty(
-        items=(
-            # ('info', "Info", "INFORMATION"),
-            ('options', "Options", "ADDON OPTIONS"),
-            ('links', "Links", "LINKS"),
-        ),
-        default='options',
-    )
+    if TYPE_CHECKING:
+        layout: bpy.types.UILayout
 
-    # SHOW TEXTS
-    show_infotext: BoolProperty(
-        name="Enable Infotext",
-        default=True,
-        description="Enable Infotext in Viewport",
-    )
+    if TYPE_CHECKING:
+        prefs_tabs: bpy.types.EnumProperty
+    else:
+        prefs_tabs: bpy.props.EnumProperty(
+            items=(
+                # ('info', "Info", "INFORMATION"),
+                ('options', "Options", "ADDON OPTIONS"),
+                ('links', "Links", "LINKS"),
+            ),
+            default='options',
+        )
 
-    # show_blender_keymaps: BoolProperty(
+    # Do we show the info text at all?
+    if TYPE_CHECKING:
+        show_infotext: bpy.types.BoolProperty
+    else:
+        show_infotext: bpy.props.BoolProperty(
+            name="Enable Infotext",
+            default=True,
+            description="Enable Infotext in Viewport",
+        )
+
+    # it'd be really cool if we could show the key choices when there was a
+    # modal running, for blender in general, but it doesn't seem to be possible
+    # show_blender_keymaps: bpy.props.BoolProperty(
     #     name="Show Blender Keymaps",
     #     default=False,
     #     description="Show Blender Keymaps",
     # )
 
-    show_view_perspective: BoolProperty(
-        name="Show View Perspective",
-        default=True,
-        description="Show View Perspective (perspective, orthographic, etc)",
-    )
+    if TYPE_CHECKING:
+        show_view_perspective: bpy.types.BoolProperty
+    else:
+        show_view_perspective: bpy.props.BoolProperty(
+            name="Show View Perspective",
+            default=True,
+            description="Show View Perspective (perspective, orthographic, etc)",
+        )
 
-    show_object_mode: BoolProperty(
-        name="Show Object Mode",
-        default=True,
-        description="Show Object Mode (object, edit, pose, etc)",
-    )
+    if TYPE_CHECKING:
+        show_object_mode: bpy.types.BoolProperty
+    else:
+        show_object_mode: bpy.props.BoolProperty(
+            name="Show Object Mode",
+            default=True,
+            description="Show Object Mode (object, edit, pose, etc)",
+        )
 
-    show_object_name: BoolProperty(
-        name="Show Object Type & Name",
-        default=True,
-        description="Show Object & Name",
-    )
+    if TYPE_CHECKING:
+        show_object_name: bpy.types.BoolProperty
+    else:
+        show_object_name: bpy.props.BoolProperty(
+            name="Show Object Type & Name",
+            default=True,
+            description="Show Object & Name",
+        )
 
-    show_vert_face_tris: BoolProperty(
-        name="Show Vertex, Face, Triangle & Ngon counts",
-        default=True,
-        description="Show Vertex, Face, Triangle & Ngon counts",
-    )
+    if TYPE_CHECKING:
+        show_vert_face_tris: bpy.types.BoolProperty
+    else:
+        show_vert_face_tris: bpy.props.BoolProperty(
+            name="Show Vertex, Face, Triangle & Ngon counts",
+            default=True,
+            description="Show Vertex, Face, Triangle & Ngon counts",
+        )
 
-    show_object_info: BoolProperty(
-        name="Show Modifiers",
-        default=True,
-        description="Show Modifiers",
-    )
+    if TYPE_CHECKING:
+        show_object_info: bpy.types.BoolProperty
+    else:
+        show_object_info: bpy.props.BoolProperty(
+            name="Show Modifiers",
+            default=True,
+            description="Show Modifiers",
+        )
 
-    show_parent: BoolProperty(
-        name="Show Parent",
-        default=True,
-        description="Show Parent",
-    )
+    if TYPE_CHECKING:
+        show_parent: bpy.types.BoolProperty
+    else:
+        show_parent: bpy.props.BoolProperty(
+            name="Show Parent",
+            default=True,
+            description="Show Parent",
+        )
 
-    show_loc_rot_scale: BoolProperty(
-        name="Show Location, Rotation & Scale",
-        default=True,
-        description="Show Location, Rotation & Scale",
-    )
+    if TYPE_CHECKING:
+        show_loc_rot_scale: bpy.types.BoolProperty
+    else:
+        show_loc_rot_scale: bpy.props.BoolProperty(
+            name="Show Location, Rotation & Scale",
+            default=True,
+            description="Show Location, Rotation & Scale",
+        )
 
-    flag_bad_transforms: BoolProperty(
-        name="Flag Unapplied & Non-uniform Scaling",
-        default=True,
-        description="Flag Unapplied & Non-uniform Scaling (when modifiers are present)",
-    )
+    if TYPE_CHECKING:
+        flag_bad_transforms: bpy.types.BoolProperty
+    else:
+        flag_bad_transforms: bpy.props.BoolProperty(
+            name="Flag Unapplied & Non-uniform Scaling",
+            default=True,
+            description="Flag Unapplied & Non-uniform Scaling (when modifiers are present)",
+        )
 
-    show_modifiers: BoolProperty(
-        name="Show Modifiers",
-        default=True,
-        description="Show Modifiers",
-    )
+    if TYPE_CHECKING:
+        show_modifiers: bpy.types.BoolProperty
+    else:
+        show_modifiers: bpy.props.BoolProperty(
+            name="Show Modifiers",
+            default=True,
+            description="Show Modifiers",
+        )
 
-    detailed_modifiers: BoolProperty(
-        name="Detailed Modifiers",
-        default=True,
-        description="Show Detailed Modifier Properties",
-    )
+    if TYPE_CHECKING:
+        detailed_modifiers: bpy.types.BoolProperty
+    else:
+        detailed_modifiers: bpy.props.BoolProperty(
+            name="Detailed Modifiers",
+            default=True,
+            description="Show Detailed Modifier Properties",
+        )
 
-    # TEXT OPTIONS
-    color_title: FloatVectorProperty(
-        name="",
-        default=(1.0, 1.0, 1.0, 1.0),
-        min=0.0, max=1.0, size=4,
-        subtype='COLOR_GAMMA',
-    )
 
-    color_setting: FloatVectorProperty(
-        name="",
-        default=(0.5, 1.0, 0.0, 1.0),
-        min=0.0, max=1.0, size=4,
-        subtype='COLOR_GAMMA',
-    )
+    # Prefs for the actual text
+    if TYPE_CHECKING:
+        color_title: Tuple[bpy.types.FloatProperty, ...]
+    else:
+        color_title: bpy.props.FloatVectorProperty(
+            name="",
+            default=[1.0, 1.0, 1.0, 1.0],
+            min=0.0, max=1.0, size=4,
+            subtype='COLOR_GAMMA',
+        )
 
-    color_value: FloatVectorProperty(
-        name="",
-        default=(0.0, 0.7, 1.0, 1.0),
-        min=0.0, max=1.0, size=4,
-        subtype='COLOR_GAMMA',
-    )
+    if TYPE_CHECKING:
+        color_setting: Tuple[bpy.types.FloatProperty, ...]
+    else:
+        color_setting: bpy.props.FloatVectorProperty(
+            name="",
+            default=[0.5, 1.0, 0.0, 1.0],
+            min=0.0, max=1.0, size=4,
+            subtype='COLOR_GAMMA',
+        )
 
-    color_option: FloatVectorProperty(
-        name="",
-        default=(1.0, 0.886, 0.2, 1.0),
-        min=0.0, max=1.0, size=4,
-        subtype='COLOR_GAMMA',
-    )
+    if TYPE_CHECKING:
+        color_value: Tuple[bpy.types.FloatProperty, ...]
+    else:
+        color_value: bpy.props.FloatVectorProperty(
+            name="",
+            default=[0.0, 0.7, 1.0, 1.0],
+            min=0.0, max=1.0, size=4,
+            subtype='COLOR_GAMMA',
+        )
 
-    color_warning: FloatVectorProperty(
-        name="",
-        default=(1.0, 0.0, 0.0, 1.0),
-        min=0, max=1, size=4,
-        subtype='COLOR_GAMMA',
-    )
+    if TYPE_CHECKING:
+        color_option: Tuple[bpy.types.FloatProperty, ...]
+    else:
+        color_option: bpy.props.FloatVectorProperty(
+            name="",
+            default=[1.0, 0.886, 0.2, 1.0],
+            min=0.0, max=1.0, size=4,
+            subtype='COLOR_GAMMA',
+        )
 
-    infotext_text_shadow: BoolProperty(
-        name="Text Shadows",
-        default=False,
-        description="Text Shadows",
-    )
+    if TYPE_CHECKING:
+        color_warning: Tuple[bpy.types.FloatProperty, ...]
+    else:
+        color_warning: bpy.props.FloatVectorProperty(
+            name="",
+            default=[1.0, 0.0, 0.0, 1.0],
+            min=0, max=1, size=4,
+            subtype='COLOR_GAMMA',
+        )
 
-    infotext_shadow_color: FloatVectorProperty(
-        name="",
-        default=(0.0, 0.0, 0.0, 1.0),
-        min=0.0, max=1.0, size=4,
-        subtype='COLOR_GAMMA',
-    )
+    if TYPE_CHECKING:
+        infotext_text_shadow: bpy.types.BoolProperty
+    else:
+        infotext_text_shadow: bpy.props.BoolProperty(
+            name="Text Shadows",
+            default=False,
+            description="Text Shadows",
+        )
 
-    infotext_shadow_alpha: FloatProperty(
-        name="",
-        default=1.0,
-        min=0.0, max=1.0,
-    )
+    if TYPE_CHECKING:
+        infotext_shadow_color: Tuple[bpy.types.FloatProperty, ...]
+    else:
+        infotext_shadow_color: bpy.props.FloatVectorProperty(
+            name="",
+            default=[0.0, 0.0, 0.0, 1.0],
+            min=0.0, max=1.0, size=4,
+            subtype='COLOR_GAMMA',
+        )
 
-    infotext_offset_shadow_x: IntProperty(
-        name="",
-        default=2,
-        min=-5, max=5,
-    )
+    if TYPE_CHECKING:
+        infotext_shadow_alpha: bpy.types.FloatProperty
+    else:
+        infotext_shadow_alpha: bpy.props.FloatProperty(
+            name="",
+            default=1.0,
+            min=0.0, max=1.0,
+        )
 
-    infotext_offset_shadow_y: IntProperty(
-        name="",
-        default=-2,
-        min=-5, max=5,
-    )
+    if TYPE_CHECKING:
+        infotext_offset_shadow_x: bpy.types.IntProperty
+    else:
+        infotext_offset_shadow_x: bpy.props.IntProperty(
+            name="",
+            default=2,
+            min=-5, max=5,
+        )
 
-    text_size_max: IntProperty(
-        name="",
-        default=22,
-        min=10, max=30,
-        description="Maximal size of the text",
-    )
+    if TYPE_CHECKING:
+        infotext_offset_shadow_y: bpy.types.IntProperty
+    else:
+        infotext_offset_shadow_y: bpy.props.IntProperty(
+            name="",
+            default=-2,
+            min=-5, max=5,
+        )
 
-    text_size_mini: IntProperty(
-        name="",
-        default=10,
-        min=10, max=30,
-        description="Minimal size when the window is smaller",
-    )
+    if TYPE_CHECKING:
+        text_size_max: bpy.types.IntProperty
+    else:
+        text_size_max: bpy.props.IntProperty(
+            name="",
+            default=22,
+            min=10, max=30,
+            description="Maximal size of the text",
+        )
 
-    infotext_text_space: FloatProperty(
-        name="",
-        default=2.0,
-        min=0.5, max=100.0,
-        description="Space Between lines",
-    )
+    if TYPE_CHECKING:
+        text_size_mini: bpy.types.IntProperty
+    else:
+        text_size_mini: bpy.props.IntProperty(
+            name="",
+            default=10,
+            min=10, max=30,
+            description="Minimal size when the window is smaller",
+        )
 
-    infotext_text_pos_y: IntProperty(
-        name="",
-        default=105,
-        min=0, max=4000,
-        description="Position of the text in Y",
-    )
+    if TYPE_CHECKING:
+        infotext_text_space: bpy.types.FloatProperty
+    else:
+        infotext_text_space: bpy.props.FloatProperty(
+            name="",
+            default=2.0,
+            min=0.5, max=100.0,
+            description="Space Between lines",
+        )
 
-    infotext_text_pos_x: IntProperty(
-        name="",
-        default=20,
-        min=0, max=4000,
-        description="Position of the text in X",
-    )
+    if TYPE_CHECKING:
+        infotext_text_pos_y: bpy.types.IntProperty
+    else:
+        infotext_text_pos_y: bpy.props.IntProperty(
+            name="",
+            default=105,
+            min=0, max=4000,
+            description="Position of the text in Y",
+        )
+
+    if TYPE_CHECKING:
+        infotext_text_pos_x: bpy.types.IntProperty
+    else:
+        infotext_text_pos_x: bpy.props.IntProperty(
+            name="",
+            default=20,
+            min=0, max=4000,
+            description="Position of the text in X",
+        )
 
     # Hidden/calculated values
     # FIXME: Make sure the math here is sensical
-    text_size_normal: IntProperty(
-        name="",
-        default=-1,
-        description="Normal size for normal text",
-        get=lambda s: min(s.text_size_max, max(s.text_size_mini, int(bpy.context.area.width / 100))),
-    )
+    if TYPE_CHECKING:
+        text_size_normal: bpy.types.IntProperty
+    else:
+        text_size_normal: bpy.props.IntProperty(
+            name="",
+            default=-1,
+            description="Normal size for normal text",
+            get=lambda s: min(s.text_size_max, max(
+                s.text_size_mini, int(bpy.context.area.width / 100))),
+        )
 
-    text_size_large: IntProperty(
-        name="",
-        default=-1,
-        description="Large size for large text",
-        get=lambda s: int(s.text_size_max * 1.5),
-    )
+    if TYPE_CHECKING:
+        text_size_large: bpy.types.IntProperty
+    else:
+        text_size_large: bpy.props.IntProperty(
+            name="",
+            default=-1,
+            description="Large size for large text",
+            get=lambda s: int(s.text_size_max * 1.5),
+        )
 
-    def draw(self, context):
+    def draw(self, context: bpy.types.Context) -> None:
         layout = self.layout
-        wm = bpy.context.window_manager
-        infotext = bpy.context.window_manager.infotext
+        # wm = bpy.context.window_manager
+        # infotext = bpy.context.window_manager.infotext
         # icons = ui.load_icons()
 
         row = layout.row(align=True)
@@ -356,6 +450,9 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
         if self.prefs_tabs == 'links':
             box = layout.box()
             box.label(text="Issues, bugs, etc:", icon='LINK_BLEND')
+            z = box.operator("wm.url_open", text="Github")
+            from tdvutil import alintrospect
+            alintrospect(z)
             box.operator("wm.url_open",
                          text="Github").url = "https://www.github.com/alinsavix/blender-infotext"
 

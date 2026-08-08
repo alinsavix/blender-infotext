@@ -1,21 +1,23 @@
 import os
 import sys
-from typing import Tuple
+from typing import Callable, Dict, List, Optional, Any, Union, Tuple, TYPE_CHECKING, cast
+
 
 import bpy
-from bpy.props import (
-    StringProperty,
-    BoolProperty,
-    PointerProperty,
-    FloatVectorProperty,
-    FloatProperty,
-    EnumProperty,
-    IntProperty,
-    BoolVectorProperty
-)
-from bpy.types import (
-    PropertyGroup,
-)
+# from bpy.props import (
+#     StringProperty,
+#     BoolProperty,
+#     PointerProperty,
+#     FloatVectorProperty,
+#     FloatProperty,
+#     EnumProperty,
+#     IntProperty,
+#     BoolVectorProperty
+# )
+
+# from bpy.types import (
+#     PropertyGroup,
+# )
 
 # from . import infotext
 # from . import functions
@@ -31,13 +33,17 @@ def get_addon_preferences():
     return bpy.context.preferences.addons[addon_key].preferences
 
 
-def get_face_type_count(infotext, obj):
+def get_face_type_count(infotext, obj: bpy.types.Object) -> None:
     if obj.type == 'MESH':
         tris = 0
         ngons = 0
-        if obj.data.is_editmode:
+
+        data = cast(bpy.types.Mesh, obj.data)
+
+        if data.is_editmode:
             obj.update_from_editmode()
-        for f in obj.data.polygons:
+
+        for f in data.polygons:
             vert_count = len(f.vertices)
             if vert_count == 3:
                 tris += 1
@@ -52,15 +58,15 @@ def get_face_type_count(infotext, obj):
 
 
 # utility function for floating point comparisons
-def float_is_close(a, b, precision):
-    return f'{a:.{precision}f}' == f'{b:.{precision}f}'
+def float_is_close(a: float, b: float, precision: int) -> str:
+    return f"{a:.{precision}f}' == f'{b:.{precision}f}"
 
 
 def fmt_unit(category: str, value: float, precision: int) -> Tuple[str, str, str]:
     # FIXME: Should the unit system be passed in instead?
     units_system = str(bpy.context.scene.unit_settings.system)
 
-    s = bpy.utils.units.to_string(units_system, category, value, precision)
+    s = bpy.utils.units.to_string(units_system, category, value, precision=precision)
 
     # does this *always* output degrees? Assuming so
     if category == "ROTATION":
