@@ -45,14 +45,6 @@ from . import prefs
 
 from typing import Callable, Dict, List, Optional, Any, Union, Tuple, TYPE_CHECKING
 
-modules = [
-    infotext,
-    functions,
-    prefs,
-    # ui,
-]
-
-
 # FIXME: There's probably a better way to do this.
 # main_dir = os.path.dirname(os.path.abspath(__file__))
 # sys.path.append(main_dir)
@@ -83,17 +75,17 @@ CLASSES = [
 ]
 
 def register():
-    for module in modules:
-        module.register()
+    # Preferences and shared state must exist before the draw callback can run.
+    prefs.register()
 
     for cls in CLASSES:
-        try:
-            bpy.utils.register_class(cls)
-        except ValueError:
-            print(f"{cls.__name__} already registred")
+        bpy.utils.register_class(cls)
 
     bpy.types.WindowManager.infotext = bpy.props.PointerProperty(
         type=INFOTEXT_OT_property_group)
+
+    # Install the draw handler last.
+    infotext.register()
 
     # Check the addon version on Github
     # context = bpy.context
@@ -110,16 +102,15 @@ def register():
 
 # Unregister
 def unregister():
+    # Stop drawing before preferences or shared state are removed.
+    infotext.unregister()
+
     del bpy.types.WindowManager.infotext
 
-    for cls in CLASSES:
-        try:
-            bpy.utils.unregister_class(cls)
-        except ValueError:
-            print(f"{cls.__name__} already unregistred")
+    for cls in reversed(CLASSES):
+        bpy.utils.unregister_class(cls)
 
-    for module in reversed(modules):
-        module.unregister()
+    prefs.unregister()
 
     # # Remove Text
     # if infotext_text_Handle:

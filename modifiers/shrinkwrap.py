@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"SHRINKWRAP": "mod_shrinkwrap"}
+
 def mod_shrinkwrap(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
                    mod: bpy.types.ShrinkwrapModifier) -> None:
     # obj = bpy.context.active_object

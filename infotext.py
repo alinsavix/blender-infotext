@@ -18,49 +18,30 @@ import blf
 
 from .functions import *
 from . import prefs
+from .modifiers import discover_modifier_handlers
+
+infotext_text_Handle: List[Any] = []
+_native_infotext_settings: Optional[Tuple[bool, bool]] = None
 
 
-# FIXME: It would be better to auto-find and auto-load these, rather than
-# having the list hard-coded. Sadly, I was having trouble making that work
-# well, so we're just going to do this.
-#
-# FIXME: Thewe will not get reloaded when the addon is reloaded
-from .modifiers.armature import *
-from .modifiers.array import *
-from .modifiers.bevel import *
-from .modifiers.boolean import *
-from .modifiers.build import *
-from .modifiers.cast import *
-from .modifiers.corrective_smooth import *
-from .modifiers.curve import *
-# from .modifiers.data_transfer import *
-from .modifiers.decimate import *
-from .modifiers.displace import *
-from .modifiers.edge_split import *
-from .modifiers.hook import *
-from .modifiers.laplacian_deform import *
-from .modifiers.laplacian_smooth import *
-from .modifiers.lattice import *
-from .modifiers.mask import *
-from .modifiers.mesh_deform import *
-from .modifiers.mirror import *
-from .modifiers.multires import *
-from .modifiers.remesh import *
-from .modifiers.screw import *
-from .modifiers.shrinkwrap import *
-from .modifiers.simple_deform import *
-from .modifiers.skin import *
-from .modifiers.smooth import *
-from .modifiers.solidify import *
-from .modifiers.subsurf import *
-from .modifiers.surface_deform import *
-from .modifiers.triangulate import *
-from .modifiers.warp import *
-from .modifiers.wave import *
-from .modifiers.weighted_normals import *
-from .modifiers.wireframe import *
+def set_native_infotext_suppressed(suppress: bool) -> None:
+    """Suppress Blender's overlapping labels, restoring the user's settings later."""
+    global _native_infotext_settings
 
-infotext_text_Handle: bpy.types.Object = []
+    view_preferences = bpy.context.preferences.view
+    if suppress:
+        if _native_infotext_settings is None:
+            _native_infotext_settings = (
+                view_preferences.show_object_info,
+                view_preferences.show_view_name,
+            )
+        view_preferences.show_object_info = False
+        view_preferences.show_view_name = False
+    elif _native_infotext_settings is not None:
+        show_object_info, show_view_name = _native_infotext_settings
+        view_preferences.show_object_info = show_object_info
+        view_preferences.show_view_name = show_view_name
+        _native_infotext_settings = None
 
 
 # ----------------------------------------------------------------------
@@ -1404,45 +1385,7 @@ def mod_unknown(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
 # ----------------------------------------------------------------------
 ModifierFunc = Callable[[Any, prefs.InfotextAddonPrefs,
                          bpy.types.Object, bpy.types.Modifier], None]
-modifiers: Dict[str, ModifierFunc] = {
-    'ARMATURE': mod_armature,
-    'ARRAY': mod_array,
-    'BEVEL': mod_bevel,
-    'BOOLEAN': mod_boolean,
-    'BUILD': mod_build,
-    'CAST': mod_cast,
-    'CORRECTIVE_SMOOTH': mod_corrective_smooth,
-    'CURVE': mod_curve,
-    # 'DATA_TRANSFER': mod_data_transfer,
-    'DECIMATE': mod_decimate,
-    'DISPLACE': mod_displace,
-    'EDGE_SPLIT': mod_edge_split,
-    'HOOK': mod_hook,
-    'LAPLACIANDEFORM': mod_laplacian_deform,
-    'LAPLACIANSMOOTH': mod_laplacian_smooth,
-    'LATTICE': mod_lattice,
-    'MASK': mod_mask,
-    'MESH_DEFORM': mod_mesh_deform,
-    'MIRROR': mod_mirror,
-    'MULTIRES': mod_multires,
-    'REMESH': mod_remesh,
-    'SCREW': mod_screw,
-    'SHRINKWRAP': mod_shrinkwrap,
-    'SIMPLE_DEFORM': mod_simple_deform,
-    'SKIN': mod_skin,
-    'SMOOTH': mod_smooth,
-    'SOLIDIFY': mod_solidify,
-    'SUBSURF': mod_subsurf,
-    'SURFACE_DEFORM': mod_surface_deform,
-    'TRIANGULATE': mod_triangulate,
-    'WARP': mod_warp,
-    'WAVE': mod_wave,
-    'WIREFRAME': mod_wireframe,
-    'WEIGHTED_NORMAL': mod_weighted_normals,
-    'default': mod_unknown,
-
-
-}
+modifier_handlers: Dict[str, ModifierFunc] = discover_modifier_handlers()
 
 
 # ----------------------------------------------------------------------
@@ -1469,13 +1412,6 @@ def infotext_key_text(p):
     am_debugging(output_text, p)
 
     if p.show_view_perspective:
-        # Make sure we don't conflict with the existing information
-        # text, by telling it to fuck off if we have the view
-        # perspective text enabled. This is SUPER-jenky. Not sure
-        # if there's a better way to do this, but my money says 'yes'
-        bpy.context.preferences.view.show_object_info = False
-        bpy.context.preferences.view.show_view_name = False
-
         view(output_text, p)
 
         output_text.extend(["SPACE"])
@@ -1591,11 +1527,8 @@ def infotext_key_text(p):
     # BLANC = (1, 1, 1, 1)
 
     if p.show_modifiers:
-        for i, mod in enumerate(obj.modifiers):
-            if mod.type in modifiers:
-                func = modifiers[mod.type]
-            else:
-                func = modifiers['default']
+        for mod in obj.modifiers:
+            func = modifier_handlers.get(mod.type, mod_unknown)
             func(output_text, p, obj, mod)
 
     output_text.extend(["SPACE"])
@@ -1608,6 +1541,7 @@ def register():
         bpy.types.SpaceView3D.draw_handler_remove(infotext_text_Handle[0], 'WINDOW')
     infotext_text_Handle[:] = [
         bpy.types.SpaceView3D.draw_handler_add(infotext_draw_text_callback, (), 'WINDOW', 'POST_PIXEL')]
+    set_native_infotext_suppressed(get_addon_preferences().show_infotext)
 
 
 def unregister():
@@ -1616,6 +1550,7 @@ def unregister():
         bpy.types.SpaceView3D.draw_handler_remove(
             infotext_text_Handle[0], 'WINDOW')
         infotext_text_Handle[:] = []
+    set_native_infotext_suppressed(False)
 
 
 # class DATA_PT_customdata(MeshButtonsPanel, Panel):

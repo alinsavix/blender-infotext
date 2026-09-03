@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"SKIN": "mod_skin"}
+
 def mod_skin(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
              mod: bpy.types.SkinModifier) -> None:
     obj = bpy.context.active_object
