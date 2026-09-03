@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"SCREW": "mod_screw"}
+
 # FIXME: Update for 2.8x/2.9x
 def mod_screw(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, mod: bpy.types.ScrewModifier) -> None:
     # obj = bpy.context.active_object

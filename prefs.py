@@ -14,6 +14,14 @@ from bpy.props import (
     BoolVectorProperty
 )
 
+
+def _update_show_infotext(self, context: bpy.types.Context) -> None:
+    # Import lazily to avoid the prefs <-> infotext module dependency at import time.
+    from . import infotext
+
+    infotext.set_native_infotext_suppressed(self.show_infotext)
+
+
 class InfotextAddonPrefs(bpy.types.AddonPreferences):
     bl_idname = __package__
 
@@ -40,6 +48,7 @@ class InfotextAddonPrefs(bpy.types.AddonPreferences):
             name="Enable Infotext",
             default=True,
             description="Enable Infotext in Viewport",
+            update=_update_show_infotext,
         )
 
     # it'd be really cool if we could show the key choices when there was a
@@ -471,14 +480,9 @@ CLASSES = [
 
 def register():
     for cls in CLASSES:
-        try:
-            bpy.utils.register_class(cls)
-        except ValueError:
-            print(f"{cls.__name__} already registred")
+        bpy.utils.register_class(cls)
+
 
 def unregister():
-    for cls in CLASSES:
-        try:
-            bpy.utils.unregister_class(cls)
-        except ValueError:
-            print(f"{cls.__name__} already unregistred")
+    for cls in reversed(CLASSES):
+        bpy.utils.unregister_class(cls)

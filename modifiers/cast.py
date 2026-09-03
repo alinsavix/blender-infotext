@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"CAST": "mod_cast"}
+
 def mod_cast(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
              mod: bpy.types.CastModifier) -> None:
     # obj = bpy.context.active_object

@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"BOOLEAN": "mod_boolean"}
+
 def mod_boolean(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
                 mod: bpy.types.BooleanModifier) -> None:
     # obj = bpy.context.active_object

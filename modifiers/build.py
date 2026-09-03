@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"BUILD": "mod_build"}
+
 def mod_build(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
               mod: bpy.types.BuildModifier) -> None:
     # obj = bpy.context.active_object

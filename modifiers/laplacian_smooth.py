@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"LAPLACIANSMOOTH": "mod_laplacian_smooth"}
+
 def mod_laplacian_smooth(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
                          mod: bpy.types.LaplacianSmoothModifier) -> None:
     # obj = bpy.context.active_object

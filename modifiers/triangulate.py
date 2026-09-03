@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"TRIANGULATE": "mod_triangulate"}
+
 # FIXME: Needs to support 'keep normals'  minimum verts, and not have
 # underscores in the 'method' field
 

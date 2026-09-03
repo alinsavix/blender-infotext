@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"EDGE_SPLIT": "mod_edge_split"}
+
 def mod_edge_split(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
                    mod: bpy.types.EdgeSplitModifier) -> None:
     # obj = bpy.context.active_object

@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"ARRAY": "mod_array"}
+
 def mod_array(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
               mod: bpy.types.ArrayModifier) -> None:
     # obj = bpy.context.active_object

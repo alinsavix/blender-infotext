@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"SUBSURF": "mod_subsurf"}
+
 def mod_subsurf(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
                 mod: bpy.types.SubsurfModifier) -> None:
     # obj = bpy.context.active_object

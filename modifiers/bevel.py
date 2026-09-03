@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"BEVEL": "mod_bevel"}
+
 def mod_bevel(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
               mod: bpy.types.BevelModifier) -> None:
     # FIXME: Should we take WM as an argument, too?

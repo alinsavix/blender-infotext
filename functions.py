@@ -1,3 +1,4 @@
+import math
 import os
 import sys
 from typing import Callable, Dict, List, Optional, Any, Union, Tuple, TYPE_CHECKING, cast
@@ -58,15 +59,15 @@ def get_face_type_count(infotext, obj: bpy.types.Object) -> None:
 
 
 # utility function for floating point comparisons
-def float_is_close(a: float, b: float, precision: int) -> str:
-    return f"{a:.{precision}f}' == f'{b:.{precision}f}"
+def float_is_close(a: float, b: float, precision: int) -> bool:
+    return math.isclose(a, b, rel_tol=0.0, abs_tol=0.5 * 10 ** -precision)
 
 
 def fmt_unit(category: str, value: float, precision: int) -> Tuple[str, str, str]:
     # FIXME: Should the unit system be passed in instead?
     units_system = str(bpy.context.scene.unit_settings.system)
 
-    s = bpy.utils.units.to_string(units_system, category, value, precision=precision)
+    s = bpy.utils.units.to_string(units_system, category, value, precision=precision).rstrip()
 
     # does this *always* output degrees? Assuming so
     if category == "ROTATION":
@@ -77,10 +78,11 @@ def fmt_unit(category: str, value: float, precision: int) -> Tuple[str, str, str
     sp = s.split()
 
     if len(sp) == 2:
-        return (s.rstrip(), sp[0], sp[1])
+        return (s, sp[0], sp[1])
 
-    # else, no units present
-    return (s[0], s[0], "")
+    # No separately-delimited unit is present. This includes unitless values
+    # and compact imperial strings such as ``41.01'``; keep the complete value.
+    return (s, s, "")
 
 
 # Shortcuts for various formatting

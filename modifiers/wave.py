@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"WAVE": "mod_wave"}
+
 def mod_wave(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
              mod: bpy.types.WaveModifier) -> None:
     # obj = bpy.context.active_object

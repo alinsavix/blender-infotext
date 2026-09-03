@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"MESH_DEFORM": "mod_mesh_deform"}
+
 def mod_mesh_deform(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
                     mod: bpy.types.MeshDeformModifier) -> None:
     # obj = bpy.context.active_object

@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"WEIGHTED_NORMAL": "mod_weighted_normals"}
+
 def mod_weighted_normals(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
                          mod: bpy.types.WeightedNormalModifier) -> None:
     # obj = bpy.context.active_object

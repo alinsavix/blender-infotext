@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"SOLIDIFY": "mod_solidify"}
+
 def mod_solidify(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
                  mod: bpy.types.SolidifyModifier) -> None:
     # obj = bpy.context.active_object

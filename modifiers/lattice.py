@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"LATTICE": "mod_lattice"}
+
 def mod_lattice(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
                 mod: bpy.types.LatticeModifier) -> None:
     obj = bpy.context.active_object

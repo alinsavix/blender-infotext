@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"REMESH": "mod_remesh"}
+
 def mod_remesh(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
                mod: bpy.types.RemeshModifier) -> None:
     # obj = bpy.context.active_object

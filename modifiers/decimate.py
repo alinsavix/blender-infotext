@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"DECIMATE": "mod_decimate"}
+
 def mod_decimate(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
                  mod: bpy.types.DecimateModifier) -> None:
     # obj = bpy.context.active_object

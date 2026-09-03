@@ -3,6 +3,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"MIRROR": "mod_mirror"}
+
 def mod_mirror(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
                mod: bpy.types.MirrorModifier) -> None:
     # obj = bpy.context.active_object

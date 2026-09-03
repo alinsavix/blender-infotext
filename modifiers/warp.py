@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"WARP": "mod_warp"}
+
 def mod_warp(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
              mod: bpy.types.WarpModifier) -> None:
     # obj = bpy.context.active_object

@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"MULTIRES": "mod_multires"}
+
 def mod_multires(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object, mod: bpy.types.MultiresModifier) -> None:
     # obj = bpy.context.active_object
     if obj.type == 'MESH':

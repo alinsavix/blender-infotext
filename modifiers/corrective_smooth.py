@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"CORRECTIVE_SMOOTH": "mod_corrective_smooth"}
+
 def mod_corrective_smooth(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
                           mod: bpy.types.CorrectiveSmoothModifier) -> None:
     # obj = bpy.context.active_object

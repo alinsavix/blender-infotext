@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"HOOK": "mod_hook"}
+
 def mod_hook(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
              mod: bpy.types. HookModifier) -> None:
     # obj = bpy.context.active_object

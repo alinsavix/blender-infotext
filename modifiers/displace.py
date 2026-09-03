@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"DISPLACE": "mod_displace"}
+
 def mod_displace(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
                  mod: bpy.types.DisplaceModifier) -> None:
     # obj = bpy.context.active_object

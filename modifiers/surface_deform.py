@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"SURFACE_DEFORM": "mod_surface_deform"}
+
 def mod_surface_deform(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
                        mod: bpy.types.SurfaceDeformModifier) -> None:
     # obj = bpy.context.active_object

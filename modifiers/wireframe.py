@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"WIREFRAME": "mod_wireframe"}
+
 def mod_wireframe(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
                   mod: bpy.types.WireframeModifier) -> None:
     # obj = bpy.context.active_object

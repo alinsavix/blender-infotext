@@ -5,6 +5,8 @@ import bpy.types
 from ..functions import *
 from .. import prefs
 
+MODIFIER_HANDLERS = {"CURVE": "mod_curve"}
+
 def mod_curve(output_text, p: prefs.InfotextAddonPrefs, obj: bpy.types.Object,
               mod: bpy.types.CurveModifier) -> None:
     # obj = bpy.context.active_object
